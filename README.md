@@ -1,4 +1,4 @@
-# AntiCheat
+# VAC (VoidAntiCheat)
 
 # The GitHub repo for my AntiCheat-PE plugin.
 
