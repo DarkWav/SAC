@@ -1,4 +1,4 @@
-# AntiCheat License 2.0
+# AntiCheat License 2.1 (ACLv2.1)
 
 You are free to:
 
@@ -15,5 +15,7 @@ NoDerivatives — If you remix, transform, or build upon the material, you may n
 No Modification — If you modyfy the material, you may not distribute the modified material.
 
 No Copying — If you Copy from the material, you may not distribute the material which includes code that was copyed from this software.
+
+No Copyright — DO NOT UNDER ANY CIRCUMSTANCES COPYRIGHT THIS PLUGIN / SOFTWARE! IF U ARE CAUGHT U WILL BE REPORTED!
 
 No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
