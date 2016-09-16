@@ -1,0 +1,15 @@
+This will teach you how to use AntiForceOP.
+
+Step 1: Enabling in config:
+
+        Set "ForceOP" to "true"
+
+Step 2: Give all your OPs the permission "anticheat.op"
+
+Step 3: Now Restart your server.
+
+Step 4: You are now protected against ForceOP! Don´t forget to give the permission "anticheat.op" to your new OPs!
+
+Have Fun with this Tool!
+
+WARNING: THIS MAY CAUSE LAG EVERY 25 SECONDS ON LARGE SERVERS!

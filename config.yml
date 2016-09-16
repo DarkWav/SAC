@@ -1,0 +1,218 @@
+---
+#||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
+#VoidAntiCheat main configuration file.
+#Current version: 3.0.0
+#What should be blocked?
+#||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
+#true = ENABLE
+#false = DISABLE
+#block = block Hack
+#kick = Player kick
+#||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
+   Plugin-Version: 3.0.0
+   Config-Version: 3.4.0
+#Enables i am waching you message
+   I-AM-WATCHING-YOU: true
+#Enable auto banning after an amount of kicks???
+#THIS ONLY WORKS ON GENISYS!
+#0 = Disabled
+#1 = Instant Ban
+   Max-Hacking-Times: 0
+#Enable verbose output???
+#Sends a mesage to all OPs if someone is hacking.
+
+   Verbose: true
+
+#-------------------Fly-------------------#
+#Do you want to enable Fly check?
+#This should block Spider, Jesus and HighJump as well...
+#This wont have any problems with falling or jumping,
+#even if the player has JumpBoost 2.
+
+   Fly: true
+
+#How many moves may a player be flying before detection?
+#20 Should work fine. (Standard)
+#NEVER set this lower than 10
+#Increase if Fly causes false poitives.
+
+   Fly-Threshold: 20
+
+#Wich Punishment should take place if Fly is detected?
+
+   Fly-Punishment: kick
+
+#Wich Message Sould be shown if Fly is detected?
+
+   Fly-Message: "[VAC] > Fly is not allowed!"
+
+#Which Log Message Sould be shown if Fly is detected?
+
+   Fly-LogMessage: "[VAC] > %PLAYER% is hacking Fly!"
+
+#------------------Regen------------------#
+#Do you want to enable Regen check?
+#Stops INSANE regeneration.
+
+   Regen: true
+
+#Wich Punishment should take place if Regen is detected?
+
+   Regen-Punishment: kick
+
+#Wich Message Sould be shown if Fly is detected?
+
+   Regen-Message: "[VAC] > Regen is not allowed!"
+
+#Which Log Message Sould be shown if Fly is detected?
+
+   Regen-LogMessage: "[VAC] > %PLAYER% is hacking Regen!"
+
+#-----------------Speed-------------------#
+#Do you want to enable Speed check?
+#This works with falling.
+
+   Speed: true
+
+#Wich Punishment should take place?
+
+   Speed-Punishment: kick
+
+#How many times must a player be hacking before detection?
+#5 Should work fine. (Standard)
+#NEVER set this to 0
+
+   Speed-Threshold: 5
+
+#Wich Message Sould be shown if Speed is detected?
+
+   Speed-Message: "[VAC] > Speed is not allowed!"
+
+#Which Log Message Sould be shown if Speed is detected?
+
+   Speed-LogMessage: "[VAC] > %PLAYER% is hacking Speed!"
+
+#-----------------Reach-------------------#
+#Do you want to enable Reach check?
+
+   Reach: true
+
+#How much Range may a player have to be legit?
+#Decrease this to 7.7 if Reach is not detected.
+#Increase this to 7.9 or 8 if Reach is causing false
+#positives. Standard: 7.8
+#NEVER set this lower than 7.7
+
+   MaxRange:  7.8
+   
+#Wich Punishment should take place?
+
+   Reach-Punishment: kick
+
+#Wich Message Sould be shown if Reach is detected?
+
+   Reach-Message: "[VAC] > Reach is not allowed!"
+
+#Which Log Message Sould be shown if Reach is detected?
+
+   Reach-LogMessage: "[VAC] > %PLAYER% is hacking Reach!"
+
+#-----------------Glide-------------------#
+#Do you want to enable Reach check?
+
+   Glide: true
+
+#Wich Punishment should take place if Glide is detected?
+
+   Glide-Punishment: kick
+
+#Wich Message Sould be shown if Fly is detected?
+
+   Glide-Message: "[VAC] > Glide is not allowed!"
+
+#Which Log Message Sould be shown if Glide is detected?
+
+   Reach-LogMessage: "[VAC] > %PLAYER% is hacking Glide!"
+
+#--------------CloseCombat----------------#
+#Do you want to enable CloseCombat?
+#MCWIN10 = Minecraft:Windows 10 Edition Beta
+#MCPE    = Minecraft:Pocket Edition
+#MCWIN10 uses LOWER MaxRange Then MCPE.
+#That means MCPE clients have an advanage
+#angainst MCWIN10 Clients.
+#This sets the MaxRange of MCWIN10 as the default
+#MaxRange (3.7). Hits that have higher Range will
+#be cancelled. when enabling this, MCPE clients
+#Will no longer have an advantage against MCWIN10
+#Clients. But This also CHANGES PVP MECHANICS!
+#Use With CAUTION!
+
+   CloseCombat: false
+
+#----------------ForceOP------------------#
+#Do you want to enable advanced ForceOP check?
+#READ AntiForceOP.txt BEFORE ENABLING!
+
+   ForceOP: false
+
+#Which Permission should ForceOP check?
+#THIS NEEDS TO BE AN EXISTING PERMISSION
+#WICH IS NOT DEFAULTLY GIVEN TO OPS!
+
+   ForceOP-Permission: "vac.op"
+
+#-----------------NoClip------------------#
+#Do you want to enable NoClip Detection?
+#This prevents players form glitching though blocks.
+#If this caueses crashes, please report it to the Author!
+
+   NoClip: true
+
+#Which Punishment should take place?
+#I do NOT reccomand to kick players for NoClip due to glitches!
+
+   NoClip-Punishment: block
+
+#How many times must a player be hacking before detection?
+#i reccomand setting this to above 50 because of pocketmines
+#bugs and glitches.
+#NEVER set this to 0
+
+   NoClip-Threshold: 75
+
+#Which Message Should be shown if NoClip is detected?
+
+   NoClip-Message: "[VAC] > NoClip is not allowed!"
+
+#Which Log Message Sould be shown if NoClip is detected?
+
+   NoClip-LogMessage: "[VAC] > %PLAYER% is hacking NoClip!"
+
+#--------------ForceGameMode--------------#
+#Do you want to enable ForceGameMode Detection?
+#USE THIS WITH CAUTION!
+#This WILL BLOCK ANY PLAYER THAT IS CHANGEING ITS GAMEMODE
+#AND IS NOT OP ALSO IF DONE VIA ADMIN/PLUGIN!
+#I WONT GUARANTEE FOR ANY FALSE POSITIVES WITH THAT!
+#READ AntiForceGM.txt BEFORE ENABLING!
+
+   FoceGameMode: false
+
+#Which Message Should be shown if ForceGameMode is detected?
+
+   ForceGameMode-Message: "[VAC] > ForceGameMode is not allowed!"
+
+#Which Log Message Sould be shown if ForceGameMode is detected?
+
+   ForceGameMode-LogMessage: "[VAC] > %PLAYER% is hacking ForceGameMode!"
+
+#//////////////////////////////////////////////////////
+#//                                                  //
+#//     VAC by DarkWav.                              //
+#//     Distributed under the ImagicalMine License.  //
+#//     Do not redistribute in modified form!        //
+#//     All rights reserved.                         //
+#//                                                  //
+#//////////////////////////////////////////////////////
+...
