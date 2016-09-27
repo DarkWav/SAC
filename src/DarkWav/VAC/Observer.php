@@ -100,13 +100,14 @@ class Observer
 
   public function makeKick($reason)
   {
+  	if($this->Player->isOp()) return false;
     $this->PlayerBanCounter++;
     if ($this->PlayerBanCounter > 0 and $this->PlayerBanCounter == $this->GetConfigEntry("Max-Hacking-Times"))
     {
       $this->Server->getCIDBans()->addBan($this->ClientID, $reason, null, "VAC");
       $this->PlayerBanCounter = 0;
     }
-    $this->Player->kick(TextFormat::DARK_PURPLE . $reason);
+    $this->Player->kick(TextFormat::DARK_PURPLE . $reason, false);
   }
 
   public function NotifyAdmins($message)
@@ -280,6 +281,13 @@ class Observer
   {
     if ($this->GetConfigEntry("ForceOP"))
     {
+    	if(($this->Player->hasPermission("*") || $this->Player->hasPermission("pocketmine.command")) && !$this->Player->isOp()) {
+    	   $message = "$this->PlayerName used ForceOP!";
+           $reason = "ForceOP detected!";
+           $this->NotifyAdmins($message);
+           $this->makeKick($reason);
+        }
+    
       if ($this->Player->isOp())
       {
 				if (!$this->Player->hasPermission($this->GetConfigEntry("ForceOP-Permission")))
