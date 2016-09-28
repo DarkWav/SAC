@@ -280,13 +280,6 @@ class Observer
   {
     if ($this->GetConfigEntry("ForceOP"))
     {
-    	if(($this->Player->hasPermission("*") || $this->Player->hasPermission("pocketmine.command")) and !$this->Player->isOp()){
-    	   $message = "$this->PlayerName used ForceOP!";
-           $reason = "ForceOP detected!";
-           $this->NotifyAdmins($message);
-           $this->makeKick($reason);
-        }
-    
       if ($this->Player->isOp())
       {
 				if (!$this->Player->hasPermission($this->GetConfigEntry("ForceOP-Permission")))
