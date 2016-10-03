@@ -21,13 +21,16 @@ class Observer
     $this->Logger                = $VAC->getServer()->getLogger();
     $this->Server                = $VAC->getServer();
     $this->JoinCounter           = 0;
+    $this->KickMessage           = "";
 
-    $this->PlayerAirCounter    = 0;
-    $this->PlayerSpeedCounter  = 0;
-    $this->PlayerGlideCounter  = 0;
-    $this->PlayerNoClipCounter = 0;
-    $this->PlayerReachCounter  = 0;
+    $this->PlayerAirCounter     = 0;
+    $this->PlayerSpeedCounter   = 0;
+    $this->PlayerGlideCounter   = 0;
+    $this->PlayerNoClipCounter  = 0;
+    $this->PlayerReachCounter   = 0;
     $this->PlayerReachFirstTick = -1;
+    $this->PlayerHitFirstTick   = -1;
+    $this->PlayerHitCounter     = 0;
     
     //DO NOT RESET!
     $this->PlayerBanCounter    = 0;
@@ -71,6 +74,8 @@ class Observer
     $this->PlayerNoClipCounter  = 0;
     $this->PlayerReachCounter   = 0;
     $this->PlayerReachFirstTick = -1;
+    $this->PlayerHitFirstTick   = -1;
+    $this->PlayerHitCounter     = 0;
     
     $this->prev_tick     = -1.0;
     
@@ -100,13 +105,12 @@ class Observer
 
   public function makeKick($reason)
   {
-    $this->PlayerBanCounter++;
-    if ($this->PlayerBanCounter > 0 and $this->PlayerBanCounter == $this->GetConfigEntry("Max-Hacking-Times"))
+    if (!in_array($this, $this->Main->PlayersToKick))
     {
-      $this->Server->getCIDBans()->addBan($this->ClientID, $reason, null, "VAC");
-      $this->PlayerBanCounter = 0;
+      // Add current Observer to the array of Observers whose players shall be kicked ASAP
+      $this->KickMessage = $reason;
+      $this->Main->PlayersToKick[] = $this;
     }
-    $this->Player->kick(TextFormat::DARK_PURPLE . $reason);
   }
 
   public function NotifyAdmins($message)
@@ -118,7 +122,7 @@ class Observer
       foreach ($this->Main->PlayerObservers as $observer)
       {
         $player = $observer->Player;
-        if ($player != null and $player->isOp())
+        if ($player != null and $this->Player->hasPermission("vac.admin"))
 	      {
 	        $player->sendMessage(TextFormat::DARK_PURPLE . $newmsg);
 	      }
@@ -171,19 +175,20 @@ class Observer
   }
 
   public function PlayerRegainHealth($event)
-	{
+  {
     if($this->GetConfigEntry("Regen"))
     {
-	    $Reason2 = $event->getRegainReason();
+      if ($this->Player->hasPermission("vac.regen")) return;
+      $Reason2 = $event->getRegainReason();
       $tick    = (double)$this->Server->getTick(); 
       $tps     = (double)$this->Server->getTicksPerSecond();
 
-	    if ($Reason2 == 1)  // Food
-	    {
-	      $heal_amount = $event->getAmount();	  
-	      if ($heal_amount > 3)
-	      {
-	        if ($this->GetConfigEntry("Regen-Punishment") == "kick")
+      if ($Reason2 != 2)  // Ignore CAUSE_MAGIC
+      {
+        $heal_amount = $event->getAmount();	  
+        if ($heal_amount > 3)
+        {
+          if ($this->GetConfigEntry("Regen-Punishment") == "kick")
           {
             $event->setCancelled(true);
             $this->ResetObserver();
@@ -282,21 +287,24 @@ class Observer
     {
       if ($this->Player->isOp())
       {
-				if (!$this->Player->hasPermission($this->GetConfigEntry("ForceOP-Permission")))
-				{
-          $message = "$this->PlayerName used ForceOP!";
-					$reason = "ForceOP detected!";
+        if (!$this->Player->hasPermission($this->GetConfigEntry("ForceOP-Permission")))
+        {
+          $event->setCancelled(true);
+          $message = "%PLAYER% used ForceOP!";
+          $reason = "ForceOP detected!";
           $this->NotifyAdmins($message);
           $this->makeKick($reason);
-			  }
-		  }
+        }
+      }
     }
 
     if ($this->Player->getGameMode() == 1 or $this->Player->getGameMode() == 3) return;
+    if ($event->isCancelled()) return;
 
     #Anti Speed & Anti Fly
     if ($this->GetConfigEntry("Speed") or $this->GetConfigEntry("Fly"))
     {
+      if ($this->Player->hasPermission("vac.fly")) return;
       $this->x_pos_old  = new Vector3($event->getFrom()->getX(), 0.0, $event->getFrom()->getZ());
       $this->x_pos_new  = new Vector3($event->getTo()->getX()  , 0.0, $event->getTo()->getZ()  );
       $this->x_distance = $this->x_pos_old->distance($this->x_pos_new);
@@ -341,6 +349,7 @@ class Observer
         # speed only part
         if ($this->GetConfigEntry("Speed"))
         {
+          if ($this->Player->hasPermission("vac.speed")) return;
           if ($this->x_speed > 10)
           {
             $this->PlayerSpeedCounter += 10;
@@ -384,12 +393,46 @@ class Observer
     $BlockID = $level->getBlock($pos)->getId();
     if (!$this->Player->isOnGround())
     {
-      if($BlockID != 8 and $BlockID != 9 and $BlockID != 10 and $BlockID != 11 and $BlockID != 65 and $BlockID != 106 and $BlockID != 30)
+      $posX        = $this->Player->getX();
+      $posY        = $this->Player->getY();
+      $posZ        = $this->Player->getZ();
+      $pos1        = new Vector3($posX, $posY, $posZ);
+      $pos2        = new Vector3($posX-1, $posY, $posZ);
+      $pos3        = new Vector3($posX-1, $posY, $posZ-1);
+      $pos4        = new Vector3($posX, $posY, $posZ-1);
+      $pos5        = new Vector3($posX+1, $posY, $posZ);
+      $pos6        = new Vector3($posX+1, $posY, $posZ+1);
+      $pos7        = new Vector3($posX, $posY, $posZ+1);
+      $pos8        = new Vector3($posX+1, $posY, $posZ-1);
+      $pos9        = new Vector3($posX-1, $posY, $posZ+1);
+      $level       = $this->Player->getLevel();
+      $bpos1       = $level->getBlock($pos1)->getId();
+      $bpos2       = $level->getBlock($pos2)->getId();
+      $bpos3       = $level->getBlock($pos3)->getId();
+      $bpos4       = $level->getBlock($pos4)->getId();
+      $bpos5       = $level->getBlock($pos5)->getId();
+      $bpos6       = $level->getBlock($pos6)->getId();
+      $bpos7       = $level->getBlock($pos7)->getId();
+      $bpos8       = $level->getBlock($pos8)->getId();
+      $bpos9       = $level->getBlock($pos9)->getId();
+      $arround     = array (
+      $bpos1,
+      $bpos2,
+      $bpos3,
+      $bpos4,
+      $bpos5,
+      $bpos6,
+      $bpos7,
+      $bpos8,
+      $bpos9
+      );
+      if(!in_array(8, $arround) and !in_array(9, $arround) and !in_array(10, $arround) and !in_array(11, $arround) and !in_array(65, $arround) and !in_array(106, $arround) and !in_array(30, $arround))
       {
         if ($this->y_pos_old > $this->y_pos_new)
         {
           if ($this->GetConfigEntry("Glide"))
           {
+            if ($this->Player->hasPermission("vac.glide")) return;
             $this->PlayerGlideCounter++;
             # Player moves down. Check Glide Hack
           }
@@ -399,6 +442,7 @@ class Observer
           # Player moves up or horizontal
           if ($this->GetConfigEntry("Fly"))
           {
+            if ($this->Player->hasPermission("vac.fly")) return;
             $this->PlayerAirCounter++;
             if ($this->PlayerGlideCounter > 0)
             {
@@ -416,6 +460,8 @@ class Observer
     
     if ($this->PlayerGlideCounter > 25 and $this->y_speed < 20)
     {
+      if($BlockID != 8 and $BlockID != 9 and $BlockID != 10 and $BlockID != 11 and $BlockID != 65 and $BlockID != 106 and $BlockID != 30)
+      {
         if ($this->GetConfigEntry("Glide-Punishment") == "kick")
         {
           $event->setCancelled(true);
@@ -432,6 +478,7 @@ class Observer
           $message = $this->GetConfigEntry("Glide-LogMessage");
           $this->NotifyAdmins($message);
         }
+      }
     }
     
     if ($this->PlayerAirCounter > $this->GetConfigEntry("Fly-Threshold"))
@@ -457,6 +504,7 @@ class Observer
     # No Clip
     if ($this->GetConfigEntry("NoClip"))
     {
+      if ($this->Player->hasPermission("vac.noclip")) return;
       $level   = $this->Player->getLevel();
       $pos     = new Vector3($this->Player->getX(), $this->Player->getY(), $this->Player->getZ());
       $BlockID = $level->getBlock($pos)->getId();
@@ -542,6 +590,7 @@ class Observer
           $this->NotifyAdmins($message);
           if ($this->PlayerNoClipCounter > $this->GetConfigEntry("NoClip-Threshold") * 10)
           {
+            $event->setCancelled(true);
             $reason = $this->GetConfigEntry("NoClip-Message");
             $this->ResetObserver();
             $this->makeKick($reason);
@@ -557,7 +606,10 @@ class Observer
       }
       else
       {
-        $this->PlayerNoClipCounter--;
+        if($this->PlayerNoClipCounter > 0)
+        {
+          $this->PlayerNoClipCounter--;
+        }
       }
     }
   }
@@ -566,13 +618,14 @@ class Observer
   {
     if ($this->GetConfigEntry("ForceGameMode"))
     {
+      if ($this->Player->hasPermission("vac.forcegamemode")) return;
       if(!$event->getPlayer()->isOp())
       {
-        $event->$event->setCancelled(true);
         $message = $this->GetConfigEntry("ForceGameMode-LogMessage");
         $this->NotifyAdmins($message);
         $reason  = $this->GetConfigEntry("ForceGameMode-Message");
         $this->makeKick($reason);
+        $event->$event->setCancelled(true);
       }
       else
       {
@@ -597,10 +650,15 @@ class Observer
     //Reach Check
     if ($this->GetConfigEntry("Reach"))
     {
+      if ($this->Player->hasPermission("vac.reach")) return;
       $reach_distance = $damager_position->distance($damaged_entity_position); 
       #$this->Logger->debug(TextFormat::DARK_PURPLE . "[VAC] > Reach distance $this->PlayerName : $reach_distance");
       
       if ($reach_distance > $this->GetConfigEntry("MaxRange"))
+      {
+        $event->setCancelled(true);
+      }
+      if ($reach_distance > $this->GetConfigEntry("KickRange"))
       {
         $this->PlayerReachCounter++;
         #$this->Logger->debug(TextFormat::DARK_PURPLE . "[VAC] > $this->PlayerName  ReachCounter: $this->PlayerReachCounter");
@@ -642,14 +700,50 @@ class Observer
           }
         }
       }
-      if ($this->GetConfigEntry("CloseCombat"))
+    }
+    if ($this->GetConfigEntry("InstantKill"))
+    {
+      if ($this->Player->hasPermission("vac.instantkill")) return;
+      $tick = (double)$this->Server->getTick(); 
+      $tps  = (double)$this->Server->getTicksPerSecond();
+      $tick_count = (double)($tick - $this->PlayerHitFirstTick); // server ticks since last hit
+      $delta_t    = (double)($tick_count) / (double)$tps;          // seconds since first reach hack
+      if ($this->PlayerHitFirstTick == -1)
       {
-        $reach_distance = $damager_position->distance($damaged_entity_position); 
-        if($reach_distance > 3.7)
+        $this->PlayerHitFirstTick = $tick;
+      }
+      // $this->Logger->info(TextFormat::DARK_PURPLE . "[VAC] > THD $this->PlayerName : $tick_count : $delta_t");
+      if ($delta_t < 0.1)
+      {
+        $this->PlayerHitCounter += 5;
+      }
+      else
+      {
+        if($this->PlayerHitCounter > 0)
         {
-          $event->$event->setCancelled(true);
+          $this->PlayerHitCounter--;
         }
       }
+      if($this->PlayerHitCounter > 25)
+      {
+        if ($this->GetConfigEntry("InstantKill-Punishment") == "kick")
+        {
+          $event->setCancelled(true);
+          $this->ResetObserver();
+          $message = $this->GetConfigEntry("InstantKill-LogMessage");
+          $reason  = $this->GetConfigEntry("InstantKill-Message");
+          $this->NotifyAdmins($message);
+          $this->makeKick($reason);
+          return;
+        }
+        if ($this->GetConfigEntry("InstantKill-Punishment") == "block")
+        {
+          $event->setCancelled(true);
+          $message = $this->GetConfigEntry("InstantKill-LogMessage");
+          $this->NotifyAdmins($message);
+        }
+      }
+      $this->PlayerHitFirstTick = $tick;
     }
   }
 
@@ -672,7 +766,6 @@ class Observer
     }   
     */      
   }
-  
 }
 //////////////////////////////////////////////////////
 //                                                  //

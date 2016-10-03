@@ -1,7 +1,7 @@
 ---
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #VoidAntiCheat main configuration file.
-#Current version: 3.0.0
+#Current version: 3.0.1
 #What should be blocked?
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #true = ENABLE
@@ -9,15 +9,18 @@
 #block = block Hack
 #kick = Player kick
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
-   Plugin-Version: 3.0.0
-   Config-Version: 3.4.0
+   Plugin-Version: 3.0.1
+   Config-Version: 3.4.1
 #Enables i am waching you message
+
    I-AM-WATCHING-YOU: true
+
 #Enable auto banning after an amount of kicks???
-#THIS ONLY WORKS ON GENISYS!
 #0 = Disabled
 #1 = Instant Ban
+
    Max-Hacking-Times: 0
+
 #Enable verbose output???
 #Sends a mesage to all OPs if someone is hacking.
 
@@ -98,12 +101,18 @@
    Reach: true
 
 #How much Range may a player have to be legit?
-#Decrease this to 7.7 if Reach is not detected.
-#Increase this to 7.9 or 8 if Reach is causing false
-#positives. Standard: 7.8
+#set MaxRange and KickRange
+#Maxrange will be the maximum range.
+#KickRange will be the Range that is required
+#for a player to be kicked.
+#Decrease KickRange to 7.8 or 7.9 
+#if Reach is not detected.
+#Standard: 8
+#set Maxrange to 3.7 if you want MCWIN10 combat.
 #NEVER set this lower than 7.7
 
-   MaxRange:  7.8
+   MaxRange:  7.7
+   KickRange: 8
    
 #Wich Punishment should take place?
 
@@ -118,7 +127,7 @@
    Reach-LogMessage: "[VAC] > %PLAYER% is hacking Reach!"
 
 #-----------------Glide-------------------#
-#Do you want to enable Reach check?
+#Do you want to enable Glide check?
 
    Glide: true
 
@@ -126,31 +135,36 @@
 
    Glide-Punishment: kick
 
-#Wich Message Sould be shown if Fly is detected?
+#Wich Message Sould be shown if Glide is detected?
 
    Glide-Message: "[VAC] > Glide is not allowed!"
 
 #Which Log Message Sould be shown if Glide is detected?
 
-   Reach-LogMessage: "[VAC] > %PLAYER% is hacking Glide!"
+   Glide-LogMessage: "[VAC] > %PLAYER% is hacking Glide!"
 
-#--------------CloseCombat----------------#
-#Do you want to enable CloseCombat?
-#MCWIN10 = Minecraft:Windows 10 Edition Beta
-#MCPE    = Minecraft:Pocket Edition
-#MCWIN10 uses LOWER MaxRange Then MCPE.
-#That means MCPE clients have an advanage
-#angainst MCWIN10 Clients.
-#This sets the MaxRange of MCWIN10 as the default
-#MaxRange (3.7). Hits that have higher Range will
-#be cancelled. when enabling this, MCPE clients
-#Will no longer have an advantage against MCWIN10
-#Clients. But This also CHANGES PVP MECHANICS!
-#Use With CAUTION!
+#--------------InstantKill----------------#
+#Do you want to enable InstantKill check?
+#This blocks Players from hitting too fast.
 
-   CloseCombat: false
+   InstantKill: true
+
+#Wich Punishment should take place if InstantKill is detected?
+
+   InstantKill-Punishment: kick
+
+#Wich Message Sould be shown if InstantKill is detected?
+
+   InstantKill-Message: "[VAC] > InstantKill is not allowed!"
+
+#Which Log Message Sould be shown if Glide is detected?
+
+   InstantKill-LogMessage: "[VAC] > %PLAYER% is hacking InstantKill!"
 
 #----------------ForceOP------------------#
+#######################################################
+# USE THIS AT YOUR OWN RISK. I GUARANTEE FOR NOTHING! #
+#######################################################
 #Do you want to enable advanced ForceOP check?
 #READ AntiForceOP.txt BEFORE ENABLING!
 
@@ -160,7 +174,7 @@
 #THIS NEEDS TO BE AN EXISTING PERMISSION
 #WICH IS NOT DEFAULTLY GIVEN TO OPS!
 
-   ForceOP-Permission: "vac.op"
+   ForceOP-Permission: "legitop"
 
 #-----------------NoClip------------------#
 #Do you want to enable NoClip Detection?
@@ -190,6 +204,9 @@
    NoClip-LogMessage: "[VAC] > %PLAYER% is hacking NoClip!"
 
 #--------------ForceGameMode--------------#
+#######################################################
+# USE THIS AT YOUR OWN RISK. I GUARANTEE FOR NOTHING! #
+#######################################################
 #Do you want to enable ForceGameMode Detection?
 #USE THIS WITH CAUTION!
 #This WILL BLOCK ANY PLAYER THAT IS CHANGEING ITS GAMEMODE

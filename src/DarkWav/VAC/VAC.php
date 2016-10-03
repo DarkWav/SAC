@@ -11,15 +11,19 @@ use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\Player;
 use pocketmine\Plugin;
 use pocketmine\plugin\PluginLoader;
+use DarkWav\VAC\Observer;
+use DarkWav\VAC\VACTick;
 
 class VAC extends PluginBase
 {
   public $Config;
   public $Logger;
   public $PlayerObservers = array();
+  public $PlayersToKick   = array();
 
   public function onEnable()
   {
+    $this->getServer()->getScheduler()->scheduleRepeatingTask(new VACTick($this), 1);
     @mkdir($this->getDataFolder());
     $this->saveDefaultConfig();
     $this->saveResource("AntiForceOP.txt");
@@ -31,7 +35,7 @@ class VAC extends PluginBase
     
     $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
     $Logger->info(TextFormat::DARK_PURPLE . "[VAC] > VoidAntiCheat Activated"            );
-    $Logger->info(TextFormat::DARK_PURPLE . "[VAC] > VoidAntiCheat v3.0.0 [Shadow]");
+    $Logger->info(TextFormat::DARK_PURPLE . "[VAC] > VoidAntiCheat v3.0.1 [Shadow]");
   
     if($Config->get("OneHit"     )) $Logger->info(TextFormat::DARK_PURPLE."[VAC] > Enabling AntiOneHit"     );
     if($Config->get("Unkillable" )) $Logger->info(TextFormat::DARK_PURPLE."[VAC] > Enabling AntiUnkillable" );
@@ -46,16 +50,46 @@ class VAC extends PluginBase
     if($Config->get("Speed"      )) $Logger->info(TextFormat::DARK_PURPLE."[VAC] > Enabling AntiSpeed"      );
     if($Config->get("Regen"      )) $Logger->info(TextFormat::DARK_PURPLE."[VAC] > Enabling AntiRegen"      );
 
-    if($Config->get("Plugin-Version") !== "3.0.0")
+    if($Config->get("Plugin-Version") !== "3.0.1")
     {
       $Logger->emergency(TextFormat::DARK_PURPLE."[VAC] > Your Config is incompatible with this plugin version, please update immediately!");
       $Server->shutdown();
     }
 
-    if($Config->get("Config-Version") !== "3.4.0")
+    if($Config->get("Config-Version") !== "3.4.1")
     {
       $Logger->warning(TextFormat::DARK_PURPLE."[VAC] > Your Config is out of date!");
     }
+    
+    foreach($Server->getOnlinePlayers() as $player)
+    {
+		  $hash     = spl_object_hash($player);
+      $name     = $player->getName();
+      $oldhash  = null;
+      $observer = null;
+      
+      foreach ($this->PlayerObservers as $key=>$obs)
+      {
+        if ($obs->PlayerName == $name)
+        {
+          $oldhash  = $key;
+          $observer = $obs;
+          $observer->Player = $player;
+        }
+      }
+      if ($oldhash != null)
+      {
+        unset($this->PlayerObservers[$oldhash]);
+        $this->PlayerObservers[$hash] = $observer;
+        $this->PlayerObservers[$hash]->PlayerRejoin();
+      }  
+      else
+      {
+    		$observer = new Observer($player, $this);
+  	  	$this->PlayerObservers[$hash] = $observer;
+  	  	$this->PlayerObservers[$hash]->PlayerJoin();      
+      }      
+    }  
   }
 
   public function onDisable()
@@ -70,9 +104,30 @@ class VAC extends PluginBase
     
   public function onCommand(CommandSender $sender, Command $cmd, $label, array $args)
   {
-    if ($cmd->getName() === "vac" || $cmd->getName() === "VoidAntiCheat")
+    $Logger = $this->getServer()->getLogger();
+    if ($this->getConfig()->get("ForceOP"))
     {
-      $sender->sendMessage(TextFormat::DARK_PURPLE."[VAC] > VoidAntiCheat v3.0.0 [Shadow] (~DarkWav)");
+      if ($sender->isOp())
+      {
+        if (!$sender->hasPermission($this->getConfig()->get("ForceOP-Permission")))
+        {
+          if ($sender instanceof Player)
+          {
+            $sname = $sender->getName();
+            $sender->getPlayer()->kick(TextFormat::RED."ForceOP detected!");
+            /*
+            "%PLAYER% used ForceOP!"
+            $reason = "ForceOP detected!";
+            $this->NotifyAdmins($message);
+            $this->makeKick($reason);
+            */
+          }
+        }
+      }
+    }
+    if ($cmd->getName() === "vac" or $cmd->getName() === "voidanticheat")
+    {
+      $sender->sendMessage(TextFormat::DARK_PURPLE."[VAC] > VoidAntiCheat v3.0.1 [Shadow] (~DarkWav)");
     }
   }
 }

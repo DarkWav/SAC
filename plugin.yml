@@ -1,20 +1,50 @@
 name: VAC
 main: DarkWav\VAC\VAC
-version: 3.0.0
+version: 3.0.1
 load: STARTUP
 enable: STARTUP
 author: DarkWav
 api: [2.0.0,1.0.0]
 commands:
       voidanticheat:
-           description: Shows AntiCheat version
+           description: Shows VoidAntiCheat version
            aliases: ["VoidAntiCheat","AntiCheat","VAC"]
       vac:
-           description: Shows AntiCheat version
+           description: Shows VoidAntiCheat version
            aliases: ["VoidAntiCheat","AntiCheat","VAC"]
 permissions:
-    vac:
-        description: "Allows to use all AntiCheat features."
-children:
-    vac.op:
+    legitop:
         description: "A permission."
+        default: false
+    vac:
+        description: "Allows to use all VAC features."
+        default: false
+        children:
+            vac.admin:
+                description: "Get notified when someone is hacking."
+                default: op
+            vac.fly:
+                description: "A permission."
+                default: false
+            vac.glide:
+                description: "A permission."
+                default: false
+            vac.speed:
+                description: "A permission."
+                default: false
+            vac.noclip:
+                description: "A permission."
+                default: false
+            vac.reach:
+                description: "A permission."
+                default: false
+            vac.instantkill:
+                description: "A permission."
+                default: false
+            vac.regen:
+                description: "A permission."
+                default: false
+            vac.forcegamemode:
+                description: "A permission."
+                default: false
+
