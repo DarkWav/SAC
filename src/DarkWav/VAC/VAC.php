@@ -45,6 +45,7 @@ class VAC extends PluginBase
     if($Config->get("Fly"        )) $Logger->info(TextFormat::DARK_PURPLE."[VAC] > Enabling AntiHighJump"   );
     if($Config->get("Fly"        )) $Logger->info(TextFormat::DARK_PURPLE."[VAC] > Enabling AntiGlide"      );
     if($Config->get("Fly"        )) $Logger->info(TextFormat::DARK_PURPLE."[VAC] > Enabling AntiSpider"     );
+    if($Config->get("InstantKill")) $Logger->info(TextFormat::DARK_PURPLE."[VAC] > Enabling AntiInstantKill");
     if($Config->get("Fly"        )) $Logger->info(TextFormat::DARK_PURPLE."[VAC] > Enabling AntiJesus"      );
     if($Config->get("Reach"      )) $Logger->info(TextFormat::DARK_PURPLE."[VAC] > Enabling AntiReach"      );
     if($Config->get("Speed"      )) $Logger->info(TextFormat::DARK_PURPLE."[VAC] > Enabling AntiSpeed"      );
