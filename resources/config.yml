@@ -1,7 +1,7 @@
 ---
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #VoidAntiCheat main configuration file.
-#Current version: 3.0.1
+#Current version: 3.0.2
 #What should be blocked?
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #true = ENABLE
@@ -9,8 +9,8 @@
 #block = block Hack
 #kick = Player kick
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
-   Plugin-Version: 3.0.1
-   Config-Version: 3.4.1
+   Plugin-Version: 3.0.2
+   Config-Version: 3.4.2
 #Enables i am waching you message
 
    I-AM-WATCHING-YOU: true
@@ -101,31 +101,18 @@
    Reach: true
 
 #How much Range may a player have to be legit?
-#set MaxRange and KickRange
 #Maxrange will be the maximum range.
-#KickRange will be the Range that is required
-#for a player to be kicked.
-#Decrease KickRange to 7.8 or 7.9 
-#if Reach is not detected.
-#Standard: 8
-#set Maxrange to 3.7 if you want MCWIN10 combat.
-#NEVER set this lower than 7.7
+#Players are not kicked for that dou to
+#False Positives.
+#Standard: 7.8
+#set MaxRange to 7.8 if you want MCPE combat.
+#set MaxRange to 3.8 if you want MCPC combat.
+#For example Minecraft: Windows 10 Edition beta
+#uses MCPC combat
+#NEVER set this to 0
 
-   MaxRange:  7.7
-   KickRange: 8
+   MaxRange:  7.8
    
-#Wich Punishment should take place?
-
-   Reach-Punishment: kick
-
-#Wich Message Sould be shown if Reach is detected?
-
-   Reach-Message: "[VAC] > Reach is not allowed!"
-
-#Which Log Message Sould be shown if Reach is detected?
-
-   Reach-LogMessage: "[VAC] > %PLAYER% is hacking Reach!"
-
 #-----------------Glide-------------------#
 #Do you want to enable Glide check?
 
@@ -179,7 +166,9 @@
 #-----------------NoClip------------------#
 #Do you want to enable NoClip Detection?
 #This prevents players form glitching though blocks.
-#If this caueses crashes, please report it to the Author!
+#If this caueses bugs, please report it to the Author!
+#Lag with stairs has been highly decreased with the update
+#3.0.2. IT STILL MAY CAUSE GLICHES!
 
    NoClip: true
 
@@ -188,7 +177,7 @@
 
    NoClip-Punishment: block
 
-#How many times must a player be hacking before detection?
+#How many times must a player be hacking before kick?
 #i reccomand setting this to above 50 because of pocketmines
 #bugs and glitches.
 #NEVER set this to 0
