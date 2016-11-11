@@ -1,5 +1,7 @@
 # VAC (VoidAntiCheat)
 
+## Sorry for the inactivity in the last days but i was busy with scool.
+
 ## An AntiCheat plugin for PocketMine-MP and Forks.<br>Compatible with MCPE 0.15/16.X.
 
 ## Find The Wiki and Phar Downloads [Here](https://github.com/DarkWav/VAC/wiki).
