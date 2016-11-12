@@ -80,7 +80,7 @@ class EventListener implements Listener
       {
         $observer->PlayerQuit();
       }   
-      $observer = $this->Main->PlayerObservers[$hash]->Player = null;
+      $this->Main->PlayerObservers[$hash]->Player = null;
     }
   }
 

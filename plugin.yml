@@ -1,6 +1,6 @@
 name: VAC
 main: DarkWav\VAC\VAC
-version: 3.0.2
+version: 3.0.3
 load: STARTUP
 enable: STARTUP
 author: DarkWav

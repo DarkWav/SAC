@@ -35,7 +35,7 @@ class VAC extends PluginBase
     
     $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
     $Logger->info(TextFormat::DARK_PURPLE . "[VAC] > VoidAntiCheat Activated"            );
-    $Logger->info(TextFormat::DARK_PURPLE . "[VAC] > VoidAntiCheat v3.0.2 [Shadow]");
+    $Logger->info(TextFormat::DARK_PURPLE . "[VAC] > VoidAntiCheat v3.0.3 [Shadow]");
   
     if($Config->get("OneHit"     )) $Logger->info(TextFormat::DARK_PURPLE."[VAC] > Enabling AntiOneHit"     );
     if($Config->get("Unkillable" )) $Logger->info(TextFormat::DARK_PURPLE."[VAC] > Enabling AntiUnkillable" );
@@ -51,7 +51,7 @@ class VAC extends PluginBase
     if($Config->get("Speed"      )) $Logger->info(TextFormat::DARK_PURPLE."[VAC] > Enabling AntiSpeed"      );
     if($Config->get("Regen"      )) $Logger->info(TextFormat::DARK_PURPLE."[VAC] > Enabling AntiRegen"      );
 
-    if($Config->get("Plugin-Version") !== "3.0.2")
+    if($Config->get("Plugin-Version") !== "3.0.3" and $Config->get("Plugin-Version") !== "3.0.2")
     {
       $Logger->emergency(TextFormat::DARK_PURPLE."[VAC] > Your Config is incompatible with this plugin version, please update immediately!");
       $Server->shutdown();
@@ -124,7 +124,7 @@ class VAC extends PluginBase
     }
     if ($cmd->getName() === "vac" or $cmd->getName() === "voidanticheat")
     {
-      $sender->sendMessage(TextFormat::DARK_PURPLE."[VAC] > VoidAntiCheat v3.0.2 [Shadow] (~DarkWav)");
+      $sender->sendMessage(TextFormat::DARK_PURPLE."[VAC] > VoidAntiCheat v3.0.3 [Shadow] (~DarkWav)");
     }
   }
   
