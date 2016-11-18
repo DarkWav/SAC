@@ -1,6 +1,6 @@
 # VAC (VoidAntiCheat)
 
-## Sorry for the inactivity in the last days but i was busy with scool.
+## [The future of VAC and incoming updates]()
 
 ## An AntiCheat plugin for PocketMine-MP and Forks.<br>Compatible with MCPE 0.15/16.X.
 
