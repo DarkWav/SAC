@@ -10,6 +10,6 @@ Step 2: Enabling in config:
 
 Step 3: Now Restart your server.
 
-Step 4: You are now protected against ForceOP! Don´t forget to give the permission "vac.op" to your new OPs BEFORE OPing them!
+Step 4: You are now protected against ForceOP! DonÂ´t forget to give the permission "legitop" to your new OPs BEFORE OPing them!
 
 Have Fun with this Tool!
