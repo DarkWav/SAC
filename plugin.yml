@@ -3,7 +3,7 @@ main: DarkWav\VAC\VAC
 version: 3.0.3
 load: STARTUP
 enable: STARTUP
-author: DarkWav
+author: Infernus101
 api: [2.0.0,1.0.0]
 commands:
       voidanticheat:
