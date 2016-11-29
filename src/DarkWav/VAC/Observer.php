@@ -488,6 +488,7 @@ class Observer
       if(    !in_array(Block::WATER               , $this->surroundings ) 
          and !in_array(Block::STILL_WATER         , $this->surroundings )
          and !in_array(Block::LAVA                , $this->surroundings )
+         and !in_array(Block::LLILY_PAD           , $this->surroundings )
          and !in_array(Block::STILL_LAVA          , $this->surroundings )
          and !in_array(Block::LADDER              , $this->surroundings )
          and !in_array(Block::VINE                , $this->surroundings )
