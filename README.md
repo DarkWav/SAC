@@ -1,5 +1,7 @@
 # VAC (VoidAntiCheat)
 
+## THIS HAS IN FACT NOTHING TO DO WITH VALVE ANTICHEAT OR VALVE CORPORATION
+
 ## [The future of VAC and incoming updates](https://github.com/DarkWav/VAC/wiki/The-Future-of-VAC-and-3.1.0-Update!)
 
 ## An AntiCheat plugin for PocketMine-MP and Forks.<br>Compatible with MCPE 0.15/16.X.
