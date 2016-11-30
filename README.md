@@ -1,6 +1,6 @@
 # VAC (VoidAntiCheat)
 
-## THIS HAS IN FACT NOTHING TO DO WITH VALVE ANTICHEAT OR VALVE CORPORATION
+## THIS HAS IN FACT NOTHING TO DO WITH VALVE ANTICHEAT OR VALVE CORPORATION.
 
 ## [The future of VAC and incoming updates](https://github.com/DarkWav/VAC/wiki/The-Future-of-VAC-and-3.1.0-Update!)
 
