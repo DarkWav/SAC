@@ -111,7 +111,7 @@
 #uses MCPC combat
 #NEVER set this to 0
 
-   MaxRange:  7.8
+   MaxRange:  3.8
    
 #-----------------Glide-------------------#
 #Do you want to enable Glide check?
