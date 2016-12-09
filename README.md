@@ -1,7 +1,5 @@
 # SAC (ShadowAntiCheat)
 
-## LOL give up @TheBigSmileXD.
-
 ## [The future of SAC and incoming updates](https://github.com/DarkWav/ShadowAntiCheat/wiki/The-Future-of-SAC-and-3.1.0-Update!)
 
 ## An AntiCheat plugin for PocketMine-MP and Forks.<br>Compatible with MCPE 0.16.X.
