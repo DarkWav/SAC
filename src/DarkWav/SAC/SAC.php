@@ -1,6 +1,6 @@
 <?php
 
-namespace DarkWav\VAC;
+namespace DarkWav\SAC;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat;
@@ -11,10 +11,10 @@ use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\Player;
 use pocketmine\Plugin;
 use pocketmine\plugin\PluginLoader;
-use DarkWav\VAC\Observer;
-use DarkWav\VAC\VACTick;
+use DarkWav\SAC\Observer;
+use DarkWav\SAC\SACTick;
 
-class VAC extends PluginBase
+class SAC extends PluginBase
 {
   public $Config;
   public $Logger;
@@ -23,7 +23,7 @@ class VAC extends PluginBase
 
   public function onEnable()
   {
-    $this->getServer()->getScheduler()->scheduleRepeatingTask(new VACTick($this), 1);
+    $this->getServer()->getScheduler()->scheduleRepeatingTask(new SACTick($this), 1);
     @mkdir($this->getDataFolder());
     $this->saveDefaultConfig();
     $this->saveResource("AntiForceOP.txt");
@@ -34,32 +34,28 @@ class VAC extends PluginBase
     $Server = $this->getServer();
     
     $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
-    $Logger->info(TextFormat::DARK_PURPLE . "[VAC] > VoidAntiCheat Activated"            );
-    $Logger->info(TextFormat::DARK_PURPLE . "[VAC] > VoidAntiCheat v3.0.3 [Shadow]");
+    $Logger->info(TextFormat::BLUE . "[SAC] > ShadowAntiCheat Activated"            );
+    $Logger->info(TextFormat::BLUE . "[SAC] > ShadowAntiCheat v3.1.0 [Shadow]");
   
-    if($Config->get("OneHit"     )) $Logger->info(TextFormat::DARK_PURPLE."[VAC] > Enabling AntiOneHit"     );
-    if($Config->get("Unkillable" )) $Logger->info(TextFormat::DARK_PURPLE."[VAC] > Enabling AntiUnkillable" );
-    if($Config->get("ForceOP"    )) $Logger->info(TextFormat::DARK_PURPLE."[VAC] > Enabling AntiForceOP"    );
-    if($Config->get("NoClip"     )) $Logger->info(TextFormat::DARK_PURPLE."[VAC] > Enabling AntiNoClip"     );
-    if($Config->get("Fly"        )) $Logger->info(TextFormat::DARK_PURPLE."[VAC] > Enabling AntiFly"        );
-    if($Config->get("Fly"        )) $Logger->info(TextFormat::DARK_PURPLE."[VAC] > Enabling AntiHighJump"   );
-    if($Config->get("Fly"        )) $Logger->info(TextFormat::DARK_PURPLE."[VAC] > Enabling AntiGlide"      );
-    if($Config->get("Fly"        )) $Logger->info(TextFormat::DARK_PURPLE."[VAC] > Enabling AntiSpider"     );
-    if($Config->get("InstantKill")) $Logger->info(TextFormat::DARK_PURPLE."[VAC] > Enabling AntiInstantKill");
-    if($Config->get("Fly"        )) $Logger->info(TextFormat::DARK_PURPLE."[VAC] > Enabling AntiJesus"      );
-    if($Config->get("Reach"      )) $Logger->info(TextFormat::DARK_PURPLE."[VAC] > Enabling AntiReach"      );
-    if($Config->get("Speed"      )) $Logger->info(TextFormat::DARK_PURPLE."[VAC] > Enabling AntiSpeed"      );
-    if($Config->get("Regen"      )) $Logger->info(TextFormat::DARK_PURPLE."[VAC] > Enabling AntiRegen"      );
+    if($Config->get("ForceOP"    )) $Logger->info(TextFormat::BLUE."[SAC] > Enabling AntiForceOP"    );
+    if($Config->get("NoClip"     )) $Logger->info(TextFormat::BLUE."[SAC] > Enabling AntiNoClip"     );
+    if($Config->get("Fly"        )) $Logger->info(TextFormat::BLUE."[SAC] > Enabling AntiFly"        );
+    if($Config->get("Glide"      )) $Logger->info(TextFormat::BLUE."[SAC] > Enabling AntiGlide"      );
+    if($Config->get("KillAura"   )) $Logger->info(TextFormat::BLUE."[SAC] > Enabling AntiKillAura"   );
+    if($Config->get("InstantKill")) $Logger->info(TextFormat::BLUE."[SAC] > Enabling AntiInstantKill");
+    if($Config->get("Reach"      )) $Logger->info(TextFormat::BLUE."[SAC] > Enabling AntiReach"      );
+    if($Config->get("Speed"      )) $Logger->info(TextFormat::BLUE."[SAC] > Enabling AntiSpeed"      );
+    if($Config->get("Regen"      )) $Logger->info(TextFormat::BLUE."[SAC] > Enabling AntiRegen"      );
 
-    if($Config->get("Plugin-Version") !== "3.0.3" and $Config->get("Plugin-Version") !== "3.0.2")
+    if($Config->get("Plugin-Version") !== "3.1.0")
     {
-      $Logger->emergency(TextFormat::DARK_PURPLE."[VAC] > Your Config is incompatible with this plugin version, please update immediately!");
+      $Logger->emergency(TextFormat::BLUE."[SAC] > Your Config is incompatible with this plugin version, please update immediately!");
       $Server->shutdown();
     }
 
-    if($Config->get("Config-Version") !== "3.4.2")
+    if($Config->get("Config-Version") !== "3.5.0")
     {
-      $Logger->warning(TextFormat::DARK_PURPLE."[VAC] > Your Config is out of date!");
+      $Logger->warning(TextFormat::BLUE."[SAC] > Your Config is out of date!");
     }
     
     foreach($Server->getOnlinePlayers() as $player)
@@ -98,8 +94,8 @@ class VAC extends PluginBase
     $Logger = $this->getServer()->getLogger();
     $Server = $this->getServer();
 
-    $Logger->info(TextFormat::DARK_PURPLE."[VAC] > You are no longer protected from cheats!");
-    $Logger->info(TextFormat::DARK_PURPLE."[VAC] > VoidAntiCheat Deactivated");
+    $Logger->info(TextFormat::BLUE."[SAC] > You are no longer protected from cheats!");
+    $Logger->info(TextFormat::BLUE."[SAC] > ShadowAntiCheat Deactivated");
     $Server->enablePlugin($this);
   }
     
@@ -115,16 +111,16 @@ class VAC extends PluginBase
           if ($sender instanceof Player)
           {
             $sname = $sender->getName();
-	    $message  = "[VAC] > $sname used ForceOP!";
+	    $message  = "[SAC] > $sname used ForceOP!";
             $this->NotifyAdmins($message);
-            $sender->getPlayer()->kick(TextFormat::DARK_PURPLE."[VAC] > ForceOP detected!");
+            $sender->getPlayer()->kick(TextFormat::BLUE."[SAC] > ForceOP detected!");
           }
         }
       }
     }
-    if ($cmd->getName() === "vac" or $cmd->getName() === "voidanticheat")
+    if ($cmd->getName() === "sac" or $cmd->getName() === "shadowanticheat")
     {
-      $sender->sendMessage(TextFormat::DARK_PURPLE."[VAC] > VoidAntiCheat v3.0.3 [Shadow] (~DarkWav)");
+      $sender->sendMessage(TextFormat::BLUE."[SAC] > ShadowAntiCheat v3.1.0 [Shadow] (~DarkWav)");
     }
   }
   
@@ -135,9 +131,9 @@ class VAC extends PluginBase
       foreach ($this->PlayerObservers as $observer)
       {
         $player = $observer->Player;
-        if ($player != null and $player->hasPermission("vac.admin"))
+        if ($player != null and $player->hasPermission("sac.admin"))
         {
-          $player->sendMessage(TextFormat::DARK_PURPLE . $message);
+          $player->sendMessage(TextFormat::BLUE . $message);
         }
       }
     }  
@@ -147,7 +143,7 @@ class VAC extends PluginBase
 
 //////////////////////////////////////////////////////
 //                                                  //
-//     VAC by DarkWav.                              //
+//     SAC by DarkWav.                              //
 //     Distributed under the AntiCheat License.     //
 //     Do not redistribute in modyfied form!        //
 //     All rights reserved.                         //

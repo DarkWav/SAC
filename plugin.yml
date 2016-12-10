@@ -1,50 +1,53 @@
-name: VAC
-main: DarkWav\VAC\VAC
-version: 3.0.3
+name: SAC
+main: DarkWav\SAC\SAC
+version: 3.1.0
 load: STARTUP
 enable: STARTUP
 author: DarkWav
 api: [2.0.0,1.0.0]
 commands:
-      voidanticheat:
-           description: Shows VoidAntiCheat version
-           aliases: ["VoidAntiCheat","AntiCheat","VAC"]
-      vac:
-           description: Shows VoidAntiCheat version
-           aliases: ["VoidAntiCheat","AntiCheat","VAC"]
+      shadowanticheat:
+           description: Shows ShadowAntiCheat version
+           aliases: ["ShadowAntiCheat","AntiCheat","SAC"]
+      sac:
+           description: Shows ShadowAntiCheat version
+           aliases: ["ShadowAntiCheat","AntiCheat","SAC"]
 permissions:
     legitop:
         description: "A permission."
         default: false
-    vac:
-        description: "Allows to use all VAC features."
+    sac:
+        description: "Allows to use all sac features."
         default: false
         children:
-            vac.admin:
+            sac.admin:
                 description: "Get notified when someone is hacking."
                 default: op
-            vac.fly:
+            sac.fly:
                 description: "A permission."
                 default: false
-            vac.glide:
+            sac.glide:
                 description: "A permission."
                 default: false
-            vac.speed:
+            sac.speed:
                 description: "A permission."
                 default: false
-            vac.noclip:
+            sac.noclip:
                 description: "A permission."
                 default: false
-            vac.reach:
+            sac.reach:
                 description: "A permission."
                 default: false
-            vac.instantkill:
+            sac.instantkill:
                 description: "A permission."
                 default: false
-            vac.regen:
+            sac.killaura:
                 description: "A permission."
                 default: false
-            vac.forcegamemode:
+            sac.regen:
+                description: "A permission."
+                default: false
+            sac.forcegamemode:
                 description: "A permission."
                 default: false
 

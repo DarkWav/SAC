@@ -1,6 +1,6 @@
 <?php
 
-namespace DarkWav\VAC;
+namespace DarkWav\SAC;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\ConsoleCommandSender;
@@ -11,14 +11,19 @@ use pocketmine\permission\Permission;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityRegainHealthEvent;
+use pocketmine\event\entity\EntityTeleportEvent;
 use pocketmine\event\entity\Effect;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
+use pocketmine\event\player\PlayerRespawnEvent;
+use pocketmine\event\player\PlayerDeathEvent;
+
+
 use pocketmine\math\Vector3;
 use pocketmine\event\player\PlayerGameModeChangeEvent;
-use DarkWav\VAC\VAC;
-use DarkWav\VAC\Observer;
+use DarkWav\SAC\SAC;
+use DarkWav\SAC\Observer;
 use pocketmine\event\Cancellable;
 use pocketmine\Player;
 
@@ -28,7 +33,7 @@ class EventListener implements Listener
   public $Logger;
   public $Server;
 
-  public function __construct(VAC $Main)
+  public function __construct(SAC $Main)
   {
     $this->Main   = $Main;
     $this->Logger = $Main->getServer()->getLogger();
@@ -120,6 +125,7 @@ class EventListener implements Listener
 	
   public function onDamage(EntityDamageEvent $event)
   {
+    $evname = $event->getEventName();
     if ($event instanceof EntityDamageByEntityEvent)
     {
       $ThisEntity = $event->getEntity();
@@ -143,11 +149,43 @@ class EventListener implements Listener
       } 
     }
   }	
+    
+  public function onPlayerDeathEvent(PlayerDeathEvent $event)
+  {
+		$player   = $event->getPlayer();
+		$hash     = spl_object_hash($player);
+
+    if (array_key_exists($hash , $this->Main->PlayerObservers))
+    {    
+      $this->Main->PlayerObservers[$hash]->onDeath($event);
+    }      
+	}
+	
+	public function onPlayerRespawnEvent(PlayerRespawnEvent $event)
+	{
+		$player   = $event->getPlayer();
+		$hash     = spl_object_hash($player);
+
+    if (array_key_exists($hash , $this->Main->PlayerObservers))
+    {    
+      $this->Main->PlayerObservers[$hash]->onRespawn($event);
+    }      
+	}  
+  
+  public function onEntityTeleportEvent(EntityTeleportEvent $event)
+  {
+		$hash = spl_object_hash($event->getEntity());
+    if (array_key_exists($hash , $this->Main->PlayerObservers))
+    {
+      $this->Main->PlayerObservers[$hash]->onTeleport($event);
+    }   
+  }
+  
 }
 
 //////////////////////////////////////////////////////
 //                                                  //
-//     VAC by DarkWav.                              //
+//     SAC by DarkWav.                              //
 //     Distributed under the AntiCheat License.     //
 //     Do not redistribute in modyfied form!        //
 //     All rights reserved.                         //

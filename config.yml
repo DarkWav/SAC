@@ -1,7 +1,7 @@
 ---
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
-#VoidAntiCheat main configuration file.
-#Current version: 3.0.3
+#ShadowAntiCheat main configuration file.
+#Current version: 3.1.0
 #What should be blocked?
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #true = ENABLE
@@ -9,8 +9,8 @@
 #block = block Hack
 #kick = Player kick
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
-   Plugin-Version: 3.0.3
-   Config-Version: 3.4.2
+   Plugin-Version: 3.1.0
+   Config-Version: 3.5.0
 #Enables i am waching you message
 
    I-AM-WATCHING-YOU: true
@@ -19,7 +19,14 @@
 #0 = Disabled
 #1 = Instant Ban
 
-   Max-Hacking-Times: 0
+   Max-Hacking-Times: 5
+
+#What commands should be executed then?
+#Use %PLAYER% for the Players name.
+
+   MaxHackingExceededCommands:
+
+   - "ban %PLAYER%"
 
 #Enable verbose output???
 #Sends a mesage to all OPs if someone is hacking.
@@ -28,9 +35,10 @@
 
 #-------------------Fly-------------------#
 #Do you want to enable Fly check?
-#This should block Spider, Jesus and HighJump as well...
 #This wont have any problems with falling or jumping,
 #even if the player has JumpBoost 2.
+#This has beem re-written in 3.1.0 and
+#takes care of NoDownlGlide.
 
    Fly: true
 
@@ -39,7 +47,7 @@
 #NEVER set this lower than 10
 #Increase if Fly causes false poitives.
 
-   Fly-Threshold: 20
+   Fly-Threshold: 25
 
 #Wich Punishment should take place if Fly is detected?
 
@@ -47,11 +55,35 @@
 
 #Wich Message Sould be shown if Fly is detected?
 
-   Fly-Message: "[VAC] > Fly is not allowed!"
+   Fly-Message: "[SAC] > Fly is not allowed!"
 
 #Which Log Message Sould be shown if Fly is detected?
 
-   Fly-LogMessage: "[VAC] > %PLAYER% is hacking Fly!"
+   Fly-LogMessage: "[SAC] > %PLAYER% is hacking Fly!"
+
+#----------------KillAura-----------------#
+#BETA, REPORT BUGS!
+#Do you want to enable KillAura check?
+#This also catches AimAura and KillAuraLegit.
+#I am not going to explain how this works
+#because of bypasses.
+
+   KillAura: true
+
+#How many times must a player hack before detection?
+#25 Should work fine. (Standard)
+#NEVER set this lower than 20
+#Increase if KillAura causes false poitives.
+
+   KillAura-Threshold: 25
+
+#Wich Message Sould be shown if KillAura is detected?
+
+   KillAura-Message: "[SAC] > KillAura is not allowed!"
+
+#Which Log Message Sould be shown if KillAura is detected?
+
+   KillAura-LogMessage: "[SAC] > %PLAYER% is hacking KillAura!"
 
 #------------------Regen------------------#
 #Do you want to enable Regen check?
@@ -63,17 +95,18 @@
 
    Regen-Punishment: kick
 
-#Wich Message Sould be shown if Fly is detected?
+#Wich Message Sould be shown if Regen is detected?
 
-   Regen-Message: "[VAC] > Regen is not allowed!"
+   Regen-Message: "[SAC] > Regen is not allowed!"
 
-#Which Log Message Sould be shown if Fly is detected?
+#Which Log Message Sould be shown if Regen is detected?
 
-   Regen-LogMessage: "[VAC] > %PLAYER% is hacking Regen!"
+   Regen-LogMessage: "[SAC] > %PLAYER% is hacking Regen!"
 
 #-----------------Speed-------------------#
 #Do you want to enable Speed check?
 #This works with falling.
+#This also catches most TP-Aura hacks.
 
    Speed: true
 
@@ -89,11 +122,11 @@
 
 #Wich Message Sould be shown if Speed is detected?
 
-   Speed-Message: "[VAC] > Speed is not allowed!"
+   Speed-Message: "[SAC] > Speed is not allowed!"
 
 #Which Log Message Sould be shown if Speed is detected?
 
-   Speed-LogMessage: "[VAC] > %PLAYER% is hacking Speed!"
+   Speed-LogMessage: "[SAC] > %PLAYER% is hacking Speed!"
 
 #-----------------Reach-------------------#
 #Do you want to enable Reach check?
@@ -102,19 +135,16 @@
 
 #How much Range may a player have to be legit?
 #Maxrange will be the maximum range.
-#Players are not kicked for that dou to
+#Players are not kicked for that due to
 #False Positives.
-#Standard: 7.8
-#set MaxRange to 7.8 if you want MCPE combat.
-#set MaxRange to 3.8 if you want MCPC combat.
-#For example Minecraft: Windows 10 Edition beta
-#uses MCPC combat
-#NEVER set this to 0
+#Standard: 3.8
+#NEVER set this to lower than 1
 
    MaxRange:  3.8
    
 #-----------------Glide-------------------#
 #Do you want to enable Glide check?
+#NoDownlGlide is handled by Fly.
 
    Glide: true
 
@@ -124,11 +154,11 @@
 
 #Wich Message Sould be shown if Glide is detected?
 
-   Glide-Message: "[VAC] > Glide is not allowed!"
+   Glide-Message: "[SAC] > Glide is not allowed!"
 
 #Which Log Message Sould be shown if Glide is detected?
 
-   Glide-LogMessage: "[VAC] > %PLAYER% is hacking Glide!"
+   Glide-LogMessage: "[SAC] > %PLAYER% is hacking Glide!"
 
 #--------------InstantKill----------------#
 #Do you want to enable InstantKill check?
@@ -136,17 +166,13 @@
 
    InstantKill: true
 
-#Wich Punishment should take place if InstantKill is detected?
-
-   InstantKill-Punishment: kick
-
 #Wich Message Sould be shown if InstantKill is detected?
 
-   InstantKill-Message: "[VAC] > InstantKill is not allowed!"
+   InstantKill-Message: "[SAC] > InstantKill is not allowed!"
 
-#Which Log Message Sould be shown if Glide is detected?
+#Which Log Message Sould be shown if InstantKill is detected?
 
-   InstantKill-LogMessage: "[VAC] > %PLAYER% is hacking InstantKill!"
+   InstantKill-LogMessage: "[SAC] > %PLAYER% is hacking InstantKill!"
 
 #----------------ForceOP------------------#
 #######################################################
@@ -165,7 +191,7 @@
 
 #-----------------NoClip------------------#
 #Do you want to enable NoClip Detection?
-#This prevents players form glitching though blocks.
+#This prevents players form glitching through blocks.
 #If this caueses bugs, please report it to the Author!
 #Lag with stairs has been highly decreased with the update
 #3.0.2. IT STILL MAY CAUSE GLICHES!
@@ -186,11 +212,11 @@
 
 #Which Message Should be shown if NoClip is detected?
 
-   NoClip-Message: "[VAC] > NoClip is not allowed!"
+   NoClip-Message: "[SAC] > NoClip is not allowed!"
 
 #Which Log Message Sould be shown if NoClip is detected?
 
-   NoClip-LogMessage: "[VAC] > %PLAYER% is hacking NoClip!"
+   NoClip-LogMessage: "[SAC] > %PLAYER% is hacking NoClip!"
 
 #--------------ForceGameMode--------------#
 #######################################################
@@ -207,16 +233,16 @@
 
 #Which Message Should be shown if ForceGameMode is detected?
 
-   ForceGameMode-Message: "[VAC] > ForceGameMode is not allowed!"
+   ForceGameMode-Message: "[SAC] > ForceGameMode is not allowed!"
 
 #Which Log Message Sould be shown if ForceGameMode is detected?
 
-   ForceGameMode-LogMessage: "[VAC] > %PLAYER% is hacking ForceGameMode!"
+   ForceGameMode-LogMessage: "[SAC] > %PLAYER% is hacking ForceGameMode!"
 
 #//////////////////////////////////////////////////////
 #//                                                  //
-#//     VAC by DarkWav.                              //
-#//     Distributed under the ImagicalMine License.  //
+#//     SAC by DarkWav.                              //
+#//     Distributed under the AntiCheat License.     //
 #//     Do not redistribute in modified form!        //
 #//     All rights reserved.                         //
 #//                                                  //
