@@ -43,7 +43,7 @@
    Fly: true
 
 #How many moves may a player be flying before detection?
-#20 Should work fine. (Standard)
+#25 Should work fine. (Standard)
 #NEVER set this lower than 10
 #Increase if Fly causes false poitives.
 
