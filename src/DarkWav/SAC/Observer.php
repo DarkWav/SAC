@@ -417,18 +417,21 @@ class Observer
           if (!$this->Player->hasPermission("sac.speed"))
           {
             # Anti Speed
-            if ($this->x_speed > 10)
+            if (!$this->Player->hasEffect(Effect::SPEED))
             {
-              if (($tick - $this->LastDamageTick) > 30)  # deactivate 1.5 seconds after receiving damage
+              if ($this->x_speed > 10)
               {
-                $this->PlayerSpeedCounter += 10;
-              }   
-            }
-            else
-            {
-              if ($this->PlayerSpeedCounter > 0)
-              { 
-                $this->PlayerSpeedCounter--;
+                if (($tick - $this->LastDamageTick) > 30)  # deactivate 1.5 seconds after receiving damage
+                {
+                  $this->PlayerSpeedCounter += 10;
+                }   
+              }
+              else
+              {
+                if ($this->PlayerSpeedCounter > 0)
+                { 
+                  $this->PlayerSpeedCounter--;
+                }
               }
             }
           }
@@ -539,61 +542,33 @@ class Observer
       $BlockID = $level->getBlock($pos)->getId();
 
       //ANTI-FALSE-POSITIVES
-      if ($BlockID == 1
+      if (
+
+      //BUILDING MATERIAL
+
+         $BlockID == 1
       or $BlockID == 2
       or $BlockID == 3
       or $BlockID == 4
       or $BlockID == 5
       or $BlockID == 7
-      or $BlockID == 14
-      or $BlockID == 15
-      or $BlockID == 16
       or $BlockID == 17
       or $BlockID == 18
-      or $BlockID == 19
       or $BlockID == 20
-      or $BlockID == 21
-      or $BlockID == 22
-      or $BlockID == 24
-      or $BlockID == 25
-      or $BlockID == 35
-      or $BlockID == 41
-      or $BlockID == 42
       or $BlockID == 43
       or $BlockID == 45
       or $BlockID == 47
       or $BlockID == 48
       or $BlockID == 49
-      or $BlockID == 52
-      or $BlockID == 56
-      or $BlockID == 57
-      or $BlockID == 58
-      or $BlockID == 61
-      or $BlockID == 62
-      or $BlockID == 73
-      or $BlockID == 74
       or $BlockID == 79
       or $BlockID == 80
-      or $BlockID == 82
-      or $BlockID == 86
       or $BlockID == 87
       or $BlockID == 89
-      or $BlockID == 91
       or $BlockID == 97
       or $BlockID == 98
-      or $BlockID == 99
-      or $BlockID == 100
-      or $BlockID == 103
       or $BlockID == 110
       or $BlockID == 112
       or $BlockID == 121
-      or $BlockID == 122
-      or $BlockID == 123
-      or $BlockID == 129
-      or $BlockID == 133
-      or $BlockID == 151
-      or $BlockID == 152
-      or $BlockID == 153
       or $BlockID == 155
       or $BlockID == 157
       or $BlockID == 159
@@ -601,15 +576,20 @@ class Observer
       or $BlockID == 162
       or $BlockID == 170
       or $BlockID == 172
-      or $BlockID == 173
       or $BlockID == 174
       or $BlockID == 243
-      or $BlockID == 245
-      or $BlockID == 246
-      or $BlockID == 247
-      or $BlockID == 248
-      or $BlockID == 249
-      or $BlockID == 255)
+
+      //ORES (for Prison mines)
+
+      or $BlockID == 14  //GOLD     (-)
+      or $BlockID == 15  //IRON     (-)
+      or $BlockID == 16  //COAL     (-)
+      or $BlockID == 21  //LAPIS    (-)
+      or $BlockID == 56  //DIAMOND  (-)
+      or $BlockID == 73  //REDSTONE (DARK)
+      or $BlockID == 73  //REDSTONE (GLOWING)
+      or $BlockID == 129 //EMERALD  (-)
+      )
       {
         if(    !in_array(Block::SLAB                , $this->surroundings ) 
            and !in_array(Block::WOOD_STAIRS         , $this->surroundings )

@@ -1,6 +1,6 @@
 name: SAC
 main: DarkWav\SAC\SAC
-version: 3.1.0
+version: 3.1.1
 load: STARTUP
 enable: STARTUP
 author: DarkWav

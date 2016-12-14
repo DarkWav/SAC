@@ -22,17 +22,28 @@ class SACTick extends PluginTask
       $obs->PlayerBanCounter++;
       if ($obs->PlayerBanCounter > 0 and $obs->PlayerBanCounter == $this->plugin->getConfig()->get("Max-Hacking-Times"))
       {
-        $this->plugin->getServer()->getNameBans()->addBan($obs->PlayerName, $obs->KickMessage, null, "SAC");
-        foreach($this->getConfig()->get("MaxHackingExceededCommands") as $command)
+        foreach($this->plugin->getConfig()->get("MaxHackingExceededCommands") as $command)
         {
           $send = $obs->ScanMessage($command);
-          $this->getServer()->dispatchCommand(new ConsoleCommandSender(), $send);
+          $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), $send);
+          if($this->plugin->getConfig()->get("BanPlayerMessageBool"))
+          {
+            $bmsg = $this->plugin->getConfig()->get("BanPlayerMessage");
+            $sbmsg = $obs->ScanMessage($bmsg);
+            $this->plugin->getServer()->broadcastMessage(TextFormat::BLUE . $sbmsg);
+          }
         }
         $obs->PlayerBanCounter = 0;
       }
       if ($obs->Player != null && $obs->Player->isOnline())
       {
         $obs->Player->kick(TextFormat::BLUE . $obs->KickMessage);
+        if($this->plugin->getConfig()->get("KickPlayerMessageBool"))
+        {
+          $msg = $this->plugin->getConfig()->get("KickPlayerMessage");
+          $smsg = $obs->ScanMessage($msg);
+          $this->plugin->getServer()->broadcastMessage(TextFormat::BLUE . $smsg);
+        }
       }   
       unset ($this->plugin->PlayersToKick[$key]);
     }  
