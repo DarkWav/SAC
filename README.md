@@ -1,6 +1,6 @@
 # SAC (ShadowAntiCheat)
 
-## 3.1.0 - NOW LIVE!
+## Just to make this clear: you are not allowed to distribute forks of this!
 
 ## An AntiCheat plugin for PocketMine-MP and Forks.<br>Compatible with MCPE 0.16.X.
 
