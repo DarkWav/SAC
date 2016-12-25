@@ -1,6 +1,6 @@
 # SAC (ShadowAntiCheat)
 
-## Just to make this clear: You wont get ANY support for modified versions of this. (if PHP files are changed)
+## API 3.0.0 isn´t supported, yet! Im working on SAC 3.2.0 for API 3.0.
 
 ## An AntiCheat plugin for PocketMine-MP and Forks.<br>Compatible with MCPE 0.16.X.
 
