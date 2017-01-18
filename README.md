@@ -1,6 +1,6 @@
 # SAC (ShadowAntiCheat)
 
-## After a long time of Inactitity, ill start working on this again. i have been very busy in the last month.
+## After a long time of inactivity, ill start working on this again. i have been very busy in the last month.
 
 ## An AntiCheat plugin for PocketMine-MP and Forks.<br>Compatible with MCPE 0.16.X.
 
