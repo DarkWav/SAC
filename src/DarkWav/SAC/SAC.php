@@ -35,7 +35,7 @@ class SAC extends PluginBase
     
     $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
     $Logger->info(TextFormat::BLUE . "[SAC] > ShadowAntiCheat Activated"            );
-    $Logger->info(TextFormat::BLUE . "[SAC] > ShadowAntiCheat v3.1.1 [Shadow]");
+    $Logger->info(TextFormat::BLUE . "[SAC] > ShadowAntiCheat v3.2.0 [Shadow]");
   
     if($Config->get("ForceOP"    )) $Logger->info(TextFormat::BLUE."[SAC] > Enabling AntiForceOP"    );
     if($Config->get("NoClip"     )) $Logger->info(TextFormat::BLUE."[SAC] > Enabling AntiNoClip"     );
@@ -47,13 +47,13 @@ class SAC extends PluginBase
     if($Config->get("Speed"      )) $Logger->info(TextFormat::BLUE."[SAC] > Enabling AntiSpeed"      );
     if($Config->get("Regen"      )) $Logger->info(TextFormat::BLUE."[SAC] > Enabling AntiRegen"      );
 
-    if($Config->get("Plugin-Version") !== "3.1.1")
+    if($Config->get("Plugin-Version") !== "3.2.0")
     {
       $Logger->emergency(TextFormat::BLUE."[SAC] > Your Config is incompatible with this plugin version, please update immediately!");
       $Server->shutdown();
     }
 
-    if($Config->get("Config-Version") !== "3.5.1")
+    if($Config->get("Config-Version") !== "3.5.2")
     {
       $Logger->warning(TextFormat::BLUE."[SAC] > Your Config is out of date!");
     }
@@ -120,7 +120,7 @@ class SAC extends PluginBase
     }
     if ($cmd->getName() === "sac" or $cmd->getName() === "shadowanticheat")
     {
-      $sender->sendMessage(TextFormat::BLUE."[SAC] > ShadowAntiCheat v3.1.1 [Shadow] (~DarkWav)");
+      $sender->sendMessage(TextFormat::BLUE."[SAC] > ShadowAntiCheat v3.2.0 [Shadow] (~DarkWav/Darku)");
     }
   }
   

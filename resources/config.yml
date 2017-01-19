@@ -1,7 +1,7 @@
 ---
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #ShadowAntiCheat main configuration file.
-#Current version: 3.1.1
+#Current version: 3.2.0
 #What should be blocked?
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #true = ENABLE
@@ -9,8 +9,8 @@
 #block = block Hack
 #kick = Player kick
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
-   Plugin-Version: 3.1.1
-   Config-Version: 3.5.1
+   Plugin-Version: 3.2.0
+   Config-Version: 3.5.2
 #Enables i am waching you message
 
    I-AM-WATCHING-YOU: true
@@ -80,15 +80,18 @@
 #This also catches AimAura and KillAuraLegit.
 #I am not going to explain how this works
 #because of bypasses.
+#This will block anything that gives the player
+#a sanificant gamplay advantage, not useless bots.
+#TP-Aura is handled by Speed.
 
    KillAura: true
 
 #How many times must a player hack before detection?
-#25 Should work fine. (Standard)
+#35 Should work fine. (Standard)
 #NEVER set this lower than 20
 #Increase if KillAura causes false poitives.
 
-   KillAura-Threshold: 25
+   KillAura-Threshold: 35
 
 #Wich Message Sould be shown if KillAura is detected?
 

@@ -22,24 +22,25 @@ class Observer
   
   public function __construct($player, SAC $SAC)
   {
-    $this->Player                = $player;
-    $this->PlayerName            = $this->Player->getName();
-    $this->Main                  = $SAC;
-    $this->ClientID              = $player->getClientId();
-    $this->Logger                = $SAC->getServer()->getLogger();
-    $this->Server                = $SAC->getServer();
-    $this->JoinCounter           = 0;
-    $this->KickMessage           = "";
+    $this->Player                  = $player;
+    $this->PlayerName              = $this->Player->getName();
+    $this->Main                    = $SAC;
+    $this->ClientID                = $player->getClientId();
+    $this->Logger                  = $SAC->getServer()->getLogger();
+    $this->Server                  = $SAC->getServer();
+    $this->JoinCounter             = 0;
+    $this->KickMessage             = "";
 
-    $this->PlayerAirCounter      = 0;
-    $this->PlayerSpeedCounter    = 0;
-    $this->PlayerGlideCounter    = 0;
-    $this->PlayerNoClipCounter   = 0;
-    $this->PlayerReachCounter    = 0;
-    $this->PlayerReachFirstTick  = -1;
-    $this->PlayerHitFirstTick    = -1;
-    $this->PlayerHitCounter      = 0;
-    $this->PlayerKillAuraCounter = 0;
+    $this->PlayerAirCounter        = 0;
+    $this->PlayerSpeedCounter      = 0;
+    $this->PlayerGlideCounter      = 0;
+    $this->PlayerNoClipCounter     = 0;
+    $this->PlayerReachCounter      = 0;
+    $this->PlayerReachFirstTick    = -1;
+    $this->PlayerHitFirstTick      = -1;
+    $this->PlayerHitCounter        = 0;
+    $this->PlayerKillAuraCounter   = 0;
+    $this->PlayerKillAuraV2Counter = 0;
     
     //DO NOT RESET!
     $this->PlayerBanCounter    = 0;
@@ -87,6 +88,7 @@ class Observer
     $this->PlayerHitFirstTick    = -1;
     $this->PlayerHitCounter      = 0;
     $this->PlayerKillAuraCounter = 0;
+    $this->PlayerKillAuraV2Counter = 0;
 
     $this->ResetMovement();
   }
@@ -706,7 +708,18 @@ class Observer
         {
           if ($distance_xz >= 0.5)
           {
-            if (($y_under_block < 1.5) and ($xz_block_height < 20) and ($y_speed < 0.5))
+            if (($distance_xz >= 3.3) and ($y_speed < 0.5))
+            {
+              $this->PlayerKillAuraV2Counter+=2;
+            }
+            else
+            {
+              if ($this->PlayerKillAuraV2Counter > 0)
+              {
+                $this->PlayerKillAuraV2Counter--;
+              }
+            }
+            if (($y_under_block < 1.25) and ($xz_block_height < 20) and ($y_speed < 0.5))
             {
               $this->PlayerKillAuraCounter+=2;
             }
@@ -715,7 +728,7 @@ class Observer
               $event->setCancelled(true);
               $this->PlayerKillAuraCounter+=2;
             }            
-            if (($y_under_block >= 1.5) or ($xz_block_height >= 20) or ($y_speed >= 2.0))
+            if (($y_under_block >= 1.25) or ($xz_block_height >= 20) or ($y_speed >= 2.0))
             {
               if ($this->PlayerKillAuraCounter > 0)
               {
@@ -724,7 +737,7 @@ class Observer
             }            
           }  
       
-          if ($this->PlayerKillAuraCounter >= $this->GetConfigEntry("KillAura-Threshold"))
+          if (($this->PlayerKillAuraCounter >= $this->GetConfigEntry("KillAura-Threshold")) or ($this->PlayerKillAuraV2Counter >= $this->GetConfigEntry("KillAura-Threshold")))
           {
             $event->setCancelled(true);
             $message = $this->GetConfigEntry("KillAura-LogMessage");
@@ -743,7 +756,7 @@ class Observer
       if (!$this->Player->hasPermission("sac.reach"))
       {
         $reach_distance = $damager_position->distance($damaged_entity_position); 
-        #$this->Logger->debug(TextFormat::BLUE . "[SAC] > Reach distance $this->PlayerName : $reach_distance");
+        $this->Logger->debug(TextFormat::BLUE . "[SAC] > Reach distance $this->PlayerName : $reach_distance");
       
         if ($reach_distance > $this->GetConfigEntry("MaxRange"))
         {
