@@ -11,6 +11,7 @@ use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\Player;
 use pocketmine\Plugin;
 use pocketmine\plugin\PluginLoader;
+use DarkWav\SAC\EventListener;
 use DarkWav\SAC\Observer;
 use DarkWav\SAC\SACTick;
 

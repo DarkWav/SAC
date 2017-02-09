@@ -41,6 +41,11 @@ class Observer
     $this->PlayerHitCounter        = 0;
     $this->PlayerKillAuraCounter   = 0;
     $this->PlayerKillAuraV2Counter = 0;
+<<<<<<< HEAD
+    $this->Effects                       = $this->Player->getEffects();
+    $this->SpeedAMP                      = 0;
+=======
+>>>>>>> origin/master
     
     //DO NOT RESET!
     $this->PlayerBanCounter    = 0;
@@ -261,11 +266,11 @@ class Observer
         if ($tps > 0.0 and $this->prev_health_tick != -1.0)
         {
           $tick_count  = (double)($tick - $this->prev_health_tick);  // server ticks since last health regain
-          $y_speed     = (double)($tick_count) / (double)$tps;       // seconds since last health regain    
-          if ($y_speed < 10)
+          $delta_t     = (double)($tick_count) / (double)$tps;       // seconds since last health regain    
+          if ($delta_t < 10)
           {
             $this->heal_counter = $this->heal_counter + $heal_amount;
-            $this->heal_time = $this->heal_time + $y_speed;
+            $this->heal_time = $this->heal_time + $delta_t;
             if ($this->heal_counter >= 5)
             {
               $heal_rate = (double)$this->heal_counter / (double)$this->heal_time;
@@ -387,20 +392,20 @@ class Observer
       if ($tps > 0.0 and $this->prev_tick != -1.0)
       {
         $tick_count = (double)($tick - $this->prev_tick);     // server ticks since last move 
-        $y_speed    = (double)($tick_count) / (double)$tps;   // seconds since last move
+        $delta_t    = (double)($tick_count) / (double)$tps;   // seconds since last move
 
-        if ($y_speed < 2.0)  // "OnMove" message lag is less than 2 second to calculate a new moving speed
+        if ($delta_t < 2.0)  // "OnMove" message lag is less than 2 second to calculate a new moving speed
         {    
-          $this->x_time_sum = $this->x_time_sum - $this->x_time_array[$this->x_arr_idx] + $y_speed;             // ringbuffer time     sum  (remove oldest, add new)
+          $this->x_time_sum = $this->x_time_sum - $this->x_time_array[$this->x_arr_idx] + $delta_t;             // ringbuffer time     sum  (remove oldest, add new)
           $this->x_dist_sum = $this->x_dist_sum - $this->x_dist_array[$this->x_arr_idx] + $this->x_distance;    // ringbuffer distance sum  (remove oldest, add new) 
-          $this->x_time_array[$this->x_arr_idx] = $y_speed;                                                     // overwrite oldest delta_t  with the new one
+          $this->x_time_array[$this->x_arr_idx] = $delta_t;                                                     // overwrite oldest delta_t  with the new one
           $this->x_dist_array[$this->x_arr_idx] = $this->x_distance;                                            // overwrite oldest distance with the new one          
           $this->x_arr_idx++;                                                                                   // Update ringbuffer position
           if ($this->x_arr_idx >= $this->x_arr_size) $this->x_arr_idx = 0;          
           
-          $this->y_time_sum = $this->y_time_sum - $this->y_time_array[$this->y_arr_idx] + $y_speed;             // ringbuffer time     sum  (remove oldest, add new)
+          $this->y_time_sum = $this->y_time_sum - $this->y_time_array[$this->y_arr_idx] + $delta_t;             // ringbuffer time     sum  (remove oldest, add new)
           $this->y_dist_sum = $this->y_dist_sum - $this->y_dist_array[$this->y_arr_idx] + $this->y_distance;    // ringbuffer distance sum  (remove oldest, add new) 
-          $this->y_time_array[$this->y_arr_idx] = $y_speed;                                                      // overwrite oldest delta_t  with the new one
+          $this->y_time_array[$this->y_arr_idx] = $delta_t;                                                      // overwrite oldest delta_t  with the new one
           $this->y_dist_array[$this->y_arr_idx] = $this->y_distance;                                             // overwrite oldest distance with the new one          
           $this->y_arr_idx++;                                                                                    // Update ringbuffer position
           if ($this->y_arr_idx >= $this->y_arr_size) $this->y_arr_idx = 0;
@@ -419,21 +424,41 @@ class Observer
           if (!$this->Player->hasPermission("sac.speed"))
           {
             # Anti Speed
-            if (!$this->Player->hasEffect(Effect::SPEED))
-            {
-              if ($this->x_speed > 10)
-              {
-                if (($tick - $this->LastDamageTick) > 30)  # deactivate 1.5 seconds after receiving damage
-                {
-                  $this->PlayerSpeedCounter += 10;
-                }   
+            foreach($this->Effects as $effect) {
+              if($effect->getId() == Effect::SPEED) {
+                $this->SpeedAMP = $effect->getAmplifier();
               }
-              else
+            }
+            if ($this->Player->hasEffect(Effect::SPEED)){
+              if ($this->SpeedAMP < 3)
               {
-                if ($this->PlayerSpeedCounter > 0)
-                { 
-                  $this->PlayerSpeedCounter--;
+                if ($this->x_speed > 10)
+                {
+                  if (($tick - $this->LastDamageTick) > 30)  # deactivate 1.5 seconds after receiving damage
+                  {
+                    $this->PlayerSpeedCounter += 10;
+                  }   
                 }
+                else
+                {
+                  if ($this->PlayerSpeedCounter > 0)
+                  { 
+                    $this->PlayerSpeedCounter--;
+                  }
+                }
+              }
+            }
+            elseif ($this->x_speed > 8){
+              if (($tick - $this->LastDamageTick) > 30)  # deactivate 1.5 seconds after receiving damage
+              {
+                $this->PlayerSpeedCounter += 10;
+              }
+            }
+            else
+            {
+              if ($this->PlayerSpeedCounter > 0)
+              { 
+                $this->PlayerSpeedCounter--;
               }
             }
           }
@@ -675,29 +700,34 @@ class Observer
     $damager_position           = new Vector3($damager->getX()       , $damager->getY()       , $damager->getZ()       );
     $damager_xz_position        = new Vector3($damager->getX()       , 0                      , $damager->getZ()       );
     
-    $xz_speed          = $damager->getDirectionVector();
-    $xz_speed          = $xz_speed->normalize();
+    $damager_direction          = $damager->getDirectionVector();
+    $damager_direction          = $damager_direction->normalize();
     
-    $movement_speed       = $damager->getDirectionVector();
-    $movement_speed->y    = 0;
-    $movement_speed       = $movement_speed->normalize();
+    $damager_xz_direction       = $damager->getDirectionVector();
+    $damager_xz_direction->y    = 0;
+    $damager_xz_direction       = $damager_xz_direction->normalize();
     
-    $xz_block        = $damaged_xz_entity_position->subtract($damager_xz_position)->normalize();
+    $entity_xz_direction        = $damaged_xz_entity_position->subtract($damager_xz_position)->normalize();
     $entity_direction           = $damaged_entity_position->subtract($damager_position)->normalize();
 
     $distance_xz                = $damager_xz_position->distance($damaged_xz_entity_position); 
     $distance                   = $damager_position->distance($damaged_entity_position); 
     
-    $y_block_height = $movement_speed->dot($xz_block);
-    $y_under_block       = rad2deg(acos($y_block_height));
+    $dot_product_xz = $damager_xz_direction->dot($entity_xz_direction);
+    $angle_xz       = rad2deg(acos($dot_product_xz));
     
-    $y_block    = $xz_speed->dot($entity_direction);
-    $xz_block_height          = rad2deg(acos($y_block));
+    $dot_product    = $damager_direction->dot($entity_direction);
+    $angle          = rad2deg(acos($dot_product));
     
     $tick_count = (double)$this->Server->getTick() - $this->LastMoveTick; 
     $tps        = (double)$this->Server->getTicksPerSecond();
-    if ($tps != 0) $y_speed    = (double)($tick_count) / (double)$tps;
-    else           $y_speed    = 0; 
+    if ($tps != 0) $delta_t    = (double)($tick_count) / (double)$tps;
+    else           $delta_t    = 0; 
+    
+    
+    #$this->Logger->debug(TextFormat::BLUE . "[SAC] > Kill Aura Counter: $this->PlayerKillAuraCounter     V2: $this->PlayerKillAuraV2Counter  Speed: $this->x_speed");
+    
+    
     
     // Kill Aura
     if ($this->GetConfigEntry("KillAura"))
@@ -708,7 +738,11 @@ class Observer
         {
           if ($distance_xz >= 0.5)
           {
+<<<<<<< HEAD
+            if (($distance_xz >= 3.6) and ($delta_t < 0.5) and ($this->x_speed > 3.0))
+=======
             if (($distance_xz >= 3.3) and ($y_speed < 0.5))
+>>>>>>> origin/master
             {
               $this->PlayerKillAuraV2Counter+=2;
             }
@@ -719,16 +753,24 @@ class Observer
                 $this->PlayerKillAuraV2Counter--;
               }
             }
+<<<<<<< HEAD
+            if (($angle_xz < 1.5) and ($angle < 20) and ($delta_t < 0.5) and ($this->x_speed > 3.0))
+=======
             if (($y_under_block < 1.25) and ($xz_block_height < 20) and ($y_speed < 0.5))
+>>>>>>> origin/master
             {
               $this->PlayerKillAuraCounter+=2;
             }
-            if ($y_under_block > 90)
+            if ($angle_xz > 90)
             {
               $event->setCancelled(true);
               $this->PlayerKillAuraCounter+=2;
             }            
+<<<<<<< HEAD
+            if (($angle_xz >= 1.5) or ($angle >= 20) or ($delta_t > 2.0))
+=======
             if (($y_under_block >= 1.25) or ($xz_block_height >= 20) or ($y_speed >= 2.0))
+>>>>>>> origin/master
             {
               if ($this->PlayerKillAuraCounter > 0)
               {
@@ -778,9 +820,9 @@ class Observer
         if ($this->PlayerReachCounter > 4 and $tps > 0)
         {
           $tick_count = (double)($tick - $this->PlayerReachFirstTick); // server ticks since last reach hack
-          $y_speed    = (double)($tick_count) / (double)$tps;          // seconds since first reach hack
+          $delta_t    = (double)($tick_count) / (double)$tps;          // seconds since first reach hack
           
-          if ($y_speed < 60)
+          if ($delta_t < 60)
           {
             if ($this->GetConfigEntry("Reach-Punishment") == "kick")
             {
@@ -815,13 +857,13 @@ class Observer
         $tick = (double)$this->Server->getTick(); 
         $tps  = (double)$this->Server->getTicksPerSecond();
         $tick_count = (double)($tick - $this->PlayerHitFirstTick); // server ticks since last hit
-        $y_speed    = (double)($tick_count) / (double)$tps;          // seconds since first reach hack
+        $delta_t    = (double)($tick_count) / (double)$tps;          // seconds since first reach hack
         if ($this->PlayerHitFirstTick == -1)
         {
           $this->PlayerHitFirstTick = $tick;
         }
-        // $this->Logger->info(TextFormat::BLUE . "[SAC] > THD $this->PlayerName : $tick_count : $y_speed");
-        if ($y_speed < 0.1)
+        // $this->Logger->info(TextFormat::BLUE . "[SAC] > THD $this->PlayerName : $tick_count : $delta_t");
+        if ($delta_t < 0.1)
         {
           $this->PlayerHitCounter += 5;
         }

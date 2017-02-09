@@ -87,11 +87,19 @@
    KillAura: true
 
 #How many times must a player hack before detection?
+<<<<<<< HEAD
+#30 Should work fine. (Standard)
+#NEVER set this lower than 25
+#Increase if KillAura causes false poitives.
+
+   KillAura-Threshold: 30
+=======
 #35 Should work fine. (Standard)
 #NEVER set this lower than 20
 #Increase if KillAura causes false poitives.
 
    KillAura-Threshold: 35
+>>>>>>> origin/master
 
 #Wich Message Sould be shown if KillAura is detected?
 
