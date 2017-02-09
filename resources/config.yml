@@ -87,19 +87,11 @@
    KillAura: true
 
 #How many times must a player hack before detection?
-<<<<<<< HEAD
 #30 Should work fine. (Standard)
 #NEVER set this lower than 25
 #Increase if KillAura causes false poitives.
 
    KillAura-Threshold: 30
-=======
-#35 Should work fine. (Standard)
-#NEVER set this lower than 20
-#Increase if KillAura causes false poitives.
-
-   KillAura-Threshold: 35
->>>>>>> origin/master
 
 #Wich Message Sould be shown if KillAura is detected?
 
@@ -161,10 +153,10 @@
 #Maxrange will be the maximum range.
 #Players are not kicked for that due to
 #False Positives.
-#Standard: 3.9
+#Standard: 3.8
 #NEVER set this to lower than 1
 
-   MaxRange:  3.9
+   MaxRange:  3.8
    
 #-----------------Glide-------------------#
 #Do you want to enable Glide check?

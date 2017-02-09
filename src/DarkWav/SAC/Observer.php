@@ -41,11 +41,8 @@ class Observer
     $this->PlayerHitCounter        = 0;
     $this->PlayerKillAuraCounter   = 0;
     $this->PlayerKillAuraV2Counter = 0;
-<<<<<<< HEAD
     $this->Effects                       = $this->Player->getEffects();
     $this->SpeedAMP                      = 0;
-=======
->>>>>>> origin/master
     
     //DO NOT RESET!
     $this->PlayerBanCounter    = 0;
@@ -738,11 +735,7 @@ class Observer
         {
           if ($distance_xz >= 0.5)
           {
-<<<<<<< HEAD
             if (($distance_xz >= 3.6) and ($delta_t < 0.5) and ($this->x_speed > 3.0))
-=======
-            if (($distance_xz >= 3.3) and ($y_speed < 0.5))
->>>>>>> origin/master
             {
               $this->PlayerKillAuraV2Counter+=2;
             }
@@ -753,11 +746,7 @@ class Observer
                 $this->PlayerKillAuraV2Counter--;
               }
             }
-<<<<<<< HEAD
             if (($angle_xz < 1.5) and ($angle < 20) and ($delta_t < 0.5) and ($this->x_speed > 3.0))
-=======
-            if (($y_under_block < 1.25) and ($xz_block_height < 20) and ($y_speed < 0.5))
->>>>>>> origin/master
             {
               $this->PlayerKillAuraCounter+=2;
             }
@@ -766,11 +755,7 @@ class Observer
               $event->setCancelled(true);
               $this->PlayerKillAuraCounter+=2;
             }            
-<<<<<<< HEAD
             if (($angle_xz >= 1.5) or ($angle >= 20) or ($delta_t > 2.0))
-=======
-            if (($y_under_block >= 1.25) or ($xz_block_height >= 20) or ($y_speed >= 2.0))
->>>>>>> origin/master
             {
               if ($this->PlayerKillAuraCounter > 0)
               {
@@ -798,7 +783,7 @@ class Observer
       if (!$this->Player->hasPermission("sac.reach"))
       {
         $reach_distance = $damager_position->distance($damaged_entity_position); 
-        $this->Logger->debug(TextFormat::BLUE . "[SAC] > Reach distance $this->PlayerName : $reach_distance");
+        #$this->Logger->debug(TextFormat::BLUE . "[SAC] > Reach distance $this->PlayerName : $reach_distance");
       
         if ($reach_distance > $this->GetConfigEntry("MaxRange"))
         {
