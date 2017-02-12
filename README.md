@@ -2,7 +2,7 @@
 
 ## Current Release: 3.2.0
 
-## An AntiCheat plugin for PocketMine-MP and Forks.<br>Compatible with MCPE 0.16.X.
+## An AntiCheat plugin for PocketMine-MP and Forks.<br>Compatible with MCPE 1.X.X.
 
 ## Find The Wiki and Phar Downloads [Here](https://github.com/DarkWav/ShadowAntiCheat/wiki).
 
