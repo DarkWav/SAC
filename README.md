@@ -13,4 +13,3 @@
 
 ### Read the [License](https://github.com/DarkWav/ShadowAntiCheat/blob/master/LICENSE.md) before downloading the source.
 ### With downloading the source or the Plugin, you AGREE to the [License](https://github.com/DarkWav/ShadowAntiCheat/blob/master/LICENSE.md)!
-### Please mark issues with the label of your platform.
