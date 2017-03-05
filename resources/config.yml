@@ -9,8 +9,8 @@
 #block = block Hack
 #kick = Player kick
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
-   Plugin-Version: 3.2.0
-   Config-Version: 3.5.2
+   Plugin-Version: 3.2.1
+   Config-Version: 3.5.3
 #Enables i am waching you message
 
    I-AM-WATCHING-YOU: true
@@ -20,6 +20,27 @@
 #1 = Instant Ban
 
    Max-Hacking-Times: 5
+
+#Which color should be used in SAC?
+#Supported colors:
+# 0 = BLACK
+# 1 = DARK_BLUE
+# 2 = DARK_GREEN
+# 3 = DARK_AQUA
+# 4 = DARK_RED
+# 5 = DARK_PURPLE
+# 6 = GOLD
+# 7 = GRAY
+# 8 = DARK_GRAY
+# 9 = BLUE
+# a = GREEN
+# b = AQUA
+# c = RED
+# d = LIGHT_PURPLE
+# e = YELLOW
+# f = WHITE
+
+   Color: 3
 
 #What commands should be executed then?
 #Use %PLAYER% for the Players name.
@@ -78,13 +99,44 @@
 #BETA, REPORT BUGS!
 #Do you want to enable KillAura check?
 #This also catches AimAura and KillAuraLegit.
-#I am not going to explain how this works
-#because of bypasses.
 #This will block anything that gives the player
 #a sanificant gamplay advantage, not useless bots.
 #TP-Aura is handled by Speed.
 
    KillAura: true
+
+#Advanced KillAura Heuristics And Detection (AKAHAD)
+#This is an advanced algorithm to catch a lot more
+#combat hacks. This is generally aggersive, but
+#you can make it even more agersive or rather
+#permissive, but i reccomand leaving it as it is.
+#How strong should AKAHAD be configured?
+#
+# 0 = DISABLE AKAHAD
+# 1 = PERMISSIVE
+# 2 = NORMAL
+# 3 = AGGRESIVE
+#
+# PREMISSIVE will cause close to zero false positives
+# even on large servers, but detection is slow and
+# bypasses are more likely.
+#
+# NORMAL will catch most KillAuras, with a very little
+# chanche of both false positives and negatives.
+# I would recommand this setting because it is the most
+# efficent and has the most usability.
+#
+# AGGRESIVE will catch nearly every KillAura very fast,
+# even triggerbots are detected. This configuration is
+# very agressive and may cause false positives depending
+# on the situation.
+#
+#I reccomand to use PERMISSIVE if you have a big server.
+#For other servers, use NORMAL for a normal server , only
+#use AGGRESIVE if you have a smaller server or massive
+#problems with KillAura hackers.
+
+   AKAHAD: 2
 
 #How many times must a player hack before detection?
 #30 Should work fine. (Standard)
@@ -127,6 +179,8 @@
    Speed: true
 
 #Wich Punishment should take place?
+#WARNING: setting this to block will
+#EXTREMLY lower the combat protection!
 
    Speed-Punishment: kick
 
@@ -150,13 +204,14 @@
    Reach: true
 
 #How much Range may a player have to be legit?
+#This wont affect killaura detection, it just blocks the hits.
 #Maxrange will be the maximum range.
 #Players are not kicked for that due to
 #False Positives.
-#Standard: 3.8
+#Standard: 3.9
 #NEVER set this to lower than 1
 
-   MaxRange:  3.8
+   MaxRange:  3.9
    
 #-----------------Glide-------------------#
 #Do you want to enable Glide check?
@@ -175,20 +230,6 @@
 #Which Log Message Sould be shown if Glide is detected?
 
    Glide-LogMessage: "[SAC] > %PLAYER% is hacking Glide!"
-
-#--------------InstantKill----------------#
-#Do you want to enable InstantKill check?
-#This blocks Players from hitting too fast.
-
-   InstantKill: true
-
-#Wich Message Sould be shown if InstantKill is detected?
-
-   InstantKill-Message: "[SAC] > InstantKill is not allowed!"
-
-#Which Log Message Sould be shown if InstantKill is detected?
-
-   InstantKill-LogMessage: "[SAC] > %PLAYER% is hacking InstantKill!"
 
 #----------------ForceOP------------------#
 #######################################################

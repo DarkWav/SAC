@@ -13,50 +13,51 @@ use pocketmine\Plugin;
 use pocketmine\plugin\PluginLoader;
 use DarkWav\SAC\EventListener;
 use DarkWav\SAC\Observer;
-use DarkWav\SAC\SACTick;
+use DarkWav\SAC\KickTask;
 
 class SAC extends PluginBase
 {
   public $Config;
   public $Logger;
+  public $cl;
   public $PlayerObservers = array();
   public $PlayersToKick   = array();
 
   public function onEnable()
   {
-    $this->getServer()->getScheduler()->scheduleRepeatingTask(new SACTick($this), 1);
+    $this->getServer()->getScheduler()->scheduleRepeatingTask(new KickTask($this), 1);
     @mkdir($this->getDataFolder());
     $this->saveDefaultConfig();
     $this->saveResource("AntiForceOP.txt");
     $this->saveResource("AntiForceGM.txt");
+    $cl              = $this->getConfig()->get("Color");
   
     $Config = $this->getConfig();
     $Logger = $this->getServer()->getLogger();
     $Server = $this->getServer();
     
     $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
-    $Logger->info(TextFormat::BLUE . "[SAC] > ShadowAntiCheat Activated"            );
-    $Logger->info(TextFormat::BLUE . "[SAC] > ShadowAntiCheat v3.2.0 [Shadow]");
-  
-    if($Config->get("ForceOP"    )) $Logger->info(TextFormat::BLUE."[SAC] > Enabling AntiForceOP"    );
-    if($Config->get("NoClip"     )) $Logger->info(TextFormat::BLUE."[SAC] > Enabling AntiNoClip"     );
-    if($Config->get("Fly"        )) $Logger->info(TextFormat::BLUE."[SAC] > Enabling AntiFly"        );
-    if($Config->get("Glide"      )) $Logger->info(TextFormat::BLUE."[SAC] > Enabling AntiGlide"      );
-    if($Config->get("KillAura"   )) $Logger->info(TextFormat::BLUE."[SAC] > Enabling AntiKillAura"   );
-    if($Config->get("InstantKill")) $Logger->info(TextFormat::BLUE."[SAC] > Enabling AntiInstantKill");
-    if($Config->get("Reach"      )) $Logger->info(TextFormat::BLUE."[SAC] > Enabling AntiReach"      );
-    if($Config->get("Speed"      )) $Logger->info(TextFormat::BLUE."[SAC] > Enabling AntiSpeed"      );
-    if($Config->get("Regen"      )) $Logger->info(TextFormat::BLUE."[SAC] > Enabling AntiRegen"      );
+    $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > ShadowAntiCheat Activated"            );
+    $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > ShadowAntiCheat v3.2.1 [Shadow]");
+    $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > Loading Modules");
+    if($Config->get("ForceOP"    )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiForceOP"    );
+    if($Config->get("NoClip"     )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiNoClip"     );
+    if($Config->get("Fly"        )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiFly"        );
+    if($Config->get("Glide"      )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiGlide"      );
+    if($Config->get("KillAura"   )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiKillAura"   );
+    if($Config->get("Reach"      )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiReach"      );
+    if($Config->get("Speed"      )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiSpeed"      );
+    if($Config->get("Regen"      )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiRegen"      );
 
-    if($Config->get("Plugin-Version") !== "3.2.0")
+    if($Config->get("Plugin-Version") !== "3.2.1")
     {
-      $Logger->emergency(TextFormat::BLUE."[SAC] > Your Config is incompatible with this plugin version, please update immediately!");
+      $Logger->error(TextFormat::ESCAPE."$cl"."[SAC] > Your Config is incompatible with this plugin version, please update immediately!");
       $Server->shutdown();
     }
 
-    if($Config->get("Config-Version") !== "3.5.2")
+    if($Config->get("Config-Version") !== "3.5.3")
     {
-      $Logger->warning(TextFormat::BLUE."[SAC] > Your Config is out of date!");
+      $Logger->warning(TextFormat::ESCAPE."$cl"."[SAC] > Your Config is out of date!");
     }
     
     foreach($Server->getOnlinePlayers() as $player)
@@ -92,17 +93,19 @@ class SAC extends PluginBase
 
   public function onDisable()
   {
+    $cl              = $this->getConfig()->get("Color");
     $Logger = $this->getServer()->getLogger();
     $Server = $this->getServer();
 
-    $Logger->info(TextFormat::BLUE."[SAC] > You are no longer protected from cheats!");
-    $Logger->info(TextFormat::BLUE."[SAC] > ShadowAntiCheat Deactivated");
+    $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > You are no longer protected from cheats!");
+    $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > ShadowAntiCheat Deactivated");
     $Server->enablePlugin($this);
   }
     
   public function onCommand(CommandSender $sender, Command $cmd, $label, array $args)
   {
     $Logger = $this->getServer()->getLogger();
+    $cl              = $this->getConfig()->get("Color");
     if ($this->getConfig()->get("ForceOP"))
     {
       if ($sender->isOp())
@@ -112,21 +115,22 @@ class SAC extends PluginBase
           if ($sender instanceof Player)
           {
             $sname = $sender->getName();
-	    $message  = "[SAC] > $sname used ForceOP!";
+            $message  = "[SAC] > $sname used ForceOP!";
             $this->NotifyAdmins($message);
-            $sender->getPlayer()->kick(TextFormat::BLUE."[SAC] > ForceOP detected!");
+            $sender->getPlayer()->kick(TextFormat::ESCAPE."$cl"."[SAC] > ForceOP detected!");
           }
         }
       }
     }
     if ($cmd->getName() === "sac" or $cmd->getName() === "shadowanticheat")
     {
-      $sender->sendMessage(TextFormat::BLUE."[SAC] > ShadowAntiCheat v3.2.0 [Shadow] (~DarkWav/Darku)");
+      $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > ShadowAntiCheat v3.2.1 [Shadow] (~DarkWav/Darku)");
     }
   }
   
   public function NotifyAdmins($message)
   {
+    $cl              = $this->getConfig()->get("Color");
     if($this->getConfig()->get("Verbose"))
     {
       foreach ($this->PlayerObservers as $observer)
@@ -134,7 +138,7 @@ class SAC extends PluginBase
         $player = $observer->Player;
         if ($player != null and $player->hasPermission("sac.admin"))
         {
-          $player->sendMessage(TextFormat::BLUE . $message);
+          $player->sendMessage(TextFormat::ESCAPE."$cl" . $message);
         }
       }
     }  

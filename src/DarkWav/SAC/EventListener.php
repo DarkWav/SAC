@@ -38,12 +38,12 @@ class EventListener implements Listener
     $this->Main   = $Main;
     $this->Logger = $Main->getServer()->getLogger();
     $this->Server = $Main->getServer();
-	}
+  }
 
   public function onJoin(PlayerJoinEvent $event)
-	{
-		$player   = $event->getPlayer();
-		$hash     = spl_object_hash($player);
+  {
+    $player   = $event->getPlayer();
+    $hash     = spl_object_hash($player);
     $name     = $player->getName();
 
     $oldhash  = null;
@@ -67,16 +67,16 @@ class EventListener implements Listener
     }  
     else
     {
-  		$observer = new Observer($player, $this->Main);
-	  	$this->Main->PlayerObservers[$hash] = $observer;
-	  	$this->Main->PlayerObservers[$hash]->PlayerJoin();      
+      $observer = new Observer($player, $this->Main);
+      $this->Main->PlayerObservers[$hash] = $observer;
+      $this->Main->PlayerObservers[$hash]->PlayerJoin();      
     }
   }
   
   public function onQuit(PlayerQuitEvent $event)
   {
-		$player   = $event->getPlayer();
-		$hash     = spl_object_hash($player);
+    $player   = $event->getPlayer();
+    $hash     = spl_object_hash($player);
 
     if (!empty($player) and !empty($hash) and array_key_exists($hash , $this->Main->PlayerObservers))
     {
@@ -89,10 +89,10 @@ class EventListener implements Listener
     }
   }
 
-	public function onMove(PlayerMoveEvent $event)
-	{
-		$player   = $event->getPlayer();
-		$hash     = spl_object_hash($player);
+  public function onMove(PlayerMoveEvent $event)
+  {
+    $player   = $event->getPlayer();
+    $hash     = spl_object_hash($player);
 
     if (array_key_exists($hash , $this->Main->PlayerObservers))
     {    
@@ -102,27 +102,27 @@ class EventListener implements Listener
       $this->Main->PlayerObservers[$hash]->getRealKnockBack($event);
       */
     }  
-	}
+  }
 
   public function onEntityRegainHealthEvent(EntityRegainHealthEvent $event)
-	{
-		$hash = spl_object_hash($event->getEntity());
+  {
+    $hash = spl_object_hash($event->getEntity());
     if (array_key_exists($hash , $this->Main->PlayerObservers))
     {
       $this->Main->PlayerObservers[$hash]->PlayerRegainHealth($event);
     }   
-	}
+  }
 
   public function onPlayerGameModeChangeEvent(PlayerGameModeChangeEvent $event)
-	{
+  {
     $hash = spl_object_hash($event->getPlayer());
     if (array_key_exists($hash , $this->Main->PlayerObservers))
     {
       $this->Main->PlayerObservers[$hash]->OnPlayerGameModeChangeEvent($event);
     }  
-	}
+  }
 
-	
+
   public function onDamage(EntityDamageEvent $event)
   {
     $evname = $event->getEventName();
@@ -148,33 +148,33 @@ class EventListener implements Listener
         }
       } 
     }
-  }	
+  }
     
   public function onPlayerDeathEvent(PlayerDeathEvent $event)
   {
-		$player   = $event->getPlayer();
-		$hash     = spl_object_hash($player);
+    $player   = $event->getPlayer();
+    $hash     = spl_object_hash($player);
 
     if (array_key_exists($hash , $this->Main->PlayerObservers))
     {    
       $this->Main->PlayerObservers[$hash]->onDeath($event);
     }      
-	}
-	
-	public function onPlayerRespawnEvent(PlayerRespawnEvent $event)
-	{
-		$player   = $event->getPlayer();
-		$hash     = spl_object_hash($player);
+  }
+
+  public function onPlayerRespawnEvent(PlayerRespawnEvent $event)
+  {
+    $player   = $event->getPlayer();
+    $hash     = spl_object_hash($player);
 
     if (array_key_exists($hash , $this->Main->PlayerObservers))
     {    
       $this->Main->PlayerObservers[$hash]->onRespawn($event);
     }      
-	}  
+  }  
   
   public function onEntityTeleportEvent(EntityTeleportEvent $event)
   {
-		$hash = spl_object_hash($event->getEntity());
+    $hash = spl_object_hash($event->getEntity());
     if (array_key_exists($hash , $this->Main->PlayerObservers))
     {
       $this->Main->PlayerObservers[$hash]->onTeleport($event);

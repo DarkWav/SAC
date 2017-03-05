@@ -6,7 +6,7 @@ use pocketmine\utils\TextFormat;
 use pocketmine\command\ConsoleCommandSender;
 use DarkWav\SAC\Observer;
 
-class SACTick extends PluginTask
+class KickTask extends PluginTask
 {
 
   public function __construct($plugin)
@@ -17,6 +17,7 @@ class SACTick extends PluginTask
 
   public function onRun($currentTick)
   {
+    $cl = $this->plugin->getConfig()->get("Color");
     foreach($this->plugin->PlayersToKick as $key=>$obs)
     {
       $obs->PlayerBanCounter++;
@@ -30,19 +31,19 @@ class SACTick extends PluginTask
           {
             $bmsg = $this->plugin->getConfig()->get("BanPlayerMessage");
             $sbmsg = $obs->ScanMessage($bmsg);
-            $this->plugin->getServer()->broadcastMessage(TextFormat::BLUE . $sbmsg);
+            $this->plugin->getServer()->broadcastMessage(TextFormat::ESCAPE."$cl" . $sbmsg);
           }
         }
         $obs->PlayerBanCounter = 0;
       }
       if ($obs->Player != null && $obs->Player->isOnline())
       {
-        $obs->Player->kick(TextFormat::BLUE . $obs->KickMessage);
+        $obs->Player->kick(TextFormat::ESCAPE."$cl" . $obs->KickMessage);
         if($this->plugin->getConfig()->get("KickPlayerMessageBool"))
         {
           $msg = $this->plugin->getConfig()->get("KickPlayerMessage");
           $smsg = $obs->ScanMessage($msg);
-          $this->plugin->getServer()->broadcastMessage(TextFormat::BLUE . $smsg);
+          $this->plugin->getServer()->broadcastMessage(TextFormat::ESCAPE."$cl" . $smsg);
         }
       }   
       unset ($this->plugin->PlayersToKick[$key]);

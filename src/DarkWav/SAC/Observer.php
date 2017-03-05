@@ -14,12 +14,6 @@ class Observer
   public $Player;
   public $surroundings;
 
-  public function SACIsOnGround($pp)
-  {
-    if ($this->AllBlocksAir()) return false;
-    else                       return true;
-  }
-  
   public function __construct($player, SAC $SAC)
   {
     $this->Player                  = $player;
@@ -41,8 +35,7 @@ class Observer
     $this->PlayerHitCounter        = 0;
     $this->PlayerKillAuraCounter   = 0;
     $this->PlayerKillAuraV2Counter = 0;
-    $this->Effects                       = $this->Player->getEffects();
-    $this->SpeedAMP                      = 0;
+    $this->SpeedAMP                = 0;
     
     //DO NOT RESET!
     $this->PlayerBanCounter    = 0;
@@ -69,6 +62,12 @@ class Observer
     $this->y_dist_sum   = 0.0;
     $this->y_speed      = 0.0;
     
+    $this->hs_arr_size   = 5;
+    $this->hs_arr_idx    = 0;
+    $this->hs_time_array = array_fill(0, $this->hs_arr_size, 0.5);
+    $this->hs_time_sum   = 0.5 * (double)$this->hs_arr_size;
+    $this->hs_hit_time   = 0.5;  
+    
     $this->x_pos_old    = new Vector3(0.0, 0.0, 0.0);
     $this->x_pos_new    = new Vector3(0.0, 0.0, 0.0);
     $this->y_pos_old    = 0.0;
@@ -81,6 +80,32 @@ class Observer
    
     $this->LastDamageTick = 0;
     $this->LastMoveTick   = 0;
+    $this->Colorized      = $this->GetConfigEntry("Color");
+    
+    if     ($this->GetConfigEntry("AKAHAD") == 1)
+    {
+      $this->dist_thr1 = 4.00;
+      $this->dist_thr2 = 3.75;
+      $this->dist_thr3 = 4.25;
+    }
+    elseif ($this->GetConfigEntry("AKAHAD") == 2)
+    {
+      $this->dist_thr1 = 3.75;
+      $this->dist_thr2 = 3.50;
+      $this->dist_thr3 = 4.00;
+    }
+    elseif ($this->GetConfigEntry("AKAHAD") == 3)
+    {
+      $this->dist_thr1 = 3.50;
+      $this->dist_thr2 = 3.25;
+      $this->dist_thr3 = 3.75;
+    }
+    else
+    {
+      $this->dist_thr1 = 0.00;
+      $this->dist_thr2 = 0.00;
+      $this->dist_thr3 = 0.00;
+    }
   }  
   
   public function ResetObserver()
@@ -127,7 +152,36 @@ class Observer
     $this->x_pos_old    = new Vector3(0.0, 0.0, 0.0);
     $this->x_pos_new    = new Vector3(0.0, 0.0, 0.0);    
     $this->y_pos_old    = 0.0;
-    $this->y_pos_new    = 0.0;        
+    $this->y_pos_new    = 0.0;     
+    
+    $this->hs_arr_size   = 5;
+    $this->hs_arr_idx    = 0;
+    $this->hs_time_array = array_fill(0, $this->hs_arr_size, 0.5);
+    $this->hs_time_sum   = 0.5 * (double)$this->hs_arr_size;
+    $this->hs_hit_time   = 0.5;  
+  }
+
+  public function SACIsOnGround($pp)
+  {
+    if ($this->AllBlocksAir()) return false;
+    else                       return true;
+  }
+
+  public function ScanMessage($message)
+  {
+    $pos    = strpos(strtoupper($message), "%PLAYER%");
+    $newmsg = $message;
+    if ($pos !== false)
+    {
+      $newmsg = substr_replace($message, $this->PlayerName, $pos, 8);
+    }    
+    return $newmsg;
+  }
+
+  public function GetConfigEntry($cfgkey)
+  {
+    $msg = $this->Main->getConfig()->get($cfgkey);
+    return $this->ScanMessage($msg);    
   }
 
   public function KickPlayer($reason)
@@ -151,34 +205,17 @@ class Observer
         $player = $observer->Player;
         if ($player != null and $this->Player->hasPermission("sac.admin"))
         {
-          $player->sendMessage(TextFormat::BLUE . $newmsg);
+          $player->sendMessage(TextFormat::ESCAPE."$this->Colorized" . $newmsg);
         }
       }
     }  
-  }
-  
-  public function ScanMessage($message)
-  {
-    $pos    = strpos(strtoupper($message), "%PLAYER%");
-    $newmsg = $message;
-    if ($pos !== false)
-    {
-      $newmsg = substr_replace($message, $this->PlayerName, $pos, 8);
-    }    
-    return $newmsg;
-  }
-  
-  public function GetConfigEntry($cfgkey)
-  {
-    $msg = $this->Main->getConfig()->get($cfgkey);
-    return $this->ScanMessage($msg);    
   }
   
   public function PlayerQuit()
   {
     if ($this->GetConfigEntry("I-AM-WATCHING-YOU"))
     {
-      $this->Logger->debug(TextFormat::BLUE . "[SAC] > $this->PlayerName is no longer watched...");
+      $this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > $this->PlayerName is no longer watched...");
     }
   }
 
@@ -187,7 +224,7 @@ class Observer
     $this->JoinCounter++;
     if ($this->GetConfigEntry("I-AM-WATCHING-YOU"))
     {
-      $this->Player->sendMessage(TextFormat::BLUE."[SAC] > $this->PlayerName, I am watching you ...");
+      $this->Player->sendMessage(TextFormat::ESCAPE."$this->Colorized"."[SAC] > $this->PlayerName, I am watching you ...");
     }
   }
   
@@ -196,8 +233,8 @@ class Observer
     $this->JoinCounter++;
     if ($this->GetConfigEntry("I-AM-WATCHING-YOU"))
     {
-      $this->Player->sendMessage(TextFormat::BLUE."[SAC] > $this->PlayerName, I am still watching you ...");
-      $this->Logger->debug      (TextFormat::BLUE."[SAC] > $this->PlayerName joined this server $this->JoinCounter times since server start");
+      $this->Player->sendMessage(TextFormat::ESCAPE."$this->Colorized"."[SAC] > $this->PlayerName, I am still watching you ...");
+      $this->Logger->debug      (TextFormat::ESCAPE."$this->Colorized"."[SAC] > $this->PlayerName joined this server $this->JoinCounter times since server start");
     }
   }
 
@@ -372,6 +409,7 @@ class Observer
   public function CheckSpeedFlyGlide($event)
   {
     if ($this->Player->hasPermission("sac.fly")) return;
+    if ($this->Player->getAllowFlight()) return;
     if ($this->GetConfigEntry("Speed") or $this->GetConfigEntry("Fly") or $this->GetConfigEntry("Glide"))
     {
       #Anti Speed, Fly and Glide
@@ -421,12 +459,9 @@ class Observer
           if (!$this->Player->hasPermission("sac.speed"))
           {
             # Anti Speed
-            foreach($this->Effects as $effect) {
-              if($effect->getId() == Effect::SPEED) {
-                $this->SpeedAMP = $effect->getAmplifier();
-              }
-            }
-            if ($this->Player->hasEffect(Effect::SPEED)){
+            if ($this->Player->hasEffect(Effect::SPEED))
+            {
+              $this->SpeedAMP = $effect->getAmplifier();
               if ($this->SpeedAMP < 3)
               {
                 if ($this->x_speed > 10)
@@ -444,8 +479,13 @@ class Observer
                   }
                 }
               }
+              else
+              {
+                $this->PlayerSpeedCounter--;
+              }
             }
-            elseif ($this->x_speed > 8){
+            elseif ($this->x_speed > 8.5)
+            {
               if (($tick - $this->LastDamageTick) > 30)  # deactivate 1.5 seconds after receiving damage
               {
                 $this->PlayerSpeedCounter += 10;
@@ -476,6 +516,7 @@ class Observer
               $event->setCancelled(true);
               $message = $this->GetConfigEntry("Speed-LogMessage");
               $this->NotifyAdmins($message);
+              $this->PlayerSpeedCounter = ($this->GetConfigEntry("Speed-Threshold") * 10) - 10;
             }
           }  
         }
@@ -722,7 +763,7 @@ class Observer
     else           $delta_t    = 0; 
     
     
-    #$this->Logger->debug(TextFormat::BLUE . "[SAC] > Kill Aura Counter: $this->PlayerKillAuraCounter     V2: $this->PlayerKillAuraV2Counter  Speed: $this->x_speed");
+    #$this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > Kill Aura Counter: $this->PlayerKillAuraCounter     V2: $this->PlayerKillAuraV2Counter  Speed: $this->x_speed");
     
     
     
@@ -733,35 +774,105 @@ class Observer
       {
         if ($is_damaged_entity_a_player)
         {
+          $tick = (double)$this->Server->getTick(); 
+          $tps  = (double)$this->Server->getTicksPerSecond();
+          if ($this->PlayerHitFirstTick == -1)
+          {
+            $this->PlayerHitFirstTick = $tick;
+          }        
+
+          $tick_count = (double)($tick - $this->PlayerHitFirstTick);   // server ticks since last hit
+          $delta_t    = (double)($tick_count) / (double)$tps;          // seconds since last hit
+
+          $this->hs_time_sum = $this->hs_time_sum - $this->hs_time_array[$this->hs_arr_idx] + $delta_t;      // ringbuffer time sum  (remove oldest, add new)
+          $this->hs_time_array[$this->hs_arr_idx] = $delta_t;                                                // overwrite oldest delta_t  with the new one
+          $this->hs_arr_idx++;                                                                               // Update ringbuffer position
+          if ($this->hs_arr_idx >= $this->hs_arr_size) $this->hs_arr_idx = 0;          
+          $this->hs_hit_time = $this->hs_time_sum / $this->hs_arr_size;
+          #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > THD $this->PlayerName : hittime = $this->hs_hit_time");
+        
+          if ($this->hs_hit_time < 0.16)
+          {
+            $this->PlayerHitCounter += 5;
+          }
+          else
+          {
+            if($this->PlayerHitCounter > 0)
+            {
+              $this->PlayerHitCounter--;
+            }
+          }
+          //Allow a maximum of 2 Unlegit hits, couter derceases x5 slower
+          if($this->PlayerHitCounter > 10)
+          {
+            $event->setCancelled(true);
+            $this->ResetObserver();
+            $message = $this->GetConfigEntry("KillAura-LogMessage");
+            $reason  = $this->GetConfigEntry("KillAura-Message");
+            $this->NotifyAdmins($message);
+            $this->KickPlayer($reason);
+            return;
+          }
+          $this->PlayerHitFirstTick = $tick;
           if ($distance_xz >= 0.5)
           {
-            if (($distance_xz >= 3.6) and ($delta_t < 0.5) and ($this->x_speed > 3.0))
+            # V2 
+            if ($this->dist_thr1 != 0.00)
             {
-              $this->PlayerKillAuraV2Counter+=2;
-            }
-            else
-            {
-              if ($this->PlayerKillAuraV2Counter > 0)
+              if (($distance_xz >= $this->dist_thr1) and 
+                  ($delta_t     <  0.50            ) and
+                  ($angle_xz    >  22.5            ) and
+                  (
+                    (($this->x_speed > 1.5) and ($this->hs_hit_time < 0.5)) or ($this->x_speed > 4.75)
+                  ))
               {
-                $this->PlayerKillAuraV2Counter--;
+                $this->PlayerKillAuraV2Counter+=2;
+              }
+              elseif (($distance_xz >= $this->dist_thr2) and 
+                  ($delta_t     <  0.50            ) and
+                  ($angle_xz    >  45.0            ) and
+                  (
+                    (($this->x_speed > 1.5) and ($this->hs_hit_time < 0.5)) or ($this->x_speed > 4.75)
+                  ))
+              {
+                $this->PlayerKillAuraV2Counter+=2;
+              }
+              elseif (($distance_xz >= $this->dist_thr3) and 
+                      ($delta_t     <  0.50            ) and
+                      (
+                       (($this->x_speed > 1.5) and ($this->hs_hit_time < 0.5)) or ($this->x_speed > 4.75)
+                      ))
+              {
+                $this->PlayerKillAuraV2Counter+=2;
+              }
+              else
+              {
+                if ($this->PlayerKillAuraV2Counter > 0)
+                {
+                  $this->PlayerKillAuraV2Counter--;
+                }
               }
             }
-            if (($angle_xz < 1.5) and ($angle < 20) and ($delta_t < 0.5) and ($this->x_speed > 3.0))
-            {
-              $this->PlayerKillAuraCounter+=2;
-            }
+            
             if ($angle_xz > 90)
             {
               $event->setCancelled(true);
+              $this->PlayerKillAuraV2Counter+=2;
+            }
+            #$this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > counter V2: $this->PlayerKillAuraV2Counter");
+            # V1
+            if (($angle_xz < 1.5) and ($angle < 20) and ($delta_t < 0.5) and ($this->x_speed > 4.75))
+            {
               $this->PlayerKillAuraCounter+=2;
-            }            
+            }
             if (($angle_xz >= 1.5) or ($angle >= 20) or ($delta_t > 2.0))
             {
               if ($this->PlayerKillAuraCounter > 0)
               {
                 $this->PlayerKillAuraCounter--;
               }   
-            }            
+            }      
+            $this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > counter V1: $this->PlayerKillAuraCounter  V2: $this->PlayerKillAuraV2Counter distance: $distance_xz  deltat: $delta_t  speedx: $this->x_speed anglexz: $angle_xz");      
           }  
       
           if (($this->PlayerKillAuraCounter >= $this->GetConfigEntry("KillAura-Threshold")) or ($this->PlayerKillAuraV2Counter >= $this->GetConfigEntry("KillAura-Threshold")))
@@ -783,7 +894,7 @@ class Observer
       if (!$this->Player->hasPermission("sac.reach"))
       {
         $reach_distance = $damager_position->distance($damaged_entity_position); 
-        #$this->Logger->debug(TextFormat::BLUE . "[SAC] > Reach distance $this->PlayerName : $reach_distance");
+        #$this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > Reach distance $this->PlayerName : $reach_distance");
       
         if ($reach_distance > $this->GetConfigEntry("MaxRange"))
         {
@@ -794,7 +905,7 @@ class Observer
       if ($reach_distance > $this->GetConfigEntry("KickRange"))
       {
         $this->PlayerReachCounter++;
-        #$this->Logger->debug(TextFormat::BLUE . "[SAC] > $this->PlayerName  ReachCounter: $this->PlayerReachCounter");
+        #$this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > $this->PlayerName  ReachCounter: $this->PlayerReachCounter");
         $tick = (double)$this->Server->getTick(); 
         $tps  = (double)$this->Server->getTicksPerSecond();
         
@@ -834,44 +945,6 @@ class Observer
         }
       }
       */
-    }
-    if ($this->GetConfigEntry("InstantKill"))
-    {
-      if (!$this->Player->hasPermission("sac.instantkill"))
-      {
-        $tick = (double)$this->Server->getTick(); 
-        $tps  = (double)$this->Server->getTicksPerSecond();
-        $tick_count = (double)($tick - $this->PlayerHitFirstTick); // server ticks since last hit
-        $delta_t    = (double)($tick_count) / (double)$tps;          // seconds since first reach hack
-        if ($this->PlayerHitFirstTick == -1)
-        {
-          $this->PlayerHitFirstTick = $tick;
-        }
-        // $this->Logger->info(TextFormat::BLUE . "[SAC] > THD $this->PlayerName : $tick_count : $delta_t");
-        if ($delta_t < 0.1)
-        {
-          $this->PlayerHitCounter += 5;
-        }
-        else
-        {
-          if($this->PlayerHitCounter > 0)
-          {
-            $this->PlayerHitCounter--;
-          }
-        }
-        //Allow a maximum of 5 Unlegit hits, couter derceases x5 slower
-        if($this->PlayerHitCounter > 25)
-        {
-          $event->setCancelled(true);
-          $this->ResetObserver();
-          $message = $this->GetConfigEntry("InstantKill-LogMessage");
-          $reason  = $this->GetConfigEntry("InstantKill-Message");
-          $this->NotifyAdmins($message);
-          $this->KickPlayer($reason);
-          return;
-        }
-        $this->PlayerHitFirstTick = $tick;
-      }
     }
   }
 
