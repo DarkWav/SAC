@@ -1,4 +1,4 @@
-# SAC License 2.3 (SACLv2.3)
+# DarkWav License 2.3 (DVLv2.3)
 
 You are free to:
 
