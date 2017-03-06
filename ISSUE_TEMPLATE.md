@@ -14,7 +14,7 @@ Settings changed:
   - 
   - 
   - 
-[...]
+<br><b>[...]</b>
 
 ### How to reproduce the issue?
 
