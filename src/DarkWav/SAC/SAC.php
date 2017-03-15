@@ -38,7 +38,7 @@ class SAC extends PluginBase
     
     $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
     $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > ShadowAntiCheat Activated"            );
-    $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > ShadowAntiCheat v3.2.1 [Shadow]");
+    $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > ShadowAntiCheat v3.2.2 [Shadow]");
     $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > Loading Modules");
     if($Config->get("ForceOP"    )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiForceOP"    );
     if($Config->get("NoClip"     )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiNoClip"     );
@@ -49,17 +49,16 @@ class SAC extends PluginBase
     if($Config->get("Speed"      )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiSpeed"      );
     if($Config->get("Regen"      )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiRegen"      );
 
-    if($Config->get("Plugin-Version") !== "3.2.1")
+    if($Config->get("Config-Version") !== "3.5.4")
+    {
+      $Logger->warning(TextFormat::ESCAPE."$cl"."[SAC] > Your Config is out of date!");
+    }
+    if($Config->get("Plugin-Version") !== "3.2.2" and $Config->get("Plugin-Version") !== "3.2.1")
     {
       $Logger->error(TextFormat::ESCAPE."$cl"."[SAC] > Your Config is incompatible with this plugin version, please update immediately!");
       $Server->shutdown();
     }
 
-    if($Config->get("Config-Version") !== "3.5.3")
-    {
-      $Logger->warning(TextFormat::ESCAPE."$cl"."[SAC] > Your Config is out of date!");
-    }
-    
     foreach($Server->getOnlinePlayers() as $player)
     {
       $hash     = spl_object_hash($player);
@@ -124,7 +123,7 @@ class SAC extends PluginBase
     }
     if ($cmd->getName() === "sac" or $cmd->getName() === "shadowanticheat")
     {
-      $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > ShadowAntiCheat v3.2.1 [Shadow] (~DarkWav/Darku)");
+      $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > ShadowAntiCheat v3.2.2 [Shadow] (~DarkWav/Darku)");
     }
   }
   

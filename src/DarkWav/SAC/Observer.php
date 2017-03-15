@@ -110,12 +110,12 @@ class Observer
   
   public function ResetObserver()
   {
-    $this->PlayerReachCounter    = 0;
-    $this->PlayerReachFirstTick  = -1;
-    $this->PlayerHitFirstTick    = -1;
-    $this->PlayerHitCounter      = 0;
-    $this->PlayerKillAuraCounter = 0;
-    $this->PlayerKillAuraV2Counter = 0;
+    $this->PlayerReachCounter      =  0;
+    $this->PlayerReachFirstTick    = -1;
+    $this->PlayerHitFirstTick      = -1;
+    $this->PlayerHitCounter        =  0;
+    $this->PlayerKillAuraCounter   =  0;
+    $this->PlayerKillAuraV2Counter =  0;
 
     $this->ResetMovement();
   }
@@ -461,7 +461,7 @@ class Observer
             # Anti Speed
             if ($this->Player->hasEffect(Effect::SPEED))
             {
-              $this->SpeedAMP = $effect->getAmplifier();
+              $this->SpeedAMP = $this->Player->getEffect(Effect::SPEED)->getAmplifier();
               if ($this->SpeedAMP < 3)
               {
                 if ($this->x_speed > 10)
@@ -819,26 +819,26 @@ class Observer
             # V2 
             if ($this->dist_thr1 != 0.00)
             {
-              if (($distance_xz >= $this->dist_thr1) and 
-                  ($delta_t     <  0.50            ) and
-                  ($angle_xz    >  22.5            ) and
+              if (($distance >= $this->dist_thr1) and 
+                  ($delta_t  <  0.50            ) and
+                  ($angle_xz >  22.5            ) and
                   (
                     (($this->x_speed > 1.5) and ($this->hs_hit_time < 0.5)) or ($this->x_speed > 4.75)
                   ))
               {
                 $this->PlayerKillAuraV2Counter+=2;
               }
-              elseif (($distance_xz >= $this->dist_thr2) and 
-                  ($delta_t     <  0.50            ) and
-                  ($angle_xz    >  45.0            ) and
-                  (
-                    (($this->x_speed > 1.5) and ($this->hs_hit_time < 0.5)) or ($this->x_speed > 4.75)
-                  ))
+              elseif (($distance >= $this->dist_thr2) and 
+                      ($delta_t  <  0.50            ) and
+                      ($angle_xz >  45.0            ) and
+                      (
+                        (($this->x_speed > 1.5) and ($this->hs_hit_time < 0.5)) or ($this->x_speed > 4.75)
+                      ))
               {
                 $this->PlayerKillAuraV2Counter+=2;
               }
-              elseif (($distance_xz >= $this->dist_thr3) and 
-                      ($delta_t     <  0.50            ) and
+              elseif (($distance >= $this->dist_thr3) and 
+                      ($delta_t  <  0.50            ) and
                       (
                        (($this->x_speed > 1.5) and ($this->hs_hit_time < 0.5)) or ($this->x_speed > 4.75)
                       ))
@@ -854,11 +854,15 @@ class Observer
               }
             }
             
-            if ($angle_xz > 90)
+            if ($angle_xz > 45)
             {
               $event->setCancelled(true);
-              $this->PlayerKillAuraV2Counter+=2;
-            }
+              if ($angle_xz > 90)
+              {
+                $this->PlayerKillAuraV2Counter+=2;
+              }
+            }            
+            
             #$this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > counter V2: $this->PlayerKillAuraV2Counter");
             # V1
             if (($angle_xz < 1.5) and ($angle < 20) and ($delta_t < 0.5) and ($this->x_speed > 4.75))

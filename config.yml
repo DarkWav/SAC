@@ -9,8 +9,8 @@
 #block = block Hack
 #kick = Player kick
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
-   Plugin-Version: 3.2.1
-   Config-Version: 3.5.3
+   Plugin-Version: 3.2.2
+   Config-Version: 3.5.4
 #Enables i am waching you message
 
    I-AM-WATCHING-YOU: true
@@ -129,7 +129,8 @@
 # AGGRESIVE will catch nearly every KillAura very fast,
 # even triggerbots are detected. This configuration is
 # very agressive and may cause false positives depending
-# on the situation.
+# on the situation. If you set "KillAura-Threshold" to
+# 45 it can be very effective.
 #
 #I reccomand to use PERMISSIVE if you have a big server.
 #For other servers, use NORMAL for a normal server , only
@@ -139,11 +140,14 @@
    AKAHAD: 2
 
 #How many times must a player hack before detection?
-#30 Should work fine. (Standard)
+#35 Should work fine. (Standard)
 #NEVER set this lower than 25
+#For PREMISSIVE AKAHAD: 25
+#For NORMAL     AKAHAD: 35
+#For AGGRESIVE  AKAHAD: 45
 #Increase if KillAura causes false poitives.
 
-   KillAura-Threshold: 30
+   KillAura-Threshold: 35
 
 #Wich Message Sould be shown if KillAura is detected?
 
