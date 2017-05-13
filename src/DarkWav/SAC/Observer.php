@@ -86,25 +86,33 @@ class Observer
     {
       $this->dist_thr1 = 4.00;
       $this->dist_thr2 = 3.75;
-      $this->dist_thr3 = 4.25;
     }
     elseif ($this->GetConfigEntry("AKAHAD") == 2)
     {
       $this->dist_thr1 = 3.75;
       $this->dist_thr2 = 3.50;
-      $this->dist_thr3 = 4.00;
     }
     elseif ($this->GetConfigEntry("AKAHAD") == 3)
     {
       $this->dist_thr1 = 3.50;
       $this->dist_thr2 = 3.25;
-      $this->dist_thr3 = 3.75;
     }
     else
     {
       $this->dist_thr1 = 0.00;
       $this->dist_thr2 = 0.00;
-      $this->dist_thr3 = 0.00;
+    }
+    if     ($this->GetConfigEntry("AKAHAD-MacroCapture") == 1)
+    {
+      $this->dist_thr3 = 4.125;
+    }
+    elseif ($this->GetConfigEntry("AKAHAD-MacroCapture") == 2)
+    {
+      $this->dist_thr3 = 3.825;
+    }
+    else
+    {
+      $this->dist_thr3 = 0.000;
     }
   }  
   
@@ -163,8 +171,8 @@ class Observer
 
   public function SACIsOnGround($pp)
   {
-    if ($this->AllBlocksAir()) return false;
-    else                       return true;
+    if     ( $this->AllBlocksAir()      ) return false;
+    else                                  return $this->Player->IsOnGround();
   }
 
   public function ScanMessage($message)
@@ -762,10 +770,7 @@ class Observer
     if ($tps != 0) $delta_t    = (double)($tick_count) / (double)$tps;
     else           $delta_t    = 0; 
     
-    
     #$this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > Kill Aura Counter: $this->PlayerKillAuraCounter     V2: $this->PlayerKillAuraV2Counter  Speed: $this->x_speed");
-    
-    
     
     // Kill Aura
     if ($this->GetConfigEntry("KillAura"))
@@ -843,7 +848,14 @@ class Observer
                        (($this->x_speed > 1.5) and ($this->hs_hit_time < 0.5)) or ($this->x_speed > 4.75)
                       ))
               {
-                $this->PlayerKillAuraV2Counter+=2;
+                if ($this->dist_thr3 != 0.000)
+                {
+                  $this->PlayerKillAuraV2Counter+=2;
+                }
+              }
+              elseif (!$this->SACIsOnGround($damager))
+              {
+                $this->PlayerKillAuraV2Counter+=4;
               }
               else
               {
@@ -856,27 +868,43 @@ class Observer
             
             if ($angle_xz > 45)
             {
-              $event->setCancelled(true);
+              if ($this->GetConfigEntry("Angle"))
+              {
+                $event->setCancelled(true);
+              }
               if ($angle_xz > 90)
               {
-                $this->PlayerKillAuraV2Counter+=2;
+                if ($this->dist_thr1 != 0.00)
+                {
+                  $this->PlayerKillAuraV2Counter+=8;
+                }
+                if ($this->GetConfigEntry("Angle"))
+                {
+                  $this->PlayerKillAuraCounter+=8;
+                }
               }
             }            
-            
-            #$this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > counter V2: $this->PlayerKillAuraV2Counter");
-            # V1
-            if (($angle_xz < 1.5) and ($angle < 20) and ($delta_t < 0.5) and ($this->x_speed > 4.75))
+            if ($this->GetConfigEntry("AimbotCatcher"))
             {
-              $this->PlayerKillAuraCounter+=2;
-            }
-            if (($angle_xz >= 1.5) or ($angle >= 20) or ($delta_t > 2.0))
-            {
-              if ($this->PlayerKillAuraCounter > 0)
+              #$this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > counter V2: $this->PlayerKillAuraV2Counter");
+              # V1
+              if (($angle_xz < 1.5) and ($angle < 20) and ($delta_t < 0.5) and ($this->x_speed > 4.75))
               {
-                $this->PlayerKillAuraCounter--;
-              }   
-            }      
-            $this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > counter V1: $this->PlayerKillAuraCounter  V2: $this->PlayerKillAuraV2Counter distance: $distance_xz  deltat: $delta_t  speedx: $this->x_speed anglexz: $angle_xz");      
+                $this->PlayerKillAuraCounter+=2;
+              }
+              if (($angle_xz >= 1.5) or ($angle >= 20) or ($delta_t > 2.0))
+              {
+                if ($this->PlayerKillAuraCounter > 0)
+                {
+                  if (!$angle_xz > 90)
+                  {
+                    $this->PlayerKillAuraCounter--;
+                  }
+                }   
+              }      
+              #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > counter V1: $this->PlayerKillAuraCounter  V2: $this->PlayerKillAuraV2Counter distance: $distance_xz  deltat: $delta_t  speedx: $this->x_speed anglexz: $angle_xz");
+            }
+            #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > counter V1: $this->PlayerKillAuraCounter  V2: $this->PlayerKillAuraV2Counter distance: $distance_xz  deltat: $delta_t  speedx: $this->x_speed anglexz: $angle_xz");
           }  
       
           if (($this->PlayerKillAuraCounter >= $this->GetConfigEntry("KillAura-Threshold")) or ($this->PlayerKillAuraV2Counter >= $this->GetConfigEntry("KillAura-Threshold")))
