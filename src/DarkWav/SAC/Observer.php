@@ -535,26 +535,35 @@ class Observer
     # No Fly, No Glide and Anti Speed
     if (!$this->SACIsOnGround($this->Player))
     {
-      if ($this->y_pos_old > $this->y_pos_new)
+      if(    !in_array(Block::WATER               , $this->surroundings ) 
+         and !in_array(Block::STILL_WATER         , $this->surroundings )
+         and !in_array(Block::LAVA                , $this->surroundings )
+         and !in_array(Block::STILL_LAVA          , $this->surroundings )
+         and !in_array(Block::LADDER              , $this->surroundings )
+         and !in_array(Block::VINE                , $this->surroundings )
+         and !in_array(Block::COBWEB              , $this->surroundings ))
       {
-        # Player moves down. Check Glide Hack
-        if ($this->GetConfigEntry("Glide"))
+        if ($this->y_pos_old > $this->y_pos_new)
         {
-          if (!$this->Player->hasPermission("sac.glide"))
+          # Player moves down. Check Glide Hack
+          if ($this->GetConfigEntry("Glide"))
           {
-            $this->PlayerGlideCounter++;
+            if (!$this->Player->hasPermission("sac.glide"))
+            {
+              $this->PlayerGlideCounter++;
+            }
           }
         }
-      }
-      elseif ($this->y_pos_old <= $this->y_pos_new)
-      {
-        # Player moves up or horizontal
-        if ($this->GetConfigEntry("Fly"))
+        elseif ($this->y_pos_old <= $this->y_pos_new)
         {
-          $this->PlayerAirCounter++;
-          if ($this->PlayerGlideCounter > 0)
+          # Player moves up or horizontal
+          if ($this->GetConfigEntry("Fly"))
           {
-            $this->PlayerGlideCounter--;
+            $this->PlayerAirCounter++;
+            if ($this->PlayerGlideCounter > 0)
+            {
+              $this->PlayerGlideCounter--;
+            }
           }
         }
       }
