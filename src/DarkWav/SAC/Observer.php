@@ -272,6 +272,12 @@ class Observer
   }
 
 
+  public function OnBlockPlaceEvent($event)
+  {
+    $this->PlayerAirCounter--;
+  }
+
+
   public function PlayerRegainHealth($event)
   {
     if($this->GetConfigEntry("Regen"))
@@ -780,7 +786,7 @@ class Observer
     else           $delta_t    = 0; 
     
     #$this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > Kill Aura Counter: $this->PlayerKillAuraCounter     V2: $this->PlayerKillAuraV2Counter  Speed: $this->x_speed");
-    
+    if ($this->Player->getGameMode() == 1 or $this->Player->getGameMode() == 3) return;
     // Kill Aura
     if ($this->GetConfigEntry("KillAura"))
     {
@@ -805,9 +811,9 @@ class Observer
           $this->hs_hit_time = $this->hs_time_sum / $this->hs_arr_size;
           #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > THD $this->PlayerName : hittime = $this->hs_hit_time");
         
-          if ($this->hs_hit_time < 0.16)
+          if ($this->hs_hit_time < 0.0825)
           {
-            $this->PlayerHitCounter += 5;
+            $this->PlayerHitCounter += 2;
           }
           else
           {
@@ -913,7 +919,7 @@ class Observer
               }      
               #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > counter V1: $this->PlayerKillAuraCounter  V2: $this->PlayerKillAuraV2Counter distance: $distance_xz  deltat: $delta_t  speedx: $this->x_speed anglexz: $angle_xz");
             }
-            #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > counter V1: $this->PlayerKillAuraCounter  V2: $this->PlayerKillAuraV2Counter distance: $distance_xz  deltat: $delta_t  speedx: $this->x_speed anglexz: $angle_xz");
+            #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "AAA[SAC] > counter V1: $this->PlayerKillAuraCounter  V2: $this->PlayerKillAuraV2Counter distance: $distance_xz  deltat: $delta_t  speedx: $this->x_speed anglexz: $angle_xz");
           }  
       
           if (($this->PlayerKillAuraCounter >= $this->GetConfigEntry("KillAura-Threshold")) or ($this->PlayerKillAuraV2Counter >= $this->GetConfigEntry("KillAura-Threshold")))
