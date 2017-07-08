@@ -11,9 +11,9 @@ use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\Player;
 use pocketmine\Plugin;
 use pocketmine\plugin\PluginLoader;
-use DarkWav\SAC\EventListener;
-use DarkWav\SAC\Observer;
-use DarkWav\SAC\KickTask;
+use DarkWav\WD\EventListener;
+use DarkWav\WD\Observer;
+use DarkWav\WD\KickTask;
 
 class WatchDog extends PluginBase
 {
