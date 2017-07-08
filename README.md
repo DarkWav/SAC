@@ -1,4 +1,4 @@
-# SAC (ShadowAntiCheat)
+# WD (WatchDog)
 
 ## Current Release: 3.2.5
 
