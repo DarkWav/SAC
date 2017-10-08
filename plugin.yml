@@ -1,15 +1,15 @@
-name: SAC
-main: DarkWav\SAC\SAC
+name: WatchDog
+main: DarkWav\WatchDog\WatchDog
 version: 3.2.5
 load: STARTUP
 enable: STARTUP
 author: DarkWav
 api: [3.0.0-ALPHA1,3.0.0-ALPHA2,3.0.0-ALPHA3,3.0.0-ALPHA4,3.0.0-ALPHA5,3.0.0-ALPHA6,3.0.0-ALPHA7,3.0.0-ALPHA8,3.0.0-ALPHA9,3.0.0-ALPHA10,3.0.0]
 commands:
-      shadowanticheat:
-           description: Shows ShadowAntiCheat version
-           aliases: ["ShadowAntiCheat","AntiCheat","SAC"]
-      sac:
+      watchdog:
+           description: Shows WatchDog version
+           aliases: ["WatchDog","AntiCheat","WD"]
+      wd:
            description: Shows ShadowAntiCheat version
            aliases: ["ShadowAntiCheat","AntiCheat","SAC"]
 permissions:
@@ -20,34 +20,34 @@ permissions:
         description: "Allows to use all sac features."
         default: false
         children:
-            sac.admin:
+            wd.admin:
                 description: "Get notified when someone is hacking."
                 default: op
-            sac.fly:
+            wd.fly:
                 description: "A permission."
                 default: false
-            sac.glide:
+            wd.glide:
                 description: "A permission."
                 default: false
-            sac.speed:
+            wd.speed:
                 description: "A permission."
                 default: false
-            sac.noclip:
+            wd.noclip:
                 description: "A permission."
                 default: false
-            sac.reach:
+            wd.reach:
                 description: "A permission."
                 default: false
-            sac.instantkill:
+            wd.instantkill:
                 description: "A permission."
                 default: false
-            sac.killaura:
+            wd.killaura:
                 description: "A permission."
                 default: false
-            sac.regen:
+            wd.regen:
                 description: "A permission."
                 default: false
-            sac.forcegamemode:
+            wd.forcegamemode:
                 description: "A permission."
                 default: false
 

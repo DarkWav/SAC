@@ -1,6 +1,6 @@
 <?php
 
-namespace DarkWav\SAC;
+namespace DarkWav\WD;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\ConsoleCommandSender;
@@ -23,7 +23,7 @@ use pocketmine\event\block\BlockPlaceEvent;
 
 use pocketmine\math\Vector3;
 use pocketmine\event\player\PlayerGameModeChangeEvent;
-use DarkWav\SAC\SAC;
+use DarkWav\SAC\WD;
 use DarkWav\SAC\Observer;
 use pocketmine\event\Cancellable;
 use pocketmine\Player;
@@ -34,7 +34,7 @@ class EventListener implements Listener
   public $Logger;
   public $Server;
 
-  public function __construct(SAC $Main)
+  public function __construct(WD $Main)
   {
     $this->Main   = $Main;
     $this->Logger = $Main->getServer()->getLogger();
@@ -202,7 +202,7 @@ class EventListener implements Listener
 
 //////////////////////////////////////////////////////
 //                                                  //
-//     SAC by DarkWav.                              //
+//     WD by DarkWav, edited by Zeao.               //
 //     Distributed under the AntiCheat License.     //
 //     Do not redistribute in modyfied form!        //
 //     All rights reserved.                         //

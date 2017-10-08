@@ -14,14 +14,14 @@ class Observer
   public $Player;
   public $surroundings;
 
-  public function __construct($player, SAC $SAC)
+  public function __construct($player, WD $WD)
   {
     $this->Player                  = $player;
     $this->PlayerName              = $this->Player->getName();
-    $this->Main                    = $SAC;
+    $this->Main                    = $WD;
     $this->ClientID                = $player->getClientId();
-    $this->Logger                  = $SAC->getServer()->getLogger();
-    $this->Server                  = $SAC->getServer();
+    $this->Logger                  = $WD->getServer()->getLogger();
+    $this->Server                  = $WD->getServer();
     $this->JoinCounter             = 0;
     $this->KickMessage             = "";
 
@@ -169,7 +169,7 @@ class Observer
     $this->hs_hit_time   = 0.5;  
   }
 
-  public function SACIsOnGround($pp)
+  public function WDIsOnGround($pp)
   {
     if     ( $this->AllBlocksAir()      ) return false;
     else                                  return $this->Player->IsOnGround();
@@ -211,7 +211,7 @@ class Observer
       foreach ($this->Main->PlayerObservers as $observer)
       {
         $player = $observer->Player;
-        if ($player != null and $this->Player->hasPermission("sac.admin"))
+        if ($player != null and $this->Player->hasPermission("wd.admin"))
         {
           $player->sendMessage(TextFormat::ESCAPE."$this->Colorized" . $newmsg);
         }
@@ -223,7 +223,7 @@ class Observer
   {
     if ($this->GetConfigEntry("I-AM-WATCHING-YOU"))
     {
-      $this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > $this->PlayerName is no longer watched...");
+      $this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "[WD] > $this->PlayerName is no longer watched...");
     }
   }
 
@@ -232,7 +232,7 @@ class Observer
     $this->JoinCounter++;
     if ($this->GetConfigEntry("I-AM-WATCHING-YOU"))
     {
-      $this->Player->sendMessage(TextFormat::ESCAPE."$this->Colorized"."[SAC] > $this->PlayerName, I am watching you ...");
+      $this->Player->sendMessage(TextFormat::ESCAPE."$this->Colorized"."[WD] > $this->PlayerName, I am watching you ...");
     }
   }
   
@@ -241,8 +241,8 @@ class Observer
     $this->JoinCounter++;
     if ($this->GetConfigEntry("I-AM-WATCHING-YOU"))
     {
-      $this->Player->sendMessage(TextFormat::ESCAPE."$this->Colorized"."[SAC] > $this->PlayerName, I am still watching you ...");
-      $this->Logger->debug      (TextFormat::ESCAPE."$this->Colorized"."[SAC] > $this->PlayerName joined this server $this->JoinCounter times since server start");
+      $this->Player->sendMessage(TextFormat::ESCAPE."$this->Colorized"."[WD] > $this->PlayerName, I am still watching you ...");
+      $this->Logger->debug      (TextFormat::ESCAPE."$this->Colorized"."[WD] > $this->PlayerName joined this server $this->JoinCounter times since server start");
     }
   }
 
@@ -282,7 +282,7 @@ class Observer
   {
     if($this->GetConfigEntry("Regen"))
     {
-      if ($this->Player->hasPermission("sac.regen")) return;
+      if ($this->Player->hasPermission("wd.regen")) return;
       $Reason2 = $event->getRegainReason();
       $tick    = (double)$this->Server->getTick(); 
       $tps     = (double)$this->Server->getTicksPerSecond();
@@ -377,8 +377,8 @@ class Observer
         if (!$this->Player->hasPermission($this->GetConfigEntry("ForceOP-Permission")))
         {
           $event->setCancelled(true);
-          $message = "[SAC] > %PLAYER% used ForceOP!";
-          $reason = "[SAC] > ForceOP detected!";
+          $message = "[WD] > %PLAYER% used ForceOP!";
+          $reason = "[WD] > ForceOP detected!";
           $this->NotifyAdmins($message);
           $this->KickPlayer($reason);
         }
@@ -422,7 +422,7 @@ class Observer
   # -------------------------------------------------------------------------------------
   public function CheckSpeedFlyGlide($event)
   {
-    if ($this->Player->hasPermission("sac.fly")) return;
+    if ($this->Player->hasPermission("wd.fly")) return;
     if ($this->Player->getAllowFlight()) return;
     if ($this->GetConfigEntry("Speed") or $this->GetConfigEntry("Fly") or $this->GetConfigEntry("Glide"))
     {
@@ -470,7 +470,7 @@ class Observer
      
         if ($this->GetConfigEntry("Speed"))
         {
-          if (!$this->Player->hasPermission("sac.speed"))
+          if (!$this->Player->hasPermission("wd.speed"))
           {
             # Anti Speed
             if ($this->Player->hasEffect(Effect::SPEED))
@@ -554,7 +554,7 @@ class Observer
           # Player moves down. Check Glide Hack
           if ($this->GetConfigEntry("Glide"))
           {
-            if (!$this->Player->hasPermission("sac.glide"))
+            if (!$this->Player->hasPermission("wd.glide"))
             {
               $this->PlayerGlideCounter++;
             }
@@ -624,7 +624,7 @@ class Observer
     # No Clip
     if ($this->GetConfigEntry("NoClip"))
     {
-      if ($this->Player->hasPermission("sac.noclip")) return;
+      if ($this->Player->hasPermission("wd.noclip")) return;
       $level   = $this->Player->getLevel();
       $pos     = new Vector3($this->Player->getX(), $this->Player->getY(), $this->Player->getZ());
       $BlockID = $level->getBlock($pos)->getId();
@@ -790,7 +790,7 @@ class Observer
     // Kill Aura
     if ($this->GetConfigEntry("KillAura"))
     {
-      if (!$this->Player->hasPermission("sac.killaura"))
+      if (!$this->Player->hasPermission("wd.killaura"))
       {
         if ($is_damaged_entity_a_player)
         {
@@ -917,9 +917,9 @@ class Observer
                   }
                 }   
               }      
-              #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > counter V1: $this->PlayerKillAuraCounter  V2: $this->PlayerKillAuraV2Counter distance: $distance_xz  deltat: $delta_t  speedx: $this->x_speed anglexz: $angle_xz");
+              #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[WD] > counter V1: $this->PlayerKillAuraCounter  V2: $this->PlayerKillAuraV2Counter distance: $distance_xz  deltat: $delta_t  speedx: $this->x_speed anglexz: $angle_xz");
             }
-            #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "AAA[SAC] > counter V1: $this->PlayerKillAuraCounter  V2: $this->PlayerKillAuraV2Counter distance: $distance_xz  deltat: $delta_t  speedx: $this->x_speed anglexz: $angle_xz");
+            #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "AAA[WD] > counter V1: $this->PlayerKillAuraCounter  V2: $this->PlayerKillAuraV2Counter distance: $distance_xz  deltat: $delta_t  speedx: $this->x_speed anglexz: $angle_xz");
           }  
       
           if (($this->PlayerKillAuraCounter >= $this->GetConfigEntry("KillAura-Threshold")) or ($this->PlayerKillAuraV2Counter >= $this->GetConfigEntry("KillAura-Threshold")))
@@ -938,10 +938,10 @@ class Observer
     //Reach Check
     if ($this->GetConfigEntry("Reach"))
     {
-      if (!$this->Player->hasPermission("sac.reach"))
+      if (!$this->Player->hasPermission("wd.reach"))
       {
         $reach_distance = $damager_position->distance($damaged_entity_position); 
-        #$this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > Reach distance $this->PlayerName : $reach_distance");
+        #$this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "[WD] > Reach distance $this->PlayerName : $reach_distance");
       
         if ($reach_distance > $this->GetConfigEntry("MaxRange"))
         {
@@ -952,7 +952,7 @@ class Observer
       if ($reach_distance > $this->GetConfigEntry("KickRange"))
       {
         $this->PlayerReachCounter++;
-        #$this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > $this->PlayerName  ReachCounter: $this->PlayerReachCounter");
+        #$this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "[WD] > $this->PlayerName  ReachCounter: $this->PlayerReachCounter");
         $tick = (double)$this->Server->getTick(); 
         $tps  = (double)$this->Server->getTicksPerSecond();
         
@@ -1024,7 +1024,7 @@ class Observer
 
 //////////////////////////////////////////////////////
 //                                                  //
-//     SAC by DarkWav.                              //
+//     WD by DarkWav.                               //
 //     Distributed under the AntiCheat License.     //
 //     Do not redistribute in modyfied form!        //
 //     All rights reserved.                         //

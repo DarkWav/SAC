@@ -1,6 +1,6 @@
 <?php
 
-namespace DarkWav\SAC;
+namespace DarkWav\WatchDog;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat;
@@ -11,11 +11,11 @@ use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\Player;
 use pocketmine\Plugin;
 use pocketmine\plugin\PluginLoader;
-use DarkWav\SAC\EventListener;
-use DarkWav\SAC\Observer;
-use DarkWav\SAC\KickTask;
+use DarkWav\WD\EventListener;
+use DarkWav\WD\Observer;
+use DarkWav\WD\KickTask;
 
-class SAC extends PluginBase
+class WatchDog extends PluginBase
 {
   public $Config;
   public $Logger;
@@ -37,27 +37,27 @@ class SAC extends PluginBase
     $Server = $this->getServer();
     
     $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
-    $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > ShadowAntiCheat Activated"            );
-    $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > ShadowAntiCheat v3.2.5 [Shade]");
-    $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > Loading Modules");
-    if($Config->get("ForceOP"    )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiForceOP"    );
-    if($Config->get("NoClip"     )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiNoClip"     );
-    if($Config->get("Fly"        )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiFly"        );
-    if($Config->get("Fly"        )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiJesus"      );
-    if($Config->get("Fly"        )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiSpider"     );
-    if($Config->get("Glide"      )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiGlide"      );
-    if($Config->get("KillAura"   )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiKillAura"   );
-    if($Config->get("Reach"      )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiReach"      );
-    if($Config->get("Speed"      )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiSpeed"      );
-    if($Config->get("Regen"      )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiRegen"      );
+    $Logger->info(TextFormat::ESCAPE."$cl" . "[WD] > WatchDog has been Activated"            );
+    $Logger->info(TextFormat::ESCAPE."$cl" . "[WD] > WatchDog v3.2.5 [Shade] by DarkWav. Code edited by Zeao.");
+    $Logger->info(TextFormat::ESCAPE."$cl" . "[WD] > Loading Modules");
+    if($Config->get("ForceOP"    )) $Logger->info(TextFormat::ESCAPE."$cl"."[WD] > Enabling AntiForceOP. Please wait.."    );
+    if($Config->get("NoClip"     )) $Logger->info(TextFormat::ESCAPE."$cl"."[WD] > Enabling AntiNoClip. Please wait.."     );
+    if($Config->get("Fly"        )) $Logger->info(TextFormat::ESCAPE."$cl"."[WD] > Enabling AntiFly. Please wait.."        );
+    if($Config->get("Fly"        )) $Logger->info(TextFormat::ESCAPE."$cl"."[WD] > Enabling AntiJesus. Please wait."      );
+    if($Config->get("Fly"        )) $Logger->info(TextFormat::ESCAPE."$cl"."[WD] > Enabling AntiSpider. Please wait."     );
+    if($Config->get("Glide"      )) $Logger->info(TextFormat::ESCAPE."$cl"."[WD] > Enabling AntiGlide. Please wait.."      );
+    if($Config->get("KillAura"   )) $Logger->info(TextFormat::ESCAPE."$cl"."[WD] > Enabling AntiKillAura. Please wait.."   );
+    if($Config->get("Reach"      )) $Logger->info(TextFormat::ESCAPE."$cl"."[WD] > Enabling AntiReach. Please wait.."      );
+    if($Config->get("Speed"      )) $Logger->info(TextFormat::ESCAPE."$cl"."[WD] > Enabling AntiSpeed. Please wait.."      );
+    if($Config->get("Regen"      )) $Logger->info(TextFormat::ESCAPE."$cl"."[WD] > Enabling AntiRegen. Please wait.."      );
 
     if($Config->get("Config-Version") !== "3.5.5")
     {
-      $Logger->warning(TextFormat::ESCAPE."$cl"."[SAC] > Your Config is out of date!");
+      $Logger->warning(TextFormat::ESCAPE."$cl"."[WD] > Your Config is out of date! Please delete the config version and restart the server.");
     }
     if($Config->get("Plugin-Version") !== "3.2.5" and $Config->get("Plugin-Version") !== "3.2.4" and $Config->get("Plugin-Version") !== "3.2.3")
     {
-      $Logger->error(TextFormat::ESCAPE."$cl"."[SAC] > Your Config is incompatible with this plugin version, please update immediately!");
+      $Logger->error(TextFormat::ESCAPE."$cl"."[WD] > Your Config is incompatible with this plugin version, please update immediately!");
       $Server->shutdown();
     }
 
@@ -98,8 +98,8 @@ class SAC extends PluginBase
     $Logger = $this->getServer()->getLogger();
     $Server = $this->getServer();
 
-    $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > You are no longer protected from cheats!");
-    $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > ShadowAntiCheat Deactivated");
+    $Logger->info(TextFormat::ESCAPE."$cl"."[WD] > You are no longer protected from cheats!");
+    $Logger->info(TextFormat::ESCAPE."$cl"."[WD] > WatchDog Deactivated");
     $Server->enablePlugin($this);
   }
     
@@ -116,16 +116,16 @@ class SAC extends PluginBase
           if ($sender instanceof Player)
           {
             $sname = $sender->getName();
-            $message  = "[SAC] > $sname used ForceOP!";
+            $message  = "[WD] > $sname used ForceOP!";
             $this->NotifyAdmins($message);
-            $sender->getPlayer()->kick(TextFormat::ESCAPE."$cl"."[SAC] > ForceOP detected!");
+            $sender->getPlayer()->kick(TextFormat::ESCAPE."$cl"."[WD] > ForceOP detected!");
           }
         }
       }
     }
-    if ($cmd->getName() === "sac" or $cmd->getName() === "shadowanticheat")
+    if ($cmd->getName() === "WD" or $cmd->getName() === "WatchDog")
     {
-      $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > ShadowAntiCheat v3.2.5 [Shade] (~DarkWav/Darku)");
+      $sender->sendMessage(TextFormat::ESCAPE."$cl"."[WD] > WatchDog v3.2.5 [Shade] (~DarkWav/Zeao)");
     }
   }
   
@@ -137,7 +137,7 @@ class SAC extends PluginBase
       foreach ($this->PlayerObservers as $observer)
       {
         $player = $observer->Player;
-        if ($player != null and $player->hasPermission("sac.admin"))
+        if ($player != null and $player->hasPermission("wd.admin"))
         {
           $player->sendMessage(TextFormat::ESCAPE."$cl" . $message);
         }
@@ -149,7 +149,7 @@ class SAC extends PluginBase
 
 //////////////////////////////////////////////////////
 //                                                  //
-//     SAC by DarkWav.                              //
+//     WD by DarkWav, edited by Zeao.               //
 //     Distributed under the AntiCheat License.     //
 //     Do not redistribute in modyfied form!        //
 //     All rights reserved.                         //
