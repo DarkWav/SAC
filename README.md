@@ -1,15 +1,11 @@
 # SAC (ShadowAntiCheat)
 
-## Current Release: 3.2.5
+### Status: Discontinued
 
-## An AntiCheat plugin for PocketMine-MP and Forks.<br>Compatible with MCPE 1.X.X.
+### Im sorry to anounce this, but SACs development needed to come to an end.<br>A lot of changes have happend in my real life
+and i do not have the neccessary time and motivation to code this plugin anymore.<br>I had a great time coding this and
+i want to thank everyone for his/her support.<br>I hope you understand this, i will leave the source for anyone who's interested.
 
-## Find The Wiki and Phar Downloads [Here](https://github.com/DarkWav/ShadowAntiCheat/wiki).
+## If you are looking for a continued version of this, this plugin which is based on SACs old code might suite you:<br>https://github.com/Driesboy/AntiCheat - A great Alternative.
 
-## [Issues/Help/Support](https://github.com/DarkWav/ShadowAntiCheat/issues)
-
-# Features:<br>
-## AntiKillAura<br>AntiReach<br>AntiFly<br>AntiJesus<br>AntiSpider<br>AntiSpeed<br>AntiGlide<br>AntiForceOP (BETA, READ AntiForceOP.txt)<br>AntiNoClip<br>AntiRegen<br>AntiForceGameMode (BETA, READ AntiForceGM.txt)<br>AntiInstantKill (Hit Speed, NOT EXPLOIT!)<br>AutoBanSytem
-
-### Read the [License](https://github.com/DarkWav/ShadowAntiCheat/blob/master/LICENSE.md) before downloading the source.
-### With downloading the source or the Plugin, you AGREE to the [License](https://github.com/DarkWav/ShadowAntiCheat/blob/master/LICENSE.md)!
+### So i still wish all of you happy Hacker fighting, farewell.
