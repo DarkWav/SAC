@@ -8,6 +8,7 @@ use pocketmine\Player;
 use pocketmine\block\Block;
 use DarkWav\SAC\EventListener;
 use pocketmine\entity\Effect;
+use pocketmine\block\BlockIds;
 
 class Observer
 {
@@ -519,13 +520,13 @@ class Observer
     # No Fly, No Glide and Anti Speed
     if (!$this->SACIsOnGround($this->Player))
     {
-      if(    !in_array(Block::WATER               , $this->surroundings ) 
-         and !in_array(Block::STILL_WATER         , $this->surroundings )
-         and !in_array(Block::LAVA                , $this->surroundings )
-         and !in_array(Block::STILL_LAVA          , $this->surroundings )
-         and !in_array(Block::LADDER              , $this->surroundings )
-         and !in_array(Block::VINE                , $this->surroundings )
-         and !in_array(Block::COBWEB              , $this->surroundings ))
+      if(    !in_array(Block::WATER                   , $this->surroundings ) 
+         and !in_array(Block::STILL_WATER             , $this->surroundings )
+         and !in_array(Block::LAVA                    , $this->surroundings )
+         and !in_array(Block::STILL_LAVA              , $this->surroundings )
+         and !in_array(Block::LADDER                  , $this->surroundings )
+         and !in_array(Block::VINE                    , $this->surroundings )
+         and !in_array(Block::COBWEB                  , $this->surroundings ))
       {
         if ($this->y_pos_old > $this->y_pos_new)
         {
@@ -657,20 +658,12 @@ class Observer
       or $BlockID == 129 //EMERALD  (-)
       )
       {
-        if(    !in_array(Block::SLAB                , $this->surroundings ) 
-           and !in_array(Block::WOOD_STAIRS         , $this->surroundings )
-           and !in_array(Block::COBBLE_STAIRS       , $this->surroundings )
-           and !in_array(Block::BRICK_STAIRS        , $this->surroundings )
-           and !in_array(Block::STONE_BRICK_STAIRS  , $this->surroundings )
-           and !in_array(Block::NETHER_BRICKS_STAIRS, $this->surroundings )
-           and !in_array(Block::SPRUCE_WOOD_STAIRS  , $this->surroundings )
-           and !in_array(Block::BIRCH_WOODEN_STAIRS , $this->surroundings )
-           and !in_array(Block::JUNGLE_WOOD_STAIRS  , $this->surroundings )
-           and !in_array(Block::QUARTZ_STAIRS       , $this->surroundings )
-           and !in_array(Block::WOOD_SLAB           , $this->surroundings )
-           and !in_array(Block::ACACIA_WOOD_STAIRS  , $this->surroundings )
-           and !in_array(Block::DARK_OAK_WOOD_STAIRS, $this->surroundings )
-           and !in_array(Block::SNOW                , $this->surroundings ))
+        if(    !in_array(67                         , $this->surroundings )
+           and !in_array(108                        , $this->surroundings )
+           and !in_array(109                        , $this->surroundings )
+           and !in_array(114                        , $this->surroundings )
+           and !in_array(156                        , $this->surroundings )
+           and !in_array(80                         , $this->surroundings ))
         {        
           if ($this->GetConfigEntry("NoClip-Punishment") == "kick")
           {

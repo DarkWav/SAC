@@ -4,7 +4,7 @@ version: 3.3.0
 load: STARTUP
 enable: STARTUP
 author: DarkWav
-api: [3.0.0-ALPHA10,3.0.0-ALPHA11,3.0.0-ALPHA12,3.0.0-ALPHA13,3.0.0-ALPHA14,3.0.0-ALPHA15,3.0.0]
+api: [3.0.0-ALPHA9,3.0.0-ALPHA10,3.0.0-ALPHA11,3.0.0-ALPHA12,3.0.0-ALPHA13,3.0.0-ALPHA14,3.0.0-ALPHA15,3.0.0-ALPHA16,3.0.0-ALPHA17,3.0.0-ALPHA18,3.0.0]
 commands:
       shadowanticheat:
            description: Shows ShadowAntiCheat version
@@ -13,7 +13,7 @@ commands:
            description: Shows ShadowAntiCheat version
            aliases: ["ShadowAntiCheat","AntiCheat","SAC"]
 permissions:
-        sac:
+    sac:
         description: "Allows to use all sac features."
         default: false
         children:

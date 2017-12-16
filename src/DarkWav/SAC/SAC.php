@@ -100,14 +100,15 @@ class SAC extends PluginBase
     $Server->enablePlugin($this);
   }
     
-  public function onCommand(CommandSender $sender, Command $cmd, $label, array $args)
+  public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool
   {
     $Logger = $this->getServer()->getLogger();
     $cl              = $this->getConfig()->get("Color");
-    if ($cmd->getName() === "sac" or $cmd->getName() === "shadowanticheat")
+    if ($command->getName() === "sac" or $command->getName() === "shadowanticheat")
     {
       $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > ShadowAntiCheat v3.3.0 [ShadowX] (~DarkWav/Darku)");
     }
+    return false;
   }
   
   public function NotifyAdmins($message)
