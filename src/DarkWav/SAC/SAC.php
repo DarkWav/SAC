@@ -28,8 +28,6 @@ class SAC extends PluginBase
     $this->getServer()->getScheduler()->scheduleRepeatingTask(new KickTask($this), 1);
     @mkdir($this->getDataFolder());
     $this->saveDefaultConfig();
-    $this->saveResource("AntiForceOP.txt");
-    $this->saveResource("AntiForceGM.txt");
     $cl              = $this->getConfig()->get("Color");
   
     $Config = $this->getConfig();
@@ -38,9 +36,8 @@ class SAC extends PluginBase
     
     $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
     $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > ShadowAntiCheat Activated"            );
-    $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > ShadowAntiCheat v3.2.5 [Shade]");
+    $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > ShadowAntiCheat v3.3.0 [ShadowX]");
     $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > Loading Modules");
-    if($Config->get("ForceOP"    )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiForceOP"    );
     if($Config->get("NoClip"     )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiNoClip"     );
     if($Config->get("Fly"        )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiFly"        );
     if($Config->get("Fly"        )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiJesus"      );
@@ -51,11 +48,11 @@ class SAC extends PluginBase
     if($Config->get("Speed"      )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiSpeed"      );
     if($Config->get("Regen"      )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiRegen"      );
 
-    if($Config->get("Config-Version") !== "3.5.5")
+    if($Config->get("Config-Version") !== "3.6.0")
     {
       $Logger->warning(TextFormat::ESCAPE."$cl"."[SAC] > Your Config is out of date!");
     }
-    if($Config->get("Plugin-Version") !== "3.2.5" and $Config->get("Plugin-Version") !== "3.2.4" and $Config->get("Plugin-Version") !== "3.2.3")
+    if($Config->get("Plugin-Version") !== "3.3.0")
     {
       $Logger->error(TextFormat::ESCAPE."$cl"."[SAC] > Your Config is incompatible with this plugin version, please update immediately!");
       $Server->shutdown();
@@ -107,25 +104,9 @@ class SAC extends PluginBase
   {
     $Logger = $this->getServer()->getLogger();
     $cl              = $this->getConfig()->get("Color");
-    if ($this->getConfig()->get("ForceOP"))
-    {
-      if ($sender->isOp())
-      {
-        if (!$sender->hasPermission($this->getConfig()->get("ForceOP-Permission")))
-        {
-          if ($sender instanceof Player)
-          {
-            $sname = $sender->getName();
-            $message  = "[SAC] > $sname used ForceOP!";
-            $this->NotifyAdmins($message);
-            $sender->getPlayer()->kick(TextFormat::ESCAPE."$cl"."[SAC] > ForceOP detected!");
-          }
-        }
-      }
-    }
     if ($cmd->getName() === "sac" or $cmd->getName() === "shadowanticheat")
     {
-      $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > ShadowAntiCheat v3.2.5 [Shade] (~DarkWav/Darku)");
+      $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > ShadowAntiCheat v3.3.0 [ShadowX] (~DarkWav/Darku)");
     }
   }
   
@@ -150,8 +131,6 @@ class SAC extends PluginBase
 //////////////////////////////////////////////////////
 //                                                  //
 //     SAC by DarkWav.                              //
-//     Distributed under the AntiCheat License.     //
-//     Do not redistribute in modyfied form!        //
-//     All rights reserved.                         //
+//     Distributed under the GGPLv3 License.        //
 //                                                  //
 //////////////////////////////////////////////////////

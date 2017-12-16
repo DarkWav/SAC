@@ -357,33 +357,11 @@ class Observer
   public function OnMove($event)
   {
     $this->LastMoveTick = (double)$this->Server->getTick();
-    $this->CheckForceOP($event);
     if ($this->Player->getGameMode() == 1 or $this->Player->getGameMode() == 3) return;
     
     $this->GetSurroundingBlocks();
     $this->CheckSpeedFlyGlide($event);
     $this->CheckNoClip($event);
-  }
-
-  # -------------------------------------------------------------------------------------
-  # CheckForceOP: Check if the player is a legit OP
-  # -------------------------------------------------------------------------------------
-  public function CheckForceOP($event)
-  {
-    if ($this->GetConfigEntry("ForceOP"))
-    {
-      if ($this->Player->isOp())
-      {
-        if (!$this->Player->hasPermission($this->GetConfigEntry("ForceOP-Permission")))
-        {
-          $event->setCancelled(true);
-          $message = "[SAC] > %PLAYER% used ForceOP!";
-          $reason = "[SAC] > ForceOP detected!";
-          $this->NotifyAdmins($message);
-          $this->KickPlayer($reason);
-        }
-      }
-    }
   }
 
   public function GetSurroundingBlocks()
@@ -725,31 +703,7 @@ class Observer
       }
     }    
   }  
-  
-  public function OnPlayerGameModeChangeEvent($event)
-  {
-    if ($this->GetConfigEntry("ForceGameMode"))
-    {
-      if ($this->Player->hasPermission("sac.forcegamemode")) return;
-      if(!$event->getPlayer()->isOp())
-      {
-        $message = $this->GetConfigEntry("ForceGameMode-LogMessage");
-        $this->NotifyAdmins($message);
-        $reason  = $this->GetConfigEntry("ForceGameMode-Message");
-        $this->KickPlayer($reason);
-        $event->$event->setCancelled(true);
-      }
-      else
-      {
-        return;
-      }
-    }
-    else
-    {
-      return;
-    }
-  }
-  
+ 
   public function PlayerHasDamaged($event)
   {
     $damaged_entity             = $event->getEntity();
@@ -1025,8 +979,6 @@ class Observer
 //////////////////////////////////////////////////////
 //                                                  //
 //     SAC by DarkWav.                              //
-//     Distributed under the AntiCheat License.     //
-//     Do not redistribute in modyfied form!        //
-//     All rights reserved.                         //
+//     Distributed under the GGPLv3 License.        //
 //                                                  //
 //////////////////////////////////////////////////////

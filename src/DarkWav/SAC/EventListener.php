@@ -22,7 +22,6 @@ use pocketmine\event\block\BlockPlaceEvent;
 
 
 use pocketmine\math\Vector3;
-use pocketmine\event\player\PlayerGameModeChangeEvent;
 use DarkWav\SAC\SAC;
 use DarkWav\SAC\Observer;
 use pocketmine\event\Cancellable;
@@ -116,16 +115,6 @@ class EventListener implements Listener
       }   
     }
   }
-
-  public function onPlayerGameModeChangeEvent(PlayerGameModeChangeEvent $event)
-  {
-    $hash = spl_object_hash($event->getPlayer());
-    if (array_key_exists($hash , $this->Main->PlayerObservers))
-    {
-      $this->Main->PlayerObservers[$hash]->OnPlayerGameModeChangeEvent($event);
-    }  
-  }
-
 
   public function onBlockPlaceEvent(BlockPlaceEvent $event)
   {

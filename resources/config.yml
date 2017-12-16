@@ -1,7 +1,7 @@
 ---
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #ShadowAntiCheat main configuration file.
-#Current version: 3.2.5
+#Current version: 3.3.0
 #What should be blocked?
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #true = ENABLE
@@ -9,8 +9,8 @@
 #block = block Hack
 #kick = Player kick
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
-   Plugin-Version: 3.2.5
-   Config-Version: 3.5.5
+   Plugin-Version: 3.3.0
+   Config-Version: 3.6.0
 #Enables i am waching you message
 
    I-AM-WATCHING-YOU: true
@@ -104,7 +104,7 @@
 #TP-Aura is handled by Speed. This is purely behavoir
 #based, it does not spawn any fake entities.
 
-   KillAura: true
+   KillAura: false
 
 #Angle (3rd-person-pvp prevention)
 #This will block hitting with impossible angles.
@@ -168,7 +168,7 @@
 #I would recommend to use AGGRESSIVE if you have many hackers,
 #for any other case use PERMISSIVE.
 
-   AKAHAD-MacroCapture: 1
+   AKAHAD-MacroCapture: 0
 
 #AimbotCatcher
 #This is and old mechanisim to catch aimaura and aimbots in
@@ -275,21 +275,6 @@
 
    Glide-LogMessage: "[SAC] > %PLAYER% is hacking Glide!"
 
-#----------------ForceOP------------------#
-#######################################################
-# USE THIS AT YOUR OWN RISK. I GUARANTEE FOR NOTHING! #
-#######################################################
-#Do you want to enable advanced ForceOP check?
-#READ AntiForceOP.txt BEFORE ENABLING!
-
-   ForceOP: false
-
-#Which Permission should ForceOP check?
-#THIS NEEDS TO BE AN EXISTING PERMISSION
-#WICH IS NOT DEFAULTLY GIVEN TO OPS!
-
-   ForceOP-Permission: "legitop"
-
 #-----------------NoClip------------------#
 #Do you want to enable NoClip Detection?
 #This prevents players form glitching through blocks.
@@ -319,33 +304,10 @@
 
    NoClip-LogMessage: "[SAC] > %PLAYER% is hacking NoClip!"
 
-#--------------ForceGameMode--------------#
-#######################################################
-# USE THIS AT YOUR OWN RISK. I GUARANTEE FOR NOTHING! #
-#######################################################
-#Do you want to enable ForceGameMode Detection?
-#USE THIS WITH CAUTION!
-#This WILL BLOCK ANY PLAYER THAT IS CHANGEING ITS GAMEMODE
-#AND IS NOT OP ALSO IF DONE VIA ADMIN/PLUGIN!
-#I WONT GUARANTEE FOR ANY FALSE POSITIVES WITH THAT!
-#READ AntiForceGM.txt BEFORE ENABLING!
-
-   FoceGameMode: false
-
-#Which Message Should be shown if ForceGameMode is detected?
-
-   ForceGameMode-Message: "[SAC] > ForceGameMode is not allowed!"
-
-#Which Log Message Sould be shown if ForceGameMode is detected?
-
-   ForceGameMode-LogMessage: "[SAC] > %PLAYER% is hacking ForceGameMode!"
-
 #//////////////////////////////////////////////////////
 #//                                                  //
 #//     SAC by DarkWav.                              //
-#//     Distributed under the AntiCheat License.     //
-#//     Do not redistribute in modified form!        //
-#//     All rights reserved.                         //
+#//     Distributed under the GGPLv3 License.        //
 #//                                                  //
 #//////////////////////////////////////////////////////
 ...
