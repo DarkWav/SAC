@@ -9,7 +9,7 @@
 ## Find The Wiki and Phar Downloads [Here](https://github.com/DarkWav/ShadowAntiCheat/wiki). (OLD, DON'T USE!)
 
 ## [Issues for non-combat-related problems](https://github.com/DarkWav/ShadowShield/issues)
-## [Issues for combat-related problems](https://github.com/DarkWav/ShadowX/issues)
+## Issues for combat-related problems
 
 # Features:<br>
 ## AntiKillAura (W.I.P)<br>AntiReach<br>AntiFly<br>AntiJesus (W.I.P)<br>AntiSpider (W.I.P)<br>AntiSpeed<br>AntiGlide<br>AntiNoClip (W.I.P)<br>AntiRegen<br>AntiInstantKill (Hit Speed, NOT EXPLOIT!)<br>AutoBanSytem
