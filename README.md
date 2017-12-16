@@ -1,6 +1,6 @@
 # SAC (ShadowAntiCheat)
 
-### Status: Continuedation in progress...
+### Status: Continueation in progress...
 
 ## Current Release: 3.2.5 (OLD, DON'T USE!)
 
