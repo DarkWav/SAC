@@ -1,0 +1,16 @@
+#######################################################
+# USE THIS AT YOUR OWN RISK. I GUARANTEE FOR NOTHING! #
+#######################################################
+This will teach you how to use AntiForceGM.
+
+Step 1: Enabling in config:
+
+        Set "ForceGameMode" to "true"
+
+WITH ENABLING THIS YOU AGREE THAT THERE IS NO "NO FALSE POSITIVE GUARANTEE" FOR THIS!
+
+Step 3: Now Restart your server.
+
+Step 4: You are now protected against ForceGM!
+
+Have Fun with this Tool!

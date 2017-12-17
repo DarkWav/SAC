@@ -104,7 +104,7 @@
 #TP-Aura is handled by Speed. This is purely behavoir
 #based, it does not spawn any fake entities.
 
-   KillAura: false
+   KillAura: true
 
 #Angle (3rd-person-pvp prevention)
 #This will block hitting with impossible angles.
@@ -168,7 +168,7 @@
 #I would recommend to use AGGRESSIVE if you have many hackers,
 #for any other case use PERMISSIVE.
 
-   AKAHAD-MacroCapture: 0
+   AKAHAD-MacroCapture: 1
 
 #AimbotCatcher
 #This is and old mechanisim to catch aimaura and aimbots in
@@ -214,6 +214,26 @@
 #Which Log Message Sould be shown if Regen is detected?
 
    Regen-LogMessage: "[SAC] > %PLAYER% is hacking Regen!"
+
+#-----------------FastBow-----------------#
+#Do you want to enable FastBow check?
+#Prevent players from shooting arrows too fast.
+#Will only trigger if a player hits a person
+#with fastbow.
+
+   FastBow: true
+
+#Wich Punishment should take place if FastBow is detected?
+
+   FastBow-Punishment: kick
+
+#Wich Message Sould be shown if FastBow is detected?
+
+   FastBow-Message: "[SAC] > FastBow is not allowed!"
+
+#Which Log Message Sould be shown if FastBow is detected?
+
+   FastBow-LogMessage: "[SAC] > %PLAYER% is hacking FastBow!"
 
 #-----------------Speed-------------------#
 #Do you want to enable Speed check?
@@ -275,6 +295,21 @@
 
    Glide-LogMessage: "[SAC] > %PLAYER% is hacking Glide!"
 
+#----------------ForceOP------------------#
+#######################################################
+# USE THIS AT YOUR OWN RISK. I GUARANTEE FOR NOTHING! #
+#######################################################
+#Do you want to enable advanced ForceOP check?
+#READ AntiForceOP.txt BEFORE ENABLING!
+
+   ForceOP: false
+
+#Which Permission should ForceOP check?
+#THIS NEEDS TO BE AN EXISTING PERMISSION
+#WICH IS NOT DEFAULTLY GIVEN TO OPS!
+
+   ForceOP-Permission: "legitop"
+
 #-----------------NoClip------------------#
 #Do you want to enable NoClip Detection?
 #This prevents players form glitching through blocks.
@@ -304,10 +339,33 @@
 
    NoClip-LogMessage: "[SAC] > %PLAYER% is hacking NoClip!"
 
+#--------------ForceGameMode--------------#
+#######################################################
+# USE THIS AT YOUR OWN RISK. I GUARANTEE FOR NOTHING! #
+#######################################################
+#Do you want to enable ForceGameMode Detection?
+#USE THIS WITH CAUTION!
+#This WILL BLOCK ANY PLAYER THAT IS CHANGEING ITS GAMEMODE
+#AND IS NOT OP ALSO IF DONE VIA ADMIN/PLUGIN!
+#I WONT GUARANTEE FOR ANY FALSE POSITIVES WITH THAT!
+#READ AntiForceGM.txt BEFORE ENABLING!
+
+   FoceGameMode: false
+
+#Which Message Should be shown if ForceGameMode is detected?
+
+   ForceGameMode-Message: "[SAC] > ForceGameMode is not allowed!"
+
+#Which Log Message Sould be shown if ForceGameMode is detected?
+
+   ForceGameMode-LogMessage: "[SAC] > %PLAYER% is hacking ForceGameMode!"
+
 #//////////////////////////////////////////////////////
 #//                                                  //
 #//     SAC by DarkWav.                              //
-#//     Distributed under the GGPLv3 License.        //
+#//     Distributed under the AntiCheat License.     //
+#//     Do not redistribute in modified form!        //
+#//     All rights reserved.                         //
 #//                                                  //
 #//////////////////////////////////////////////////////
 ...

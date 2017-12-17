@@ -5,10 +5,10 @@ namespace DarkWav\SAC;
 use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
+use pocketmine\block\BlockIds;
 use pocketmine\block\Block;
 use DarkWav\SAC\EventListener;
 use pocketmine\entity\Effect;
-use pocketmine\block\BlockIds;
 
 class Observer
 {
@@ -279,6 +279,11 @@ class Observer
   }
 
 
+  public function OnBlockBreakEvent($event)
+  {
+  }
+
+
   public function PlayerRegainHealth($event)
   {
     if($this->GetConfigEntry("Regen"))
@@ -358,11 +363,33 @@ class Observer
   public function OnMove($event)
   {
     $this->LastMoveTick = (double)$this->Server->getTick();
+    $this->CheckForceOP($event);
     if ($this->Player->getGameMode() == 1 or $this->Player->getGameMode() == 3) return;
     
     $this->GetSurroundingBlocks();
     $this->CheckSpeedFlyGlide($event);
     $this->CheckNoClip($event);
+  }
+
+  # -------------------------------------------------------------------------------------
+  # CheckForceOP: Check if the player is a legit OP
+  # -------------------------------------------------------------------------------------
+  public function CheckForceOP($event)
+  {
+    if ($this->GetConfigEntry("ForceOP"))
+    {
+      if ($this->Player->isOp())
+      {
+        if (!$this->Player->hasPermission($this->GetConfigEntry("ForceOP-Permission")))
+        {
+          $event->setCancelled(true);
+          $message = "[SAC] > %PLAYER% used ForceOP!";
+          $reason = "[SAC] > ForceOP detected!";
+          $this->NotifyAdmins($message);
+          $this->KickPlayer($reason);
+        }
+      }
+    }
   }
 
   public function GetSurroundingBlocks()
@@ -520,13 +547,13 @@ class Observer
     # No Fly, No Glide and Anti Speed
     if (!$this->SACIsOnGround($this->Player))
     {
-      if(    !in_array(Block::WATER                   , $this->surroundings ) 
-         and !in_array(Block::STILL_WATER             , $this->surroundings )
-         and !in_array(Block::LAVA                    , $this->surroundings )
-         and !in_array(Block::STILL_LAVA              , $this->surroundings )
-         and !in_array(Block::LADDER                  , $this->surroundings )
-         and !in_array(Block::VINE                    , $this->surroundings )
-         and !in_array(Block::COBWEB                  , $this->surroundings ))
+      if(    !in_array(Block::WATER               , $this->surroundings ) 
+         and !in_array(Block::STILL_WATER         , $this->surroundings )
+         and !in_array(Block::LAVA                , $this->surroundings )
+         and !in_array(Block::STILL_LAVA          , $this->surroundings )
+         and !in_array(Block::LADDER              , $this->surroundings )
+         and !in_array(Block::VINE                , $this->surroundings )
+         and !in_array(Block::COBWEB              , $this->surroundings ))
       {
         if ($this->y_pos_old > $this->y_pos_new)
         {
@@ -658,12 +685,16 @@ class Observer
       or $BlockID == 129 //EMERALD  (-)
       )
       {
-        if(    !in_array(67                         , $this->surroundings )
-           and !in_array(108                        , $this->surroundings )
-           and !in_array(109                        , $this->surroundings )
-           and !in_array(114                        , $this->surroundings )
-           and !in_array(156                        , $this->surroundings )
-           and !in_array(80                         , $this->surroundings ))
+        if(    !in_array(Block::SANDSTONE_STAIRS    , $this->surroundings )
+           and !in_array(Block::DARK_OAK_STAIRS     , $this->surroundings )
+           and !in_array(Block::ACACIA_STAIRS       , $this->surroundings )
+           and !in_array(Block::NETHER_BRICK_STAIRS , $this->surroundings )
+           and !in_array(Block::SPRUCE_STAIRS       ,$this->surroundings )
+           and !in_array(Block::BIRCH_STAIRS        , $this->surroundings )
+           and !in_array(Block::JUNGLE_STAIRS       , $this->surroundings )
+           and !in_array(Block::QUARTZ_STAIRS       , $this->surroundings )
+           and !in_array(Block::OAK_STAIRS          , $this->surroundings )
+           and !in_array(Block::SNOW                , $this->surroundings ))
         {        
           if ($this->GetConfigEntry("NoClip-Punishment") == "kick")
           {
@@ -696,7 +727,31 @@ class Observer
       }
     }    
   }  
- 
+  
+  public function OnPlayerGameModeChangeEvent($event)
+  {
+    if ($this->GetConfigEntry("ForceGameMode"))
+    {
+      if ($this->Player->hasPermission("sac.forcegamemode")) return;
+      if(!$event->getPlayer()->isOp())
+      {
+        $message = $this->GetConfigEntry("ForceGameMode-LogMessage");
+        $this->NotifyAdmins($message);
+        $reason  = $this->GetConfigEntry("ForceGameMode-Message");
+        $this->KickPlayer($reason);
+        $event->$event->setCancelled(true);
+      }
+      else
+      {
+        return;
+      }
+    }
+    else
+    {
+      return;
+    }
+  }
+  
   public function PlayerHasDamaged($event)
   {
     $damaged_entity             = $event->getEntity();
@@ -760,7 +815,7 @@ class Observer
         
           if ($this->hs_hit_time < 0.0825)
           {
-            $this->PlayerHitCounter += 2;
+            $this->PlayerHitCounter += 3;
           }
           else
           {
@@ -769,7 +824,7 @@ class Observer
               $this->PlayerHitCounter--;
             }
           }
-          //Allow a maximum of 2 Unlegit hits, couter derceases x5 slower
+          //Allow a maximum of 3 Unlegit hits, couter derceases x3 slower
           if($this->PlayerHitCounter > 10)
           {
             $event->setCancelled(true);
@@ -942,19 +997,107 @@ class Observer
     }
   }
 
+
   public function PlayerWasDamaged($event)
   {
     if ($event->getDamage() >= 1)
     {
-      $this->LastDamageTick = $this->Server->getTick();  // remember time of last damage
+      $this->PlayerSpeedCounter -= 8;
     }
   }
   
+
+  public function PlayerShotArrow($event)
+  {
+    $damaged_entity             = $event->getEntity();
+    $is_damaged_entity_a_player = $damaged_entity instanceof Player;
+    $damaged_entity_position    = new Vector3($damaged_entity->getX(), $damaged_entity->getY(), $damaged_entity->getZ());
+    $damaged_xz_entity_position = new Vector3($damaged_entity->getX(), 0                      , $damaged_entity->getZ());
+    
+    $damager                    = $this->Player;    
+    $damager_position           = new Vector3($damager->getX()       , $damager->getY()       , $damager->getZ()       );
+    $damager_xz_position        = new Vector3($damager->getX()       , 0                      , $damager->getZ()       );
+    
+    $damager_direction          = $damager->getDirectionVector();
+    $damager_direction          = $damager_direction->normalize();
+    
+    $damager_xz_direction       = $damager->getDirectionVector();
+    $damager_xz_direction->y    = 0;
+    $damager_xz_direction       = $damager_xz_direction->normalize();
+    
+    $entity_xz_direction        = $damaged_xz_entity_position->subtract($damager_xz_position)->normalize();
+    $entity_direction           = $damaged_entity_position->subtract($damager_position)->normalize();
+
+    $distance_xz                = $damager_xz_position->distance($damaged_xz_entity_position); 
+    $distance                   = $damager_position->distance($damaged_entity_position); 
+    
+    $dot_product_xz = $damager_xz_direction->dot($entity_xz_direction);
+    $angle_xz       = rad2deg(acos($dot_product_xz));
+    
+    $dot_product    = $damager_direction->dot($entity_direction);
+    $angle          = rad2deg(acos($dot_product));
+    
+    $tick_count = (double)$this->Server->getTick() - $this->LastMoveTick; 
+    $tps        = (double)$this->Server->getTicksPerSecond();
+    if ($tps != 0) $delta_t    = (double)($tick_count) / (double)$tps;
+    else           $delta_t    = 0; 
+    
+    if ($this->Player->getGameMode() == 1 or $this->Player->getGameMode() == 3) return;
+    if ($this->GetConfigEntry("FastBow"))
+    {
+      if ($is_damaged_entity_a_player)
+      {
+        $tick = (double)$this->Server->getTick(); 
+        $tps  = (double)$this->Server->getTicksPerSecond();
+        if ($this->PlayerHitFirstTick == -1)
+        {
+          $this->PlayerHitFirstTick = $tick;
+        }        
+
+        $tick_count = (double)($tick - $this->PlayerHitFirstTick);   // server ticks since last hit
+        $delta_t    = (double)($tick_count) / (double)$tps;          // seconds since last hit
+
+        $this->hs_time_sum = $this->hs_time_sum - $this->hs_time_array[$this->hs_arr_idx] + $delta_t;      // ringbuffer time sum  (remove oldest, add new)
+        $this->hs_time_array[$this->hs_arr_idx] = $delta_t;                                                // overwrite oldest delta_t  with the new one
+        $this->hs_arr_idx++;                                                                               // Update ringbuffer position
+        if ($this->hs_arr_idx >= $this->hs_arr_size) $this->hs_arr_idx = 0;          
+        $this->hs_hit_time = $this->hs_time_sum / $this->hs_arr_size;
+        #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > THD $this->PlayerName : hittime = $this->hs_hit_time");
+    
+        if ($this->hs_hit_time < 0.8)
+        {
+          $this->PlayerHitCounter += 3;
+        }
+        else
+        {
+          if($this->PlayerHitCounter > 0)
+          {
+            $this->PlayerHitCounter--;
+          }
+        }
+        //Allow a maximum of 3 Unlegit shots, couter derceases x3 slower
+        if($this->PlayerHitCounter > 10)
+        {
+          $event->setCancelled(true);
+          $this->ResetObserver();
+          $message = $this->GetConfigEntry("FastBow-LogMessage");
+          $reason  = $this->GetConfigEntry("FastBow-Message");
+          $this->NotifyAdmins($message);
+          $this->KickPlayer($reason);
+          return;
+        }
+        $this->PlayerHitFirstTick = $tick;
+      }
+    }
+  }
+
+
   public function onDeath($event)
   {
     $this->ResetMovement();
     $this->LastDamageTick = $this->Server->getTick();  // remember time of last damage
   }  
+
 
   public function onRespawn($event)
   {
@@ -962,9 +1105,10 @@ class Observer
     $this->LastDamageTick = $this->Server->getTick();  // remember time of last damage
   }  
   
+
   public function onTeleport($event)
   {
-    $this->ResetObserver(); 
+    $this->ResetMovement();
     $this->LastDamageTick = $this->Server->getTick();  // remember time of last damage
   }  
 }
@@ -972,6 +1116,8 @@ class Observer
 //////////////////////////////////////////////////////
 //                                                  //
 //     SAC by DarkWav.                              //
-//     Distributed under the GGPLv3 License.        //
+//     Distributed under the AntiCheat License.     //
+//     Do not redistribute in modyfied form!        //
+//     All rights reserved.                         //
 //                                                  //
 //////////////////////////////////////////////////////

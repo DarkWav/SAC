@@ -19,9 +19,11 @@ use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerRespawnEvent;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\block\BlockPlaceEvent;
+use pocketmine\event\block\BlockBreakEvent;
 
 
 use pocketmine\math\Vector3;
+use pocketmine\event\player\PlayerGameModeChangeEvent;
 use DarkWav\SAC\SAC;
 use DarkWav\SAC\Observer;
 use pocketmine\event\Cancellable;
@@ -116,6 +118,16 @@ class EventListener implements Listener
     }
   }
 
+  public function onPlayerGameModeChangeEvent(PlayerGameModeChangeEvent $event)
+  {
+    $hash = spl_object_hash($event->getPlayer());
+    if (array_key_exists($hash , $this->Main->PlayerObservers))
+    {
+      $this->Main->PlayerObservers[$hash]->OnPlayerGameModeChangeEvent($event);
+    }  
+  }
+
+
   public function onBlockPlaceEvent(BlockPlaceEvent $event)
   {
     $hash = spl_object_hash($event->getPlayer());
@@ -126,25 +138,35 @@ class EventListener implements Listener
   }
 
 
+  public function onBlockBreakEvent(BlockBreakEvent $event)
+  {
+    $hash = spl_object_hash($event->getPlayer());
+    if (array_key_exists($hash , $this->Main->PlayerObservers))
+    {
+      $this->Main->PlayerObservers[$hash]->OnBlockBreakEvent($event);
+    }  
+  }
+
+
   public function onDamage(EntityDamageEvent $event)
   {
     $evname = $event->getEventName();
     if ($event instanceof EntityDamageByEntityEvent)
     {
-      if ($event->getCause() == EntityDamageEvent::CAUSE_ENTITY_ATTACK)
+      $ThisEntity = $event->getEntity();
+      if($ThisEntity instanceof Player)
       {
-        $ThisEntity = $event->getEntity();
-        if($ThisEntity instanceof Player)
+        $hash = spl_object_hash($ThisEntity);
+        if (array_key_exists($hash , $this->Main->PlayerObservers))
         {
-          $hash = spl_object_hash($ThisEntity);
-          if (array_key_exists($hash , $this->Main->PlayerObservers))
-          {
-            $this->Main->PlayerObservers[$hash]->PlayerWasDamaged($event);
-          }
+          $this->Main->PlayerObservers[$hash]->PlayerWasDamaged($event);
         }
+      }
       
-        $ThisDamager = $event->getDamager();
-        if($ThisDamager instanceof Player)
+      $ThisDamager = $event->getDamager();
+      if($ThisDamager instanceof Player)
+      {
+        if ($event->getCause() == EntityDamageEvent::CAUSE_ENTITY_ATTACK)
         {
           $hash = spl_object_hash($ThisDamager);
           if (array_key_exists($hash , $this->Main->PlayerObservers))
@@ -152,10 +174,19 @@ class EventListener implements Listener
             $this->Main->PlayerObservers[$hash]->PlayerHasDamaged($event);
           }
         }
+        if ($event->getCause() == EntityDamageEvent::CAUSE_PROJECTILE)
+        {
+          $hash = spl_object_hash($ThisDamager);
+          if (array_key_exists($hash , $this->Main->PlayerObservers))
+          {
+            $this->Main->PlayerObservers[$hash]->PlayerShotArrow($event);
+          }
+        }
       }
     }
   }
-    
+
+
   public function onPlayerDeathEvent(PlayerDeathEvent $event)
   {
     $player   = $event->getPlayer();

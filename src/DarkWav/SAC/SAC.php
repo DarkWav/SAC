@@ -28,6 +28,8 @@ class SAC extends PluginBase
     $this->getServer()->getScheduler()->scheduleRepeatingTask(new KickTask($this), 1);
     @mkdir($this->getDataFolder());
     $this->saveDefaultConfig();
+    $this->saveResource("AntiForceOP.txt");
+    $this->saveResource("AntiForceGM.txt");
     $cl              = $this->getConfig()->get("Color");
   
     $Config = $this->getConfig();
@@ -38,6 +40,7 @@ class SAC extends PluginBase
     $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > ShadowAntiCheat Activated"            );
     $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > ShadowAntiCheat v3.3.0 [ShadowX]");
     $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > Loading Modules");
+    if($Config->get("ForceOP"    )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiForceOP"    );
     if($Config->get("NoClip"     )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiNoClip"     );
     if($Config->get("Fly"        )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiFly"        );
     if($Config->get("Fly"        )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiJesus"      );
@@ -46,6 +49,10 @@ class SAC extends PluginBase
     if($Config->get("KillAura"   )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiKillAura"   );
     if($Config->get("Reach"      )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiReach"      );
     if($Config->get("Speed"      )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiSpeed"      );
+    if($Config->get("FastBow"    )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiFastBow"    );
+    if($Config->get("FastBreak"  )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiFastBreak"  );
+    if($Config->get("FastPlace"  )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiFastPlace"  );
+    if($Config->get("Nuker"      )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiNuker"      );
     if($Config->get("Regen"      )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiRegen"      );
 
     if($Config->get("Config-Version") !== "3.6.0")
@@ -104,11 +111,27 @@ class SAC extends PluginBase
   {
     $Logger = $this->getServer()->getLogger();
     $cl              = $this->getConfig()->get("Color");
+    if ($this->getConfig()->get("ForceOP"))
+    {
+      if ($sender->isOp())
+      {
+        if (!$sender->hasPermission($this->getConfig()->get("ForceOP-Permission")))
+        {
+          if ($sender instanceof Player)
+          {
+            $sname = $sender->getName();
+            $message  = "[SAC] > $sname used ForceOP!";
+            $this->NotifyAdmins($message);
+            $sender->getPlayer()->kick(TextFormat::ESCAPE."$cl"."[SAC] > ForceOP detected!");
+          }
+        }
+      }
+    }
     if ($command->getName() === "sac" or $command->getName() === "shadowanticheat")
     {
       $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > ShadowAntiCheat v3.3.0 [ShadowX] (~DarkWav/Darku)");
     }
-    return false;
+	return false;
   }
   
   public function NotifyAdmins($message)
@@ -132,6 +155,8 @@ class SAC extends PluginBase
 //////////////////////////////////////////////////////
 //                                                  //
 //     SAC by DarkWav.                              //
-//     Distributed under the GGPLv3 License.        //
+//     Distributed under the AntiCheat License.     //
+//     Do not redistribute in modyfied form!        //
+//     All rights reserved.                         //
 //                                                  //
 //////////////////////////////////////////////////////

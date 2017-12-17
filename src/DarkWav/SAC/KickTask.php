@@ -15,7 +15,7 @@ class KickTask extends PluginTask
     $this->plugin = $plugin;
   }
 
-  public function onRun($currentTick)
+  public function onRun(int $currentTick)
   {
     $cl = $this->plugin->getConfig()->get("Color");
     foreach($this->plugin->PlayersToKick as $key=>$obs)
