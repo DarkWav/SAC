@@ -1002,6 +1002,7 @@ class Observer
   {
     if ($event->getDamage() >= 1)
     {
+      $this->LastDamageTick = $this->Server->getTick();  // remember time of last damage
       $this->PlayerSpeedCounter -= 8;
     }
   }
