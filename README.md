@@ -1,6 +1,6 @@
 # SAC (ShadowAntiCheat)
 
-### Status: Continueation in progress... (Delayed dou to upcoming exams)
+### Status: Continueation in progress... (Delayed because of upcoming exams)
 
 ## Current Release: 3.2.5 (OLD, DON'T USE!)
 
