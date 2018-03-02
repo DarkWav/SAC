@@ -1,7 +1,7 @@
 ---
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #ShadowAntiCheat main configuration file.
-#Current version: 3.3.0
+#Current version: 3.3.1
 #What should be blocked?
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #true = ENABLE
@@ -9,11 +9,11 @@
 #block = block Hack
 #kick = Player kick
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
-   Plugin-Version: 3.3.0
-   Config-Version: 3.6.0
+   Plugin-Version: 3.3.1
+   Config-Version: 3.6.1
 #Enables i am waching you message
 
-   I-AM-WATCHING-YOU: true
+   I-AM-WATCHING-YOU: false
 
 #Which color should be used in SAC?
 #Supported colors:
@@ -81,7 +81,7 @@
 #NEVER set this lower than 10
 #Increase if Fly causes false poitives.
 
-   Fly-Threshold: 25
+   Fly-Threshold: 20
 
 #Wich Punishment should take place if Fly is detected?
 
@@ -115,14 +115,14 @@
 
    Angle: true
 
-#Advanced KillAura Heuristics And Detection (AKAHAD)
+#Advanced KillAura Heuristics And Detection
 #This is an advanced algorithm to catch a lot more
 #combat hacks. This is generally aggersive, but
-#you can make it even more agersive or rather
+#you can make it even more aggressive or rather
 #permissive, but i recommend leaving it as it is.
-#How strong should AKAHAD be configured?
+#How strong should Heuristics be configured?
 #
-# 0 = DISABLE AKAHAD
+# 0 = DISABLE
 # 1 = PERMISSIVE
 # 2 = NORMAL
 # 3 = AGGRESSIVE
@@ -137,7 +137,7 @@
 # efficent and has the most usability.
 #
 # AGGRESSIVE will catch nearly every KillAura very fast,
-# even triggerbots are detected. This configuration is
+# even some triggerbots are detected. This configuration is
 # very agressive and may cause false positives depending
 # on the situation. If you set "KillAura-Threshold" to
 # 45 it can be very effective. USE AT YOUR OWN RISK!
@@ -147,28 +147,31 @@
 #use AGGRESSIVE if you have a smaller server or massive
 #problems with KillAura hackers.
 
-   AKAHAD: 2
+   Heuristics: 2
 
-#MacroCapture (Triggerbot/Macro detection)
-#This is a component of AKAHAD you can configure.
-#This will NOT work if AKAHAD is diabled!
+#DeepHeuristics (Triggerbot/Advanced TPAura detection)
+#This is catches combat hacks that actually aim 
+#on a Player. Disabeling this could make the check
+#pretty easy to bypass.
+#This is a component of Heuristics you can configure.
+#This will NOT work if Heuristics are disabled!
 #
-# 0 = DISABLE MacroCapture
-# 1 = PREMISSIVE
+# 0 = DISABLE
+# 1 = OPTIMAL
 # 2 = AGGRESSIVE
 #
-# PREMISSIVE will catch some Macros and helps the KillAura
+# OPTIMAL will catch some Macros and helps the KillAura
 # Check to perform better.
-# Works best with AKAHAD set to PREMISSIVE or NORMAL.
+# Works best with Heuristics set to PREMISSIVE or NORMAL.
 #
 # AGGRESSIVE will catch nearly every combat hack in existance,
 # but should be used with high thresholds.
-# Works best with AKAHAD set to AGGRESSIVE.
+# Works best with Heuristics set to AGGRESSIVE.
 #
 #I would recommend to use AGGRESSIVE if you have many hackers,
-#for any other case use PERMISSIVE.
+#for any other case use OPTIMAL.
 
-   AKAHAD-MacroCapture: 1
+   DeepHeuristics: 1
 
 #AimbotCatcher
 #This is and old mechanisim to catch aimaura and aimbots in
@@ -182,9 +185,10 @@
 #How many times must a player hack before detection?
 #35 Should work fine. (Standard)
 #NEVER set this lower than 25
-#For PREMISSIVE AKAHAD: 25
-#For   NORMAL   AKAHAD: 35
-#For AGGRESSIVE AKAHAD: 45
+#For PREMISSIVE Heuristics: 25
+#For   NORMAL   Heuristics: 35
+#For AGGRESSIVE Heuristics: 45
+#ALWAYS SET TO AT LEAST 40 IF USING AGGRESSIVE DeepHeuristics!
 #Increase if KillAura causes false poitives.
 
    KillAura-Threshold: 35
@@ -220,8 +224,10 @@
 #Prevent players from shooting arrows too fast.
 #Will only trigger if a player hits a person
 #with fastbow.
+#This is currently in an ustable stage and
+#will flag Eggs and Snowballs!
 
-   FastBow: true
+   FastBow: false
 
 #Wich Punishment should take place if FastBow is detected?
 
@@ -272,10 +278,11 @@
 #Maxrange will be the maximum range.
 #Players are not kicked for that due to
 #False Positives.
-#Standard: 3.9
+#It simply mitigates an exploit in the game.
+#Standard: 4.0
 #NEVER set this to lower than 1
 
-   MaxRange:  3.9
+   MaxRange:  4.0
    
 #-----------------Glide-------------------#
 #Do you want to enable Glide check?
@@ -298,6 +305,8 @@
 #----------------ForceOP------------------#
 #######################################################
 # USE THIS AT YOUR OWN RISK. I GUARANTEE FOR NOTHING! #
+# THIS IS OBSOLETE AS OF NOW. I CANT GUARANTEE IT     #
+# CAN HELP YOU ANYTHING!                              #
 #######################################################
 #Do you want to enable advanced ForceOP check?
 #READ AntiForceOP.txt BEFORE ENABLING!
@@ -342,6 +351,8 @@
 #--------------ForceGameMode--------------#
 #######################################################
 # USE THIS AT YOUR OWN RISK. I GUARANTEE FOR NOTHING! #
+# THIS IS OBSOLETE AS OF NOW. I CANT GUARANTEE IT     #
+# CAN HELP YOU ANYTHING!                              #
 #######################################################
 #Do you want to enable ForceGameMode Detection?
 #USE THIS WITH CAUTION!
@@ -363,9 +374,7 @@
 #//////////////////////////////////////////////////////
 #//                                                  //
 #//     SAC by DarkWav.                              //
-#//     Distributed under the AntiCheat License.     //
-#//     Do not redistribute in modified form!        //
-#//     All rights reserved.                         //
+#//     Distributed under the GGPL License.          //
 #//                                                  //
 #//////////////////////////////////////////////////////
 ...

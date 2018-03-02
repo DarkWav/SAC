@@ -83,17 +83,17 @@ class Observer
     $this->LastMoveTick   = 0;
     $this->Colorized      = $this->GetConfigEntry("Color");
     
-    if     ($this->GetConfigEntry("AKAHAD") == 1)
+    if     ($this->GetConfigEntry("Heuristics") == 1)
     {
       $this->dist_thr1 = 4.00;
       $this->dist_thr2 = 3.75;
     }
-    elseif ($this->GetConfigEntry("AKAHAD") == 2)
+    elseif ($this->GetConfigEntry("Heuristics") == 2)
     {
       $this->dist_thr1 = 3.75;
       $this->dist_thr2 = 3.50;
     }
-    elseif ($this->GetConfigEntry("AKAHAD") == 3)
+    elseif ($this->GetConfigEntry("Heuristics") == 3)
     {
       $this->dist_thr1 = 3.50;
       $this->dist_thr2 = 3.25;
@@ -103,11 +103,11 @@ class Observer
       $this->dist_thr1 = 0.00;
       $this->dist_thr2 = 0.00;
     }
-    if     ($this->GetConfigEntry("AKAHAD-MacroCapture") == 1)
+    if     ($this->GetConfigEntry("DeepHeuristics") == 1)
     {
       $this->dist_thr3 = 4.125;
     }
-    elseif ($this->GetConfigEntry("AKAHAD-MacroCapture") == 2)
+    elseif ($this->GetConfigEntry("DeepHeuristics") == 2)
     {
       $this->dist_thr3 = 3.825;
     }
@@ -815,7 +815,7 @@ class Observer
         
           if ($this->hs_hit_time < 0.0825)
           {
-            $this->PlayerHitCounter += 3;
+            $this->PlayerHitCounter += 2;
           }
           else
           {
@@ -824,8 +824,8 @@ class Observer
               $this->PlayerHitCounter--;
             }
           }
-          //Allow a maximum of 3 Unlegit hits, couter derceases x3 slower
-          if($this->PlayerHitCounter > 10)
+          //Allow a maximum of 7 Unlegit hits, couter derceases x2 slower
+          if($this->PlayerHitCounter > 15)
           {
             $event->setCancelled(true);
             $this->ResetObserver();
@@ -872,7 +872,7 @@ class Observer
               }
               elseif (!$this->SACIsOnGround($damager))
               {
-                $this->PlayerKillAuraV2Counter+=4;
+                $this->PlayerKillAuraV2Counter+=3;
               }
               else
               {

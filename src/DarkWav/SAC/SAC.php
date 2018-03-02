@@ -55,11 +55,11 @@ class SAC extends PluginBase
     if($Config->get("Nuker"      )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiNuker"      );
     if($Config->get("Regen"      )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiRegen"      );
 
-    if($Config->get("Config-Version") !== "3.6.0")
+    if($Config->get("Config-Version") !== "3.6.1")
     {
       $Logger->warning(TextFormat::ESCAPE."$cl"."[SAC] > Your Config is out of date!");
     }
-    if($Config->get("Plugin-Version") !== "3.3.0")
+    if($Config->get("Plugin-Version") !== "3.3.1")
     {
       $Logger->error(TextFormat::ESCAPE."$cl"."[SAC] > Your Config is incompatible with this plugin version, please update immediately!");
       $Server->shutdown();
