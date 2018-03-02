@@ -51,3 +51,10 @@ class KickTask extends PluginTask
   }
   
 }
+
+//////////////////////////////////////////////////////
+//                                                  //
+//     SAC by DarkWav.                              //
+//     Distributed under the GGPL License.          //
+//                                                  //
+//////////////////////////////////////////////////////

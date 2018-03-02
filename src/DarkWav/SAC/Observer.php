@@ -1117,8 +1117,6 @@ class Observer
 //////////////////////////////////////////////////////
 //                                                  //
 //     SAC by DarkWav.                              //
-//     Distributed under the AntiCheat License.     //
-//     Do not redistribute in modyfied form!        //
-//     All rights reserved.                         //
+//     Distributed under the GGPL License.          //
 //                                                  //
 //////////////////////////////////////////////////////
