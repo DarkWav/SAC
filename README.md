@@ -8,10 +8,10 @@
 
 ## Find The Wiki and Phar Downloads [Here](https://github.com/DarkWav/ShadowAntiCheat/wiki). (OLD, DON'T USE!)
 
-## [Issues](https://github.com/DarkWav/SAC/issues)
+## [Issues / Help / Support / Bug Report](https://github.com/DarkWav/SAC/issues)
 
 # Features:<br>
 ## AntiKillAura<br>AntiReach<br>AntiFly<br>AntiJesus (W.I.P)<br>AntiSpider (W.I.P)<br>AntiSpeed<br>AntiGlide<br>AntiNoClip (W.I.P)<br>AntiRegen<br>AntiInstantKill (Hit Speed, NOT EXPLOIT!)<br>AutoBanSytem
 
-### Read the [License](https://github.com/DarkWav/ShadowAntiCheat/blob/master/LICENSE.md) before downloading the source.
-### With downloading the source or the Plugin, you AGREE to the [License](https://github.com/DarkWav/ShadowAntiCheat/blob/master/LICENSE.md)!
+### Read the [License](https://github.com/DarkWav/ShadowAntiCheat/blob/master/LICENSE) before downloading the source.
+### With downloading the source or the Plugin, you AGREE to the [License](https://github.com/DarkWav/ShadowAntiCheat/blob/master/LICENSE)!
