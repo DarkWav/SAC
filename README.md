@@ -6,7 +6,7 @@
 
 ## An AntiCheat plugin for PocketMine-MP.<br>Compatible with MCPE 1.X.X.
 
-## Find The Wiki and Phar Downloads [Here](https://github.com/DarkWav/ShadowAntiCheat/wiki). (OLD, DON'T USE!)
+## Find The Wiki and Phar Downloads [Here](https://github.com/DarkWav/ShadowAntiCheat/wiki).
 
 ## [Issues / Help / Support / Bug Report](https://github.com/DarkWav/SAC/issues)
 
