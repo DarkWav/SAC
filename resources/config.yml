@@ -1,7 +1,7 @@
 ---
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #ShadowAntiCheat main configuration file.
-#Current version: 3.3.1
+#Current version: 3.3.2
 #What should be blocked?
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #true = ENABLE
@@ -9,7 +9,7 @@
 #block = block Hack
 #kick = Player kick
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
-   Plugin-Version: 3.3.1
+   Plugin-Version: 3.3.2
    Config-Version: 3.6.1
 #Enables i am waching you message
 
@@ -187,8 +187,8 @@
 #NEVER set this lower than 25
 #For PREMISSIVE Heuristics: 25
 #For   NORMAL   Heuristics: 35
-#For AGGRESSIVE Heuristics: 45
-#ALWAYS SET TO AT LEAST 40 IF USING AGGRESSIVE DeepHeuristics!
+#For AGGRESSIVE Heuristics: 40
+#ALWAYS SET TO AT LEAST 30 IF USING AGGRESSIVE DeepHeuristics!
 #Increase if KillAura causes false poitives.
 
    KillAura-Threshold: 35
