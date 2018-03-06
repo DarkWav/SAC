@@ -85,18 +85,18 @@ class Observer
     
     if     ($this->GetConfigEntry("Heuristics") == 1)
     {
-      $this->dist_thr1 = 4.00;
-      $this->dist_thr2 = 3.75;
+      $this->dist_thr1 = 4.0;
+      $this->dist_thr2 = 3.7;
     }
     elseif ($this->GetConfigEntry("Heuristics") == 2)
     {
-      $this->dist_thr1 = 3.75;
-      $this->dist_thr2 = 3.50;
+      $this->dist_thr1 = 3.7;
+      $this->dist_thr2 = 3.5;
     }
     elseif ($this->GetConfigEntry("Heuristics") == 3)
     {
-      $this->dist_thr1 = 3.50;
-      $this->dist_thr2 = 3.25;
+      $this->dist_thr1 = 3.5;
+      $this->dist_thr2 = 3.2;
     }
     else
     {
@@ -105,11 +105,11 @@ class Observer
     }
     if     ($this->GetConfigEntry("DeepHeuristics") == 1)
     {
-      $this->dist_thr3 = 4.125;
+      $this->dist_thr3 = 4.1;
     }
     elseif ($this->GetConfigEntry("DeepHeuristics") == 2)
     {
-      $this->dist_thr3 = 3.825;
+      $this->dist_thr3 = 3.8;
     }
     else
     {
@@ -482,7 +482,7 @@ class Observer
             if ($this->Player->hasEffect(Effect::SPEED))
             {
               $this->SpeedAMP = $this->Player->getEffect(Effect::SPEED)->getAmplifier();
-              if ($this->SpeedAMP < 3)
+              if ($this->SpeedAMP < 3) # Speed 1 and 2
               {
                 if ($this->x_speed > 10)
                 {
@@ -499,9 +499,34 @@ class Observer
                   }
                 }
               }
+              elseif ($this->SpeedAMP == 3 or $this->SpeedAMP == 4) # Speed 3 and 4
+              {
+                if ($this->x_speed > 11.5)
+                {
+                  if (($tick - $this->LastDamageTick) > 30)  # deactivate 1.5 seconds after receiving damage
+                  {
+                    $this->PlayerSpeedCounter += 10;
+                  }   
+                }
+                else
+                {
+                  if ($this->PlayerSpeedCounter > 0)
+                  { 
+                    $this->PlayerSpeedCounter--;
+                  }
+                }
+              }
+              elseif ($this->SpeedAMP > 4) #Speed 5 and higher
+              {
+                 $this->PlayerSpeedCounter++; # do nothing
+                 $this->PlayerSpeedCounter--; # do nothing
+              }
               else
               {
-                $this->PlayerSpeedCounter--;
+                if ($this->PlayerSpeedCounter > 0)
+                { 
+                  $this->PlayerSpeedCounter--;
+                }
               }
             }
             elseif ($this->x_speed > 8.5)
