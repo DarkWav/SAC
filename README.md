@@ -2,7 +2,7 @@
 
 ### Status: Continueation in progress... (I dont have much time right now, sorry)
 
-## Current Release: 3.2.5 (OLD, DON'T USE!)<br>Current Beta: 3.3.1 (DO NO USE IN PRODUCTION!)
+## Current Release: 3.2.5 (OLD, DON'T USE!)<br>Current Beta: 3.3.2 (DO NO USE IN PRODUCTION!)
 
 ## An AntiCheat plugin for PocketMine-MP.<br>Compatible with MCPE 1.X.X.
 
