@@ -85,18 +85,18 @@ class Observer
     
     if     ($this->GetConfigEntry("Heuristics") == 1)
     {
-      $this->dist_thr1 = 4.0;
-      $this->dist_thr2 = 3.7;
+      $this->dist_thr1 = 3.8;
+      $this->dist_thr2 = 3.4;
     }
     elseif ($this->GetConfigEntry("Heuristics") == 2)
     {
-      $this->dist_thr1 = 3.7;
-      $this->dist_thr2 = 3.5;
+      $this->dist_thr1 = 3.6;
+      $this->dist_thr2 = 3.2;
     }
     elseif ($this->GetConfigEntry("Heuristics") == 3)
     {
-      $this->dist_thr1 = 3.5;
-      $this->dist_thr2 = 3.2;
+      $this->dist_thr1 = 3.4;
+      $this->dist_thr2 = 3.0;
     }
     else
     {
@@ -105,9 +105,13 @@ class Observer
     }
     if     ($this->GetConfigEntry("DeepHeuristics") == 1)
     {
-      $this->dist_thr3 = 4.1;
+      $this->dist_thr3 = 4.2;
     }
-    elseif ($this->GetConfigEntry("DeepHeuristics") == 2)
+	if     ($this->GetConfigEntry("DeepHeuristics") == 2)
+    {
+      $this->dist_thr3 = 4.0;
+    }
+    elseif ($this->GetConfigEntry("DeepHeuristics") == 3)
     {
       $this->dist_thr3 = 3.8;
     }
@@ -271,18 +275,6 @@ class Observer
     }
     return true;
   }
-
-
-  public function OnBlockPlaceEvent($event)
-  {
-    $this->PlayerAirCounter--;
-  }
-
-
-  public function OnBlockBreakEvent($event)
-  {
-  }
-
 
   public function PlayerRegainHealth($event)
   {
@@ -863,36 +855,35 @@ class Observer
           $this->PlayerHitFirstTick = $tick;
           if ($distance_xz >= 0.5)
           {
-            # V2 
+            # V2
             if ($this->dist_thr1 != 0.00)
             {
               if (($distance >= $this->dist_thr1) and 
                   ($delta_t  <  0.50            ) and
                   ($angle_xz >  22.5            ) and
                   (
-                    (($this->x_speed > 1.5) and ($this->hs_hit_time < 0.5)) or ($this->x_speed > 4.75)
+                    (($this->x_speed > 1.5) and ($this->hs_hit_time < 0.625)) or ($this->x_speed > 4.625)
                   ))
               {
-                $this->PlayerKillAuraV2Counter+=2;
+                $this->PlayerKillAuraV2Counter+=6;
               }
               elseif (($distance >= $this->dist_thr2) and 
                       ($delta_t  <  0.50            ) and
                       ($angle_xz >  45.0            ) and
                       (
-                        (($this->x_speed > 1.5) and ($this->hs_hit_time < 0.5)) or ($this->x_speed > 4.75)
-                      ))
+                        (($this->x_speed > 1.5) and ($this->hs_hit_time < 0.625)) or ($this->x_speed > 4.125
               {
-                $this->PlayerKillAuraV2Counter+=2;
+                $this->PlayerKillAuraV2Counter+=9;
               }
               elseif (($distance >= $this->dist_thr3) and 
                       ($delta_t  <  0.50            ) and
                       (
-                       (($this->x_speed > 1.5) and ($this->hs_hit_time < 0.5)) or ($this->x_speed > 4.75)
+                       (($this->x_speed > 1.5) and ($this->hs_hit_time < 0.625)) or ($this->x_speed > 4.625)
                       ))
               {
                 if ($this->dist_thr3 != 0.000)
                 {
-                  $this->PlayerKillAuraV2Counter+=2;
+                  $this->PlayerKillAuraV2Counter+=3;
                 }
               }
               elseif (!$this->SACIsOnGround($damager))
@@ -918,11 +909,11 @@ class Observer
               {
                 if ($this->dist_thr1 != 0.00)
                 {
-                  $this->PlayerKillAuraV2Counter+=8;
+                  $this->PlayerKillAuraV2Counter+=9;
                 }
                 if ($this->GetConfigEntry("Angle"))
                 {
-                  $this->PlayerKillAuraCounter+=8;
+                  $this->PlayerKillAuraCounter+=9;
                 }
               }
             }            

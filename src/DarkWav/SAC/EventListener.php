@@ -18,8 +18,6 @@ use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerRespawnEvent;
 use pocketmine\event\player\PlayerDeathEvent;
-use pocketmine\event\block\BlockPlaceEvent;
-use pocketmine\event\block\BlockBreakEvent;
 
 
 use pocketmine\math\Vector3;
@@ -126,27 +124,6 @@ class EventListener implements Listener
       $this->Main->PlayerObservers[$hash]->OnPlayerGameModeChangeEvent($event);
     }  
   }
-
-
-  public function onBlockPlaceEvent(BlockPlaceEvent $event)
-  {
-    $hash = spl_object_hash($event->getPlayer());
-    if (array_key_exists($hash , $this->Main->PlayerObservers))
-    {
-      $this->Main->PlayerObservers[$hash]->OnBlockPlaceEvent($event);
-    }  
-  }
-
-
-  public function onBlockBreakEvent(BlockBreakEvent $event)
-  {
-    $hash = spl_object_hash($event->getPlayer());
-    if (array_key_exists($hash , $this->Main->PlayerObservers))
-    {
-      $this->Main->PlayerObservers[$hash]->OnBlockBreakEvent($event);
-    }  
-  }
-
 
   public function onDamage(EntityDamageEvent $event)
   {

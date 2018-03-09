@@ -1,7 +1,7 @@
 ---
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #ShadowAntiCheat main configuration file.
-#Current version: 3.3.2
+#Current version: 3.3.3
 #What should be blocked?
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #true = ENABLE
@@ -9,8 +9,8 @@
 #block = block Hack
 #kick = Player kick
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
-   Plugin-Version: 3.3.2
-   Config-Version: 3.6.1
+   Plugin-Version: 3.3.3
+   Config-Version: 3.6.2
 #Enables i am waching you message
 
    I-AM-WATCHING-YOU: false
@@ -111,6 +111,7 @@
 #(blocks hitting behind yourself)
 #This is pretty basic and will not cause false
 #positives or false alerts.
+#This also communicates with Heuristics. (Even when disabled.)
 #Do you want to enable Angle?
 
    Angle: true
@@ -124,7 +125,7 @@
 #
 # 0 = DISABLE
 # 1 = PERMISSIVE
-# 2 = NORMAL
+# 2 = NORMAL (OPTIMAL)
 # 3 = AGGRESSIVE
 #
 # PREMISSIVE will cause close to zero false positives
@@ -149,29 +150,32 @@
 
    Heuristics: 2
 
-#DeepHeuristics (Triggerbot/Advanced TPAura detection)
-#This is catches combat hacks that actually aim 
+#DeepHeuristics (Triggerbot/Advanced Aura Detection)
+#This catches combat hacks that actually aim 
 #on a Player. Disabeling this could make the check
 #pretty easy to bypass.
 #This is a component of Heuristics you can configure.
 #This will NOT work if Heuristics are disabled!
 #
 # 0 = DISABLE
-# 1 = OPTIMAL
-# 2 = AGGRESSIVE
+# 1 = PERMISSIVE (OPTIMAL)
+# 2 = NORMAL (OPTIMAL)
+# 3 = AGGRESSIVE (PARANOID)
 #
-# OPTIMAL will catch some Macros and helps the KillAura
-# Check to perform better.
+# PERMISSIVE and NORMAL will catch some Macros and helps the KillAura
+# Check to perform better. Generally NORMAL catches more hacks whilst
+# PERMISSIVE gives almost zero False Alarms, it is still your choice.
 # Works best with Heuristics set to PREMISSIVE or NORMAL.
 #
-# AGGRESSIVE will catch nearly every combat hack in existance,
-# but should be used with high thresholds.
-# Works best with Heuristics set to AGGRESSIVE.
+# AGGRESSIVE is pretty paranoid and will catch nearly every combat hack in existance,
+# but should be used with high thresholds. False Alarms much more likely.
+# Works best with Heuristics set to AGGRESSIVE. USE AT YOUR OWN RISK!
 #
 #I would recommend to use AGGRESSIVE if you have many hackers,
-#for any other case use OPTIMAL.
+#for any other case use NORMAL.
+#Only use PERMISSIVE if you get False Detections with NORMAL.
 
-   DeepHeuristics: 1
+   DeepHeuristics: 2
 
 #AimbotCatcher
 #This is and old mechanisim to catch aimaura and aimbots in
@@ -185,10 +189,11 @@
 #How many times must a player hack before detection?
 #35 Should work fine. (Standard)
 #NEVER set this lower than 25
+#Optimal settings:
 #For PREMISSIVE Heuristics: 25
 #For   NORMAL   Heuristics: 35
-#For AGGRESSIVE Heuristics: 40
-#ALWAYS SET TO AT LEAST 30 IF USING AGGRESSIVE DeepHeuristics!
+#For AGGRESSIVE Heuristics: 45
+#ALWAYS SET TO AT LEAST 40 IF USING AGGRESSIVE Heuristics!
 #Increase if KillAura causes false poitives.
 
    KillAura-Threshold: 35
