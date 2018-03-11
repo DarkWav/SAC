@@ -871,7 +871,8 @@ class Observer
                       ($delta_t  <  0.50            ) and
                       ($angle_xz >  45.0            ) and
                       (
-                        (($this->x_speed > 1.5) and ($this->hs_hit_time < 0.625)) or ($this->x_speed > 4.125
+                        (($this->x_speed > 1.5) and ($this->hs_hit_time < 0.625)) or ($this->x_speed > 4.125)
+                      ))
               {
                 $this->PlayerKillAuraV2Counter+=9;
               }
