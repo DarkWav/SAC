@@ -4,5 +4,5 @@ branches:
 projects:
   SAC:
     path: ""
-    icon: meta/ploggit-icon.png
+    icon: meta/poggit-icon.png
 ...
