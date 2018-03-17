@@ -33,7 +33,9 @@ class Observer
     $this->PlayerReachCounter      = 0;
     $this->PlayerReachFirstTick    = -1;
     $this->PlayerHitFirstTick      = -1;
+    $this->PlayerShootFirstTick      = -1;
     $this->PlayerHitCounter        = 0;
+    $this->PlayerShootCounter        = 0;
     $this->PlayerKillAuraCounter   = 0;
     $this->PlayerKillAuraV2Counter = 0;
     $this->SpeedAMP                = 0;
@@ -1046,35 +1048,10 @@ class Observer
   
 
   public function PlayerShotArrow($event)
-  {
-    $damaged_entity             = $event->getEntity();
-    $is_damaged_entity_a_player = $damaged_entity instanceof Player;
-    $damaged_entity_position    = new Vector3($damaged_entity->getX(), $damaged_entity->getY(), $damaged_entity->getZ());
-    $damaged_xz_entity_position = new Vector3($damaged_entity->getX(), 0                      , $damaged_entity->getZ());
-    
+  { 
     $damager                    = $this->Player;    
     $damager_position           = new Vector3($damager->getX()       , $damager->getY()       , $damager->getZ()       );
     $damager_xz_position        = new Vector3($damager->getX()       , 0                      , $damager->getZ()       );
-    
-    $damager_direction          = $damager->getDirectionVector();
-    $damager_direction          = $damager_direction->normalize();
-    
-    $damager_xz_direction       = $damager->getDirectionVector();
-    $damager_xz_direction->y    = 0;
-    $damager_xz_direction       = $damager_xz_direction->normalize();
-    
-    $entity_xz_direction        = $damaged_xz_entity_position->subtract($damager_xz_position)->normalize();
-    $entity_direction           = $damaged_entity_position->subtract($damager_position)->normalize();
-
-    $distance_xz                = $damager_xz_position->distance($damaged_xz_entity_position); 
-    $distance                   = $damager_position->distance($damaged_entity_position); 
-    
-    $dot_product_xz = $damager_xz_direction->dot($entity_xz_direction);
-    $angle_xz       = rad2deg(acos($dot_product_xz));
-    
-    $dot_product    = $damager_direction->dot($entity_direction);
-    $angle          = rad2deg(acos($dot_product));
-    
     $tick_count = (double)$this->Server->getTick() - $this->LastMoveTick; 
     $tps        = (double)$this->Server->getTicksPerSecond();
     if ($tps != 0) $delta_t    = (double)($tick_count) / (double)$tps;
@@ -1083,38 +1060,41 @@ class Observer
     if ($this->Player->getGameMode() == 1 or $this->Player->getGameMode() == 3) return;
     if ($this->GetConfigEntry("FastBow"))
     {
-      if ($is_damaged_entity_a_player)
+      $tick = (double)$this->Server->getTick(); 
+      $tps  = (double)$this->Server->getTicksPerSecond();
+      if ($this->PlayerShootFirstTick == -1)
       {
-        $tick = (double)$this->Server->getTick(); 
-        $tps  = (double)$this->Server->getTicksPerSecond();
-        if ($this->PlayerHitFirstTick == -1)
-        {
-          $this->PlayerHitFirstTick = $tick;
-        }        
+        $this->PlayerShootFirstTick = $tick;
+      }        
+      $tick_count = (double)($tick - $this->PlayerShootFirstTick);   // server ticks since last hit
+      $delta_t    = (double)($tick_count) / (double)$tps;          // seconds since last hit
 
-        $tick_count = (double)($tick - $this->PlayerHitFirstTick);   // server ticks since last hit
-        $delta_t    = (double)($tick_count) / (double)$tps;          // seconds since last hit
-
-        $this->hs_time_sum = $this->hs_time_sum - $this->hs_time_array[$this->hs_arr_idx] + $delta_t;      // ringbuffer time sum  (remove oldest, add new)
-        $this->hs_time_array[$this->hs_arr_idx] = $delta_t;                                                // overwrite oldest delta_t  with the new one
-        $this->hs_arr_idx++;                                                                               // Update ringbuffer position
-        if ($this->hs_arr_idx >= $this->hs_arr_size) $this->hs_arr_idx = 0;          
-        $this->hs_hit_time = $this->hs_time_sum / $this->hs_arr_size;
-        #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > THD $this->PlayerName : hittime = $this->hs_hit_time");
+      $this->hs_time_sum = $this->hs_time_sum - $this->hs_time_array[$this->hs_arr_idx] + $delta_t;      // ringbuffer time sum  (remove oldest, add new)
+      $this->hs_time_array[$this->hs_arr_idx] = $delta_t;                                                // overwrite oldest delta_t  with the new one
+      $this->hs_arr_idx++;                                                                               // Update ringbuffer position
+      if ($this->hs_arr_idx >= $this->hs_arr_size) $this->hs_arr_idx = 0;          
+      $this->hs_hit_time = $this->hs_time_sum / $this->hs_arr_size;
+      #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > $this->PlayerName : Shottime = $this->hs_hit_time");
     
-        if ($this->hs_hit_time < 0.8)
+      if ($this->hs_hit_time < 0.65)
+      {
+        if ($this->GetConfigEntry("FastBow-Punishment") == "kick")
         {
-          $this->PlayerHitCounter += 3;
+          $this->PlayerShootCounter += 3;
         }
-        else
+        $event->setCancelled(true);
+      }
+      else
+      {
+        if($this->PlayerShootCounter > 0)
         {
-          if($this->PlayerHitCounter > 0)
-          {
-            $this->PlayerHitCounter--;
-          }
+          $this->PlayerShootCounter--;
         }
-        //Allow a maximum of 3 Unlegit shots, couter derceases x3 slower
-        if($this->PlayerHitCounter > 10)
+      }
+      //Allow a maximum of 6 Unlegit shots, couter derceases x3 slower
+      if ($this->GetConfigEntry("FastBow-Punishment") == "kick")
+      {
+        if($this->PlayerShootCounter > 20)
         {
           $event->setCancelled(true);
           $this->ResetObserver();
@@ -1124,8 +1104,8 @@ class Observer
           $this->KickPlayer($reason);
           return;
         }
-        $this->PlayerHitFirstTick = $tick;
       }
+      $this->PlayerShootFirstTick = $tick;
     }
   }
 

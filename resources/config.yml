@@ -1,7 +1,7 @@
 ---
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #ShadowAntiCheat main configuration file.
-#Current version: 3.3.3
+#Current version: 3.3.4
 #What should be blocked?
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #true = ENABLE
@@ -9,8 +9,8 @@
 #block = block Hack
 #kick = Player kick
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
-   Plugin-Version: 3.3.3
-   Config-Version: 3.6.2
+   Plugin-Version: 3.3.4
+   Config-Version: 3.6.3
 #Enables i am waching you message
 
    I-AM-WATCHING-YOU: false
@@ -81,7 +81,7 @@
 #NEVER set this lower than 10
 #Increase if Fly causes false poitives.
 
-   Fly-Threshold: 20
+   Fly-Threshold: 15
 
 #Wich Punishment should take place if Fly is detected?
 
@@ -154,6 +154,7 @@
 #This catches combat hacks that actually aim 
 #on a Player. Disabeling this could make the check
 #pretty easy to bypass.
+#Advanced behavorial analysis of a players combat.
 #This is a component of Heuristics you can configure.
 #This will NOT work if Heuristics are disabled!
 #
@@ -227,12 +228,9 @@
 #-----------------FastBow-----------------#
 #Do you want to enable FastBow check?
 #Prevent players from shooting arrows too fast.
-#Will only trigger if a player hits a person
-#with fastbow.
-#This is currently in an ustable stage and
-#will flag Eggs and Snowballs!
+#Works Well as of version 3.3.4.
 
-   FastBow: false
+   FastBow: true
 
 #Wich Punishment should take place if FastBow is detected?
 

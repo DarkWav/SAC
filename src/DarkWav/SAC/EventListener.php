@@ -12,6 +12,7 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityRegainHealthEvent;
 use pocketmine\event\entity\EntityTeleportEvent;
+use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\entity\Effect;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerJoinEvent;
@@ -151,19 +152,23 @@ class EventListener implements Listener
             $this->Main->PlayerObservers[$hash]->PlayerHasDamaged($event);
           }
         }
-        if ($event->getCause() == EntityDamageEvent::CAUSE_PROJECTILE)
-        {
-          $hash = spl_object_hash($ThisDamager);
-          if (array_key_exists($hash , $this->Main->PlayerObservers))
-          {
-            $this->Main->PlayerObservers[$hash]->PlayerShotArrow($event);
-          }
-        }
       }
     }
   }
 
-
+  public function onEntityShootBowEvent(EntityShootBowEvent $event)
+  {
+    $ThisEntity = $event->getEntity();
+    if($ThisEntity instanceof Player)
+    {
+      $hash = spl_object_hash($ThisEntity);
+      if (array_key_exists($hash , $this->Main->PlayerObservers))
+      {
+        $this->Main->PlayerObservers[$hash]->PlayerShotArrow($event);
+      }
+    }  
+  }
+  
   public function onPlayerDeathEvent(PlayerDeathEvent $event)
   {
     $player   = $event->getPlayer();
