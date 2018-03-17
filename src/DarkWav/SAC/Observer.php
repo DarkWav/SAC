@@ -37,7 +37,7 @@ class Observer
     $this->PlayerKillAuraCounter   = 0;
     $this->PlayerKillAuraV2Counter = 0;
     $this->SpeedAMP                = 0;
-	$this->LastAngle               = 0;
+    $this->LastAngle               = 0;
     
     //DO NOT RESET!
     $this->PlayerBanCounter    = 0;
@@ -107,22 +107,22 @@ class Observer
     if     ($this->GetConfigEntry("DeepHeuristics") == 1)
     {
       $this->dist_thr3 = 4.2;
-	  $this->accuracy_thr1 = 2.8;
+      $this->accuracy_thr1 = 2.8;
     }
-	if     ($this->GetConfigEntry("DeepHeuristics") == 2)
+    if     ($this->GetConfigEntry("DeepHeuristics") == 2)
     {
       $this->dist_thr3 = 4.0;
-	  $this->accuracy_thr1 = 4.2;
+      $this->accuracy_thr1 = 4.2;
     }
     elseif ($this->GetConfigEntry("DeepHeuristics") == 3)
     {
       $this->dist_thr3 = 3.8;
-	  $this->accuracy_thr1 = 5.6;
+      $this->accuracy_thr1 = 5.6;
     }
     else
     {
       $this->dist_thr3 = 0.000;
-	  $this->accuracy_thr1 = 0.000;
+      $this->accuracy_thr1 = 0.000;
     }
   }  
   
@@ -806,12 +806,12 @@ class Observer
     
     $tick_count = (double)$this->Server->getTick() - $this->LastMoveTick; 
     $tps        = (double)$this->Server->getTicksPerSecond();
-	$aimconsistency = abs($angle_xz - $this->LastAngle);
+    $aimconsistency = abs($angle_xz - $this->LastAngle);
     if ($tps != 0) $delta_t    = (double)($tick_count) / (double)$tps;
     else           $delta_t    = 0; 
     
     #$this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > Kill Aura Counter: $this->PlayerKillAuraCounter     V2: $this->PlayerKillAuraV2Counter  Speed: $this->x_speed");
-	#$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > $this->PlayerName : consistency = $aimconsistency, VL= $this->PlayerKillAuraV2Counter");
+    #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > $this->PlayerName : consistency = $aimconsistency, VL= $this->PlayerKillAuraV2Counter");
     if ($this->Player->getGameMode() == 1 or $this->Player->getGameMode() == 3) return;
     // Kill Aura
     if ($this->GetConfigEntry("KillAura"))
@@ -894,8 +894,8 @@ class Observer
                   $this->PlayerKillAuraV2Counter+=3;
                 }
               }
-			  elseif (($aimconsistency < $this->accuracy_thr1) and
-			          ($aimconsistency > 0.75                ) and
+              elseif (($aimconsistency < $this->accuracy_thr1) and
+                      ($aimconsistency > 0.75                ) and
                       ($delta_t  <  1.0                      ) and
                       (
                        ($this->x_speed > 4.0)
@@ -1031,7 +1031,7 @@ class Observer
       }
       */
     }
-	$this->LastAngle = $angle_xz;
+    $this->LastAngle = $angle_xz;
   }
 
 
@@ -1148,7 +1148,7 @@ class Observer
   {
     $this->ResetMovement();
     $this->LastDamageTick = $this->Server->getTick();  // remember time of last damage
-  }  
+  }
 }
 
 //////////////////////////////////////////////////////
