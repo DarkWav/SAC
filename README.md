@@ -4,7 +4,7 @@
 
 ## Current Release: 3.3.4
 
-## An AntiCheat plugin for PocketMine-MP.<br>Compatible with MCPE 1.X.X.
+## An AntiCheat plugin for [PocketMine-MP](https://github.com/pmmp/pocketmine-mp).<br>Compatible with MCPE 1.X.X.
 
 ## Find The Wiki and Phar Downloads [Here](https://github.com/DarkWav/ShadowAntiCheat/wiki).
 
