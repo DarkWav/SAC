@@ -11,7 +11,7 @@
 ## [Issues / Help / Support / Bug Report](https://github.com/DarkWav/SAC/issues)
 
 # Features:<br>
-## * AntiKillAura<br>
+* ## AntiKillAura<br>
 * AntiReach<br>
 * AntiFly<br>* AntiJesus (W.I.P)<br>* AntiSpider (W.I.P)<br>* AntiSpeed<br>* AntiGlide<br>* AntiNoClip (W.I.P)<br>* AntiRegen<br>* AntiInstantKill (Hit Speed, NOT EXPLOIT!)<br>* AutoBanSytem<br>Read more about Block Hacks [Here](https://github.com/DarkWav/SAC/wiki/About-Block-Hack-Detection).
 
