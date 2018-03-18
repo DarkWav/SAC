@@ -1043,6 +1043,8 @@ class Observer
     {
       $this->LastDamageTick = $this->Server->getTick();  // remember time of last damage
       $this->PlayerSpeedCounter -= 8;
+      $this->PlayerAirCounter -= 2;
+      $this->PlayerGlideCounter -= 2;
     }
   }
   
