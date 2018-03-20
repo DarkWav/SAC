@@ -109,17 +109,17 @@ class Observer
     if     ($this->GetConfigEntry("DeepHeuristics") == 1)
     {
       $this->dist_thr3 = 4.2;
-      $this->accuracy_thr1 = 2.8;
+      $this->accuracy_thr1 = 3.0;
     }
     if     ($this->GetConfigEntry("DeepHeuristics") == 2)
     {
       $this->dist_thr3 = 4.0;
-      $this->accuracy_thr1 = 4.2;
+      $this->accuracy_thr1 = 4.0;
     }
     elseif ($this->GetConfigEntry("DeepHeuristics") == 3)
     {
       $this->dist_thr3 = 3.8;
-      $this->accuracy_thr1 = 5.6;
+      $this->accuracy_thr1 = 5.0;
     }
     else
     {
@@ -572,8 +572,10 @@ class Observer
     if (!$this->SACIsOnGround($this->Player))
     {
       if(    !in_array(Block::WATER               , $this->surroundings ) 
+         and !in_array(Block::FLOWING_WATER       , $this->surroundings )
          and !in_array(Block::STILL_WATER         , $this->surroundings )
          and !in_array(Block::LAVA                , $this->surroundings )
+         and !in_array(Block::FLOWING_LAVA        , $this->surroundings )
          and !in_array(Block::STILL_LAVA          , $this->surroundings )
          and !in_array(Block::LADDER              , $this->surroundings )
          and !in_array(Block::VINE                , $this->surroundings )
