@@ -88,17 +88,17 @@ class Observer
     
     if     ($this->GetConfigEntry("Heuristics") == 1)
     {
-      $this->dist_thr1 = 3.8;
-      $this->dist_thr2 = 3.4;
+      $this->dist_thr1 = 3.75;
+      $this->dist_thr2 = 3.5;
     }
     elseif ($this->GetConfigEntry("Heuristics") == 2)
     {
-      $this->dist_thr1 = 3.6;
-      $this->dist_thr2 = 3.2;
+      $this->dist_thr1 = 3.625;
+      $this->dist_thr2 = 3.25;
     }
     elseif ($this->GetConfigEntry("Heuristics") == 3)
     {
-      $this->dist_thr1 = 3.4;
+      $this->dist_thr1 = 3.5;
       $this->dist_thr2 = 3.0;
     }
     else
@@ -108,17 +108,17 @@ class Observer
     }
     if     ($this->GetConfigEntry("DeepHeuristics") == 1)
     {
-      $this->dist_thr3 = 4.2;
+      $this->dist_thr3 = 4.0;
       $this->accuracy_thr1 = 3.0;
     }
     if     ($this->GetConfigEntry("DeepHeuristics") == 2)
     {
-      $this->dist_thr3 = 4.0;
+      $this->dist_thr3 = 3.875;
       $this->accuracy_thr1 = 4.0;
     }
     elseif ($this->GetConfigEntry("DeepHeuristics") == 3)
     {
-      $this->dist_thr3 = 3.8;
+      $this->dist_thr3 = 3.75;
       $this->accuracy_thr1 = 5.0;
     }
     else
@@ -528,7 +528,7 @@ class Observer
                 }
               }
             }
-            elseif ($this->x_speed > 8.5)
+            elseif ($this->x_speed > 8.75)
             {
               if (($tick - $this->LastDamageTick) > 30)  # deactivate 1.5 seconds after receiving damage
               {
@@ -711,15 +711,24 @@ class Observer
       or $BlockID == 129 //EMERALD  (-)
       )
       {
-        if(    !in_array(Block::SANDSTONE_STAIRS    , $this->surroundings )
-           and !in_array(Block::DARK_OAK_STAIRS     , $this->surroundings )
-           and !in_array(Block::ACACIA_STAIRS       , $this->surroundings )
+        if(    !in_array(Block::STONE_SLAB          , $this->surroundings )
+           and !in_array(Block::OAK_STAIRS          , $this->surroundings )
+           and !in_array(Block::COBBLESTONE_STAIRS  , $this->surroundings )
+           and !in_array(Block::SNOW_LAYER          , $this->surroundings )
+           and !in_array(Block::BRICK_STAIRS        , $this->surroundings )
+           and !in_array(Block::STONE_BRICK_STAIRS  , $this->surroundings )
            and !in_array(Block::NETHER_BRICK_STAIRS , $this->surroundings )
-           and !in_array(Block::SPRUCE_STAIRS       ,$this->surroundings )
+           and !in_array(Block::SANDSTONE_STAIRS    , $this->surroundings )
+           and !in_array(Block::SPRUCE_STAIRS       , $this->surroundings )
            and !in_array(Block::BIRCH_STAIRS        , $this->surroundings )
            and !in_array(Block::JUNGLE_STAIRS       , $this->surroundings )
            and !in_array(Block::QUARTZ_STAIRS       , $this->surroundings )
-           and !in_array(Block::OAK_STAIRS          , $this->surroundings )
+           and !in_array(Block::WOODEN_SLAB         , $this->surroundings )
+           and !in_array(Block::ACACIA_STAIRS       , $this->surroundings )
+           and !in_array(Block::DARK_OAK_STAIRS     , $this->surroundings )
+           and !in_array(Block::RED_SANDSTONE_STAIRS, $this->surroundings )
+           and !in_array(Block::STONE_SLAB2         , $this->surroundings )
+           and !in_array(Block::PURPUR_STAIRS       , $this->surroundings )
            and !in_array(Block::SNOW                , $this->surroundings ))
         {        
           if ($this->GetConfigEntry("NoClip-Punishment") == "kick")
@@ -870,7 +879,7 @@ class Observer
             if ($this->dist_thr1 != 0.00)
             {
               if (($distance >= $this->dist_thr1) and 
-                  ($delta_t  <  0.75            ) and
+                  ($delta_t  <  0.5             ) and
                   ($angle_xz >  22.5            ) and
                   (
                     (($this->x_speed > 1.5) and ($this->hs_hit_time < 0.625)) or ($this->x_speed > 4.625)
@@ -879,7 +888,7 @@ class Observer
                 $this->PlayerKillAuraV2Counter+=3;
               }
               elseif (($distance >= $this->dist_thr2) and 
-                      ($delta_t  <  0.75            ) and
+                      ($delta_t  <  0.5             ) and
                       ($angle_xz >  45.0            ) and
                       (
                         (($this->x_speed > 1.5) and ($this->hs_hit_time < 0.625)) or ($this->x_speed > 4.125)
@@ -888,7 +897,7 @@ class Observer
                 $this->PlayerKillAuraV2Counter+=6;
               }
               elseif (($distance >= $this->dist_thr3) and 
-                      ($delta_t  <  0.75            ) and
+                      ($delta_t  <  0.5             ) and
                       (
                        (($this->x_speed > 1.5) and ($this->hs_hit_time < 0.625)) or ($this->x_speed > 4.625)
                       ))
@@ -898,9 +907,9 @@ class Observer
                   $this->PlayerKillAuraV2Counter+=3;
                 }
               }
-              elseif (($aimconsistency < $this->accuracy_thr1) and
-                      ($aimconsistency > 0.75                ) and
-                      ($delta_t  <  1.0                      ) and
+              elseif (($aimconsistency <= $this->accuracy_thr1) and
+                      ($aimconsistency >= 0.625               ) and
+                      ($delta_t  <  0.5                       ) and
                       (
                        ($this->x_speed > 4.0)
                       ))
@@ -909,10 +918,6 @@ class Observer
                 {
                   $this->PlayerKillAuraV2Counter+=2;
                 }
-              }
-              elseif (!$this->SACIsOnGround($damager))
-              {
-                $this->PlayerKillAuraV2Counter+=1;
               }
               else
               {
@@ -945,11 +950,12 @@ class Observer
             {
               #$this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > counter V2: $this->PlayerKillAuraV2Counter");
               # V1
-              if (($angle_xz < 1.5) and ($angle < 20) and ($delta_t < 0.5) and ($this->x_speed > 6.0))
+              if (($angle_xz < 1.0) and ($angle < 20) and ($aimconsistency > 0.625) and ($delta_t < 0.5) and ($this->x_speed > 6.0))
               {
                 $this->PlayerKillAuraCounter+=2;
+                $this->PlayerKillAuraV2Counter+=2;
               }
-              if (($angle_xz >= 1.5) or ($angle >= 20) or ($delta_t > 2.0))
+              if (($angle_xz >= 1.0) or ($angle >= 20) or ($delta_t > 2.0) or ($aimconsistency <= 0.625))
               {
                 if ($this->PlayerKillAuraCounter > 0)
                 {

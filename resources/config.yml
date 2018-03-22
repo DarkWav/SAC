@@ -1,7 +1,7 @@
 ---
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #ShadowAntiCheat main configuration file.
-#Current version: 3.3.6
+#Current version: 3.3.7
 #What should be blocked?
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #true = ENABLE
@@ -9,7 +9,7 @@
 #block = block Hack
 #kick = Player kick
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
-   Plugin-Version: 3.3.6
+   Plugin-Version: 3.3.7
    Config-Version: 3.6.3
 #Enables i am waching you message
 
@@ -77,7 +77,7 @@
    Fly: true
 
 #How many moves may a player be flying before detection?
-#25 Should work fine. (Standard)
+#15 Should work fine. (Standard)
 #NEVER set this lower than 10
 #Increase if Fly causes false poitives.
 
@@ -125,7 +125,7 @@
 #
 # 0 = DISABLE
 # 1 = PERMISSIVE
-# 2 = NORMAL (OPTIMAL)
+# 2 = NORMAL
 # 3 = AGGRESSIVE
 #
 # PREMISSIVE will cause close to zero false positives
@@ -159,9 +159,9 @@
 #This will NOT work if Heuristics are disabled!
 #
 # 0 = DISABLE
-# 1 = PERMISSIVE (OPTIMAL)
-# 2 = NORMAL (OPTIMAL)
-# 3 = AGGRESSIVE (PARANOID)
+# 1 = PERMISSIVE
+# 2 = NORMAL
+# 3 = AGGRESSIVE
 #
 # PERMISSIVE and NORMAL will catch some Macros and helps the KillAura
 # Check to perform better. Generally NORMAL catches more hacks whilst
