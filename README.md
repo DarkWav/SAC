@@ -2,7 +2,7 @@
 
 ### Status: Continueation in progress... (I dont have much time right now, sorry)
 
-## Current Release: 3.3.6
+## Current Release: 3.3.7
 
 ## An AntiCheat plugin for [PocketMine-MP](https://github.com/pmmp/pocketmine-mp).<br>Compatible with MCPE 1.X.X.
 
