@@ -80,7 +80,8 @@ class Observer
     $this->heal_counter = 0;
     $this->heal_time    = 0;    
     
-    $this->surroundings = array();
+    $this->surroundings     = array();
+    $this->clipsurroundings = array();
    
     $this->LastDamageTick = 0;
     $this->LastMoveTick   = 0;
@@ -189,13 +190,44 @@ class Observer
 
   public function ScanMessage($message)
   {
-    $pos    = strpos(strtoupper($message), "%PLAYER%");
-    $newmsg = $message;
+    $pos     = strpos(strtoupper($message), "%PLAYER%");
+    $newmsg  = $message;
+    $newmsg2 = $message;
+    $newmsg3 = $message;
+    $newmsg4 = $message;
+    
     if ($pos !== false)
     {
       $newmsg = substr_replace($message, $this->PlayerName, $pos, 8);
+    }
+    $pos2    = strpos(strtoupper($newmsg), "%AURAVL%");
+    if ($pos2 !== false)
+    {
+      $newmsg2 = substr_replace($newmsg, $this->PlayerKillAuraCounter, $pos2, 8);
     }    
-    return $newmsg;
+    else
+    {
+      $newmsg2 = $newmsg;
+    }
+    $pos3    = strpos(strtoupper($newmsg2), "%HEURVL%");
+    if ($pos3 !== false)
+    {
+      $newmsg3 = substr_replace($newmsg2, $this->PlayerKillAuraV2Counter, $pos3, 8);
+    }    
+    else
+    {
+      $newmsg3 = $newmsg2;
+    }
+    $pos4    = strpos(strtoupper($newmsg3), "%NOCLIPVL%");
+    if ($pos4 !== false)
+    {
+      $newmsg4 = substr_replace($newmsg3, $this->PlayerNoClipCounter, $pos4, 10);
+    }    
+    else
+    {
+      $newmsg4 = $newmsg3;
+    }
+    return $newmsg4;
   }
 
   public function GetConfigEntry($cfgkey)
@@ -408,6 +440,33 @@ class Observer
     $pos7        = new Vector3($posX  , $posY, $posZ+1);
     $pos8        = new Vector3($posX+1, $posY, $posZ-1);
     $pos9        = new Vector3($posX-1, $posY, $posZ+1);
+    $pos10       = new Vector3($posX  , $posY-1, $posZ  );
+    $pos11       = new Vector3($posX-1, $posY-1, $posZ  );
+    $pos12       = new Vector3($posX-1, $posY-1, $posZ-1);
+    $pos13       = new Vector3($posX  , $posY-1, $posZ-1);
+    $pos14       = new Vector3($posX+1, $posY-1, $posZ  );
+    $pos15       = new Vector3($posX+1, $posY-1, $posZ+1);
+    $pos16       = new Vector3($posX  , $posY-1, $posZ+1);
+    $pos17       = new Vector3($posX+1, $posY-1, $posZ-1);
+    $pos18       = new Vector3($posX-1, $posY-1, $posZ+1);
+    $pos19       = new Vector3($posX  , $posY+1, $posZ  );
+    $pos20       = new Vector3($posX-1, $posY+1, $posZ  );
+    $pos21       = new Vector3($posX-1, $posY+1, $posZ-1);
+    $pos22       = new Vector3($posX  , $posY+1, $posZ-1);
+    $pos23       = new Vector3($posX+1, $posY+1, $posZ  );
+    $pos24       = new Vector3($posX+1, $posY+1, $posZ+1);
+    $pos25       = new Vector3($posX  , $posY+1, $posZ+1);
+    $pos26       = new Vector3($posX+1, $posY+1, $posZ-1);
+    $pos27       = new Vector3($posX-1, $posY+1, $posZ+1);
+    $pos28       = new Vector3($posX  , $posY+2, $posZ  );
+    $pos29       = new Vector3($posX-1, $posY+2, $posZ  );
+    $pos30       = new Vector3($posX-1, $posY+2, $posZ-1);
+    $pos31       = new Vector3($posX  , $posY+2, $posZ-1);
+    $pos32       = new Vector3($posX+1, $posY+2, $posZ  );
+    $pos33       = new Vector3($posX+1, $posY+2, $posZ+1);
+    $pos34       = new Vector3($posX  , $posY+2, $posZ+1);
+    $pos35       = new Vector3($posX+1, $posY+2, $posZ-1);
+    $pos36       = new Vector3($posX-1, $posY+2, $posZ+1);
     
     $bpos1       = $level->getBlock($pos1)->getId();
     $bpos2       = $level->getBlock($pos2)->getId();
@@ -418,8 +477,36 @@ class Observer
     $bpos7       = $level->getBlock($pos7)->getId();
     $bpos8       = $level->getBlock($pos8)->getId();
     $bpos9       = $level->getBlock($pos9)->getId();
+    $bpos10       = $level->getBlock($pos10)->getId();
+    $bpos11       = $level->getBlock($pos11)->getId();
+    $bpos12       = $level->getBlock($pos12)->getId();
+    $bpos13       = $level->getBlock($pos13)->getId();
+    $bpos14       = $level->getBlock($pos14)->getId();
+    $bpos15       = $level->getBlock($pos15)->getId();
+    $bpos16       = $level->getBlock($pos16)->getId();
+    $bpos17       = $level->getBlock($pos17)->getId();
+    $bpos18       = $level->getBlock($pos18)->getId();
+    $bpos19       = $level->getBlock($pos19)->getId();
+    $bpos20       = $level->getBlock($pos20)->getId();
+    $bpos21       = $level->getBlock($pos21)->getId();
+    $bpos22       = $level->getBlock($pos22)->getId();
+    $bpos23       = $level->getBlock($pos23)->getId();
+    $bpos24       = $level->getBlock($pos24)->getId();
+    $bpos25       = $level->getBlock($pos25)->getId();
+    $bpos26       = $level->getBlock($pos26)->getId();
+    $bpos27       = $level->getBlock($pos27)->getId();
+    $bpos28       = $level->getBlock($pos28)->getId();
+    $bpos29       = $level->getBlock($pos29)->getId();
+    $bpos30       = $level->getBlock($pos30)->getId();
+    $bpos31       = $level->getBlock($pos31)->getId();
+    $bpos32       = $level->getBlock($pos32)->getId();
+    $bpos33       = $level->getBlock($pos33)->getId();
+    $bpos34       = $level->getBlock($pos34)->getId();
+    $bpos35       = $level->getBlock($pos35)->getId();
+    $bpos36       = $level->getBlock($pos36)->getId();
     
-    $this->surroundings = array ($bpos1, $bpos2, $bpos3, $bpos4, $bpos5, $bpos6, $bpos7, $bpos8, $bpos9);    
+    $this->surroundings = array ($bpos1, $bpos2, $bpos3, $bpos4, $bpos5, $bpos6, $bpos7, $bpos8, $bpos9);
+    $this->clipsurroundings = array ($bpos1, $bpos2, $bpos3, $bpos4, $bpos5, $bpos6, $bpos7, $bpos8, $bpos9, $bpos10, $bpos11, $bpos12, $bpos13, $bpos14, $bpos15, $bpos16, $bpos17, $bpos18, $bpos19, $bpos20, $bpos21, $bpos22, $bpos23, $bpos24, $bpos25, $bpos26, $bpos27, $bpos28, $bpos29, $bpos30, $bpos31, $bpos32, $bpos33, $bpos34, $bpos35, $bpos36);    
   }
   
   # -------------------------------------------------------------------------------------
@@ -571,15 +658,15 @@ class Observer
     # No Fly, No Glide and Anti Speed
     if (!$this->SACIsOnGround($this->Player))
     {
-      if(    !in_array(Block::WATER               , $this->surroundings ) 
-         and !in_array(Block::FLOWING_WATER       , $this->surroundings )
-         and !in_array(Block::STILL_WATER         , $this->surroundings )
-         and !in_array(Block::LAVA                , $this->surroundings )
-         and !in_array(Block::FLOWING_LAVA        , $this->surroundings )
-         and !in_array(Block::STILL_LAVA          , $this->surroundings )
-         and !in_array(Block::LADDER              , $this->surroundings )
-         and !in_array(Block::VINE                , $this->surroundings )
-         and !in_array(Block::COBWEB              , $this->surroundings ))
+      if(    !in_array(Block::WATER               , $this->clipsurroundings ) 
+         and !in_array(Block::FLOWING_WATER       , $this->clipsurroundings )
+         and !in_array(Block::STILL_WATER         , $this->clipsurroundings )
+         and !in_array(Block::LAVA                , $this->clipsurroundings )
+         and !in_array(Block::FLOWING_LAVA        , $this->clipsurroundings )
+         and !in_array(Block::STILL_LAVA          , $this->clipsurroundings )
+         and !in_array(Block::LADDER              , $this->clipsurroundings )
+         and !in_array(Block::VINE                , $this->clipsurroundings )
+         and !in_array(Block::COBWEB              , $this->clipsurroundings ))
       {
         if ($this->y_pos_old > $this->y_pos_new)
         {
@@ -657,12 +744,14 @@ class Observer
     if ($this->GetConfigEntry("NoClip"))
     {
       if ($this->Player->hasPermission("sac.noclip")) return;
-      $level   = $this->Player->getLevel();
-      $pos     = new Vector3($this->Player->getX(), $this->Player->getY(), $this->Player->getZ());
-      $BlockID = $level->getBlock($pos)->getId();
+      $level    = $this->Player->getLevel();
+      $pos      = new Vector3($this->Player->getX(), $this->Player->getY(), $this->Player->getZ());
+      $BlockID  = $level->getBlock($pos)->getId();
+      $pos2     = new Vector3($this->Player->getX(), $this->Player->getY()+1, $this->Player->getZ());
+      $BlockID2 = $level->getBlock($pos2)->getId();
 
       //ANTI-FALSE-POSITIVES
-      if (
+      if ((
 
       //BUILDING MATERIAL
 
@@ -710,48 +799,79 @@ class Observer
       or $BlockID == 73  //REDSTONE (GLOWING)
       or $BlockID == 129 //EMERALD  (-)
       )
+      and
+      (
+
+      //BUILDING MATERIAL
+
+         $BlockID2 == 1
+      or $BlockID2 == 2
+      or $BlockID2 == 3
+      or $BlockID2 == 4
+      or $BlockID2 == 5
+      or $BlockID2 == 7
+      or $BlockID2 == 17
+      or $BlockID2 == 18
+      or $BlockID2 == 20
+      or $BlockID2 == 43
+      or $BlockID2 == 45
+      or $BlockID2 == 47
+      or $BlockID2 == 48
+      or $BlockID2 == 49
+      or $BlockID2 == 79
+      or $BlockID2 == 80
+      or $BlockID2 == 87
+      or $BlockID2 == 89
+      or $BlockID2 == 97
+      or $BlockID2 == 98
+      or $BlockID2 == 110
+      or $BlockID2 == 112
+      or $BlockID2 == 121
+      or $BlockID2 == 155
+      or $BlockID2 == 157
+      or $BlockID2 == 159
+      or $BlockID2 == 161
+      or $BlockID2 == 162
+      or $BlockID2 == 170
+      or $BlockID2 == 172
+      or $BlockID2 == 174
+      or $BlockID2 == 243
+
+      //ORES (for Prison mines)
+
+      or $BlockID2 == 14  //GOLD     (-)
+      or $BlockID2 == 15  //IRON     (-)
+      or $BlockID2 == 16  //COAL     (-)
+      or $BlockID2 == 21  //LAPIS    (-)
+      or $BlockID2 == 56  //DIAMOND  (-)
+      or $BlockID2 == 73  //REDSTONE (DARK)
+      or $BlockID2 == 73  //REDSTONE (GLOWING)
+      or $BlockID2 == 129 //EMERALD  (-)
+      ))
       {
-        if(    !in_array(Block::STONE_SLAB          , $this->surroundings )
-           and !in_array(Block::OAK_STAIRS          , $this->surroundings )
-           and !in_array(Block::COBBLESTONE_STAIRS  , $this->surroundings )
-           and !in_array(Block::SNOW_LAYER          , $this->surroundings )
-           and !in_array(Block::BRICK_STAIRS        , $this->surroundings )
-           and !in_array(Block::STONE_BRICK_STAIRS  , $this->surroundings )
-           and !in_array(Block::NETHER_BRICK_STAIRS , $this->surroundings )
-           and !in_array(Block::SANDSTONE_STAIRS    , $this->surroundings )
-           and !in_array(Block::SPRUCE_STAIRS       , $this->surroundings )
-           and !in_array(Block::BIRCH_STAIRS        , $this->surroundings )
-           and !in_array(Block::JUNGLE_STAIRS       , $this->surroundings )
-           and !in_array(Block::QUARTZ_STAIRS       , $this->surroundings )
-           and !in_array(Block::WOODEN_SLAB         , $this->surroundings )
-           and !in_array(Block::ACACIA_STAIRS       , $this->surroundings )
-           and !in_array(Block::DARK_OAK_STAIRS     , $this->surroundings )
-           and !in_array(Block::RED_SANDSTONE_STAIRS, $this->surroundings )
-           and !in_array(Block::STONE_SLAB2         , $this->surroundings )
-           and !in_array(Block::PURPUR_STAIRS       , $this->surroundings )
-           and !in_array(Block::SNOW                , $this->surroundings ))
-        {        
-          if ($this->GetConfigEntry("NoClip-Punishment") == "kick")
+        #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > Not_In_Array, VL: $this->PlayerNoClipCounter");        
+        if ($this->GetConfigEntry("NoClip-Punishment") == "kick")
+        {
+          $this->PlayerNoClipCounter += 10;
+          $event->setCancelled(true);
+          if ($this->PlayerNoClipCounter > $this->GetConfigEntry("NoClip-Threshold") * 10)
           {
-            $this->PlayerNoClipCounter += 10;
-            $event->setCancelled(true);
-            $message = $this->GetConfigEntry("NoClip-LogMessage");
-            $this->NotifyAdmins($message);
-            if ($this->PlayerNoClipCounter > $this->GetConfigEntry("NoClip-Threshold") * 10)
-            {
-              $event->setCancelled(true);
-              $reason = $this->GetConfigEntry("NoClip-Message");
-              $this->ResetObserver();
-              $this->KickPlayer($reason);
-            }
+            $reason = $this->GetConfigEntry("NoClip-Message");
+            $this->ResetObserver();
+            $this->KickPlayer($reason);
           }
-          if ($this->GetConfigEntry("NoClip-Punishment") == "block")
+          if ($this->PlayerNoClipCounter > $this->GetConfigEntry("NoClip-Threshold") * 5)
           {
-            $event->setCancelled(true);
             $message = $this->GetConfigEntry("NoClip-LogMessage");
             $this->NotifyAdmins($message);
           }
-        }  
+        }
+        if ($this->GetConfigEntry("NoClip-Punishment") == "block")
+        {
+            $event->setCancelled(true);
+            $message = $this->GetConfigEntry("NoClip-LogMessage");
+            $this->NotifyAdmins($message);
+        }
       }
       else
       {
@@ -938,7 +1058,7 @@ class Observer
               {
                 if ($this->dist_thr1 != 0.00)
                 {
-                  $this->PlayerKillAuraV2Counter+=9;
+                  $this->PlayerKillAuraV2Counter+=6;
                 }
                 if ($this->GetConfigEntry("Angle"))
                 {
@@ -970,15 +1090,30 @@ class Observer
             #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "AAA[SAC] > counter V1: $this->PlayerKillAuraCounter  V2: $this->PlayerKillAuraV2Counter distance: $distance_xz  deltat: $delta_t  speedx: $this->x_speed anglexz: $angle_xz");
           }  
       
-          if (($this->PlayerKillAuraCounter >= $this->GetConfigEntry("KillAura-Threshold")) or ($this->PlayerKillAuraV2Counter >= $this->GetConfigEntry("KillAura-Threshold")))
+          if (($this->PlayerKillAuraCounter >= $this->GetConfigEntry("KillAura-Threshold")))
           {
             $event->setCancelled(true);
-            $message = $this->GetConfigEntry("KillAura-LogMessage");
-            $this->NotifyAdmins($message);
             $reason = $this->GetConfigEntry("KillAura-Message");
             $this->ResetObserver();
             $this->KickPlayer($reason);
+          }        
+          if (($this->PlayerKillAuraCounter > $this->GetConfigEntry("KillAura-Threshold") * 0.25))
+          {
+            $message = $this->GetConfigEntry("KillAura-LogMessage");
+            $this->NotifyAdmins($message);
+          }            
+          if (($this->PlayerKillAuraV2Counter >= $this->GetConfigEntry("KillAura-Threshold")))
+          {
+            $event->setCancelled(true);
+            $reason = $this->GetConfigEntry("KillAura-HEUR-Message");
+            $this->ResetObserver();
+            $this->KickPlayer($reason);
           }
+          if (($this->PlayerKillAuraV2Counter > $this->GetConfigEntry("KillAura-Threshold") * 0.25))
+          {
+            $message = $this->GetConfigEntry("KillAura-HEUR-LogMessage");
+            $this->NotifyAdmins($message);
+          }                
         }
       }
     }

@@ -38,12 +38,11 @@ class SAC extends PluginBase
     
     $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
     $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > ShadowAntiCheat Activated"            );
-    $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > ShadowAntiCheat v3.3.7 [ShadowX]");
+    $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > ShadowAntiCheat v3.3.8 [ShadowX]");
     $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > Loading Modules");
     if($Config->get("ForceOP"    )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiForceOP"    );
     if($Config->get("NoClip"     )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiNoClip"     );
     if($Config->get("Fly"        )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiFly"        );
-    if($Config->get("Fly"        )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiJesus"      );
     if($Config->get("Fly"        )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiSpider"     );
     if($Config->get("Glide"      )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiGlide"      );
     if($Config->get("KillAura"   )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiKillAura"   );
@@ -52,11 +51,11 @@ class SAC extends PluginBase
     if($Config->get("FastBow"    )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiFastBow"    );
     if($Config->get("Regen"      )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiRegen"      );
 
-    if($Config->get("Config-Version") !== "3.6.3")
+    if($Config->get("Config-Version") !== "3.6.4")
     {
       $Logger->warning(TextFormat::ESCAPE."$cl"."[SAC] > Your Config is out of date!");
     }
-    if($Config->get("Plugin-Version") !== "3.3.1" and $Config->get("Plugin-Version") !== "3.3.2" and $Config->get("Plugin-Version") !== "3.3.3" and $Config->get("Plugin-Version") !== "3.3.4" and $Config->get("Plugin-Version") !== "3.3.5" and $Config->get("Plugin-Version") !== "3.3.6" and $Config->get("Plugin-Version") !== "3.3.7")
+    if($Config->get("Plugin-Version") !== "3.3.8")
     {
       $Logger->error(TextFormat::ESCAPE."$cl"."[SAC] > Your Config is incompatible with this plugin version, please update immediately!");
       $Server->shutdown();
@@ -126,7 +125,7 @@ class SAC extends PluginBase
     }
     if ($command->getName() === "sac" or $command->getName() === "shadowanticheat")
     {
-      $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > ShadowAntiCheat v3.3.7 [ShadowX] (~DarkWav/Darku)");
+      $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > ShadowAntiCheat v3.3.8 [ShadowX] (~DarkWav/Darku)");
     }
 	return false;
   }
