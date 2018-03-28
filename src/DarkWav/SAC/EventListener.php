@@ -10,15 +10,18 @@ use pocketmine\utils\Config;
 use pocketmine\permission\Permission;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\entity\EntityRegainHealthEvent;
 use pocketmine\event\entity\EntityTeleportEvent;
 use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\entity\Effect;
+use pocketmine\event\player\PlayerEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerRespawnEvent;
 use pocketmine\event\player\PlayerDeathEvent;
+use pocketmine\event\player\PlayerAnimationEvent;
 
 
 use pocketmine\math\Vector3;
@@ -90,6 +93,7 @@ class EventListener implements Listener
     }
   }
 
+
   public function onMove(PlayerMoveEvent $event)
   {
     $player   = $event->getPlayer();
@@ -103,6 +107,20 @@ class EventListener implements Listener
       $this->Main->PlayerObservers[$hash]->getRealKnockBack($event);
       */
     }  
+  }
+
+  public function onPlayerAnimationEvent(PlayerAnimationEvent $event)
+  {
+    $player   = $event->getPlayer();
+    $hash     = spl_object_hash($player);
+    
+    if($event->getAnimationType() == 1)
+    {
+      if (array_key_exists($hash , $this->Main->PlayerObservers))
+      {    
+        $this->Main->PlayerObservers[$hash]->OnSwing($event);
+      }  
+    }
   }
 
   public function onEntityRegainHealthEvent(EntityRegainHealthEvent $event)

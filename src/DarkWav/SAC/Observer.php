@@ -84,6 +84,7 @@ class Observer
     $this->clipsurroundings = array();
    
     $this->LastDamageTick = 0;
+    $this->LastIceTick    = 0;
     $this->LastMoveTick   = 0;
     $this->Colorized      = $this->GetConfigEntry("Color");
     
@@ -564,18 +565,72 @@ class Observer
         {
           if (!$this->Player->hasPermission("sac.speed"))
           {
+            if(    !in_array(Block::ICE               , $this->clipsurroundings ) 
+               and !in_array(Block::FROSTED_ICE       , $this->clipsurroundings )
+               and !in_array(Block::PACKED_ICE        , $this->clipsurroundings )
+               and !in_array(Block::RAIL              , $this->clipsurroundings )
+               and !in_array(Block::POWERED_RAIL      , $this->clipsurroundings )
+               and !in_array(Block::DETECTOR_RAIL     , $this->clipsurroundings )
+               and !in_array(Block::ACTIVATOR_RAIL    , $this->clipsurroundings ))
+            {
+            # $this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > $this->PlayerName failed InArray!"); 
             # Anti Speed
-            if ($this->Player->hasEffect(Effect::SPEED))
-            {
-              $this->SpeedAMP = $this->Player->getEffect(Effect::SPEED)->getAmplifier();
-              if ($this->SpeedAMP < 3) # Speed 1 and 2
-              {
-                if ($this->x_speed > 10)
+                if ($this->Player->hasEffect(Effect::SPEED))
                 {
-                  if (($tick - $this->LastDamageTick) > 30)  # deactivate 1.5 seconds after receiving damage
+                  $this->SpeedAMP = $this->Player->getEffect(Effect::SPEED)->getAmplifier();
+                  if ($this->SpeedAMP < 3) # Speed 1 and 2
+                  {
+                    if ($this->x_speed > 10)
+                    {
+                      if (($tick - $this->LastDamageTick) > 30 and ($tick - $this->LastIceTick) > 60 )  # deactivate 1.5 seconds after receiving damage and 3.0 seconds after being near ice.
+                      {
+                        $this->PlayerSpeedCounter += 10;
+                      }   
+                    }
+                    else
+                    {
+                      if ($this->PlayerSpeedCounter > 0)
+                      { 
+                        $this->PlayerSpeedCounter--;
+                      }
+                    }
+                  }
+                  elseif ($this->SpeedAMP == 3 or $this->SpeedAMP == 4) # Speed 3 and 4
+                  {
+                    if ($this->x_speed > 11.5)
+                    {
+                      if (($tick - $this->LastDamageTick) > 30 and ($tick - $this->LastIceTick) > 60 )  # deactivate 1.5 seconds after receiving damage and 3.0 seconds after being near ice.
+                      {
+                        $this->PlayerSpeedCounter += 10;
+                      }   
+                    }
+                    else
+                    {
+                      if ($this->PlayerSpeedCounter > 0)
+                      { 
+                        $this->PlayerSpeedCounter--;
+                      }
+                    }
+                  }
+                  elseif ($this->SpeedAMP > 4) #Speed 5 and higher
+                  {
+                     $this->PlayerSpeedCounter++; # do nothing
+                     $this->PlayerSpeedCounter--; # do nothing
+                  }
+                  else
+                  {
+                    if ($this->PlayerSpeedCounter > 0)
+                    { 
+                      $this->PlayerSpeedCounter--;
+                    }
+                  }
+                }
+                elseif ($this->x_speed > 8.325)
+                {
+                  if (($tick - $this->LastDamageTick) > 30 and ($tick - $this->LastIceTick) > 60 )  # deactivate 1.5 seconds after receiving damage and 3.0 seconds after being near ice.
                   {
                     $this->PlayerSpeedCounter += 10;
-                  }   
+                  }
                 }
                 else
                 {
@@ -584,53 +639,12 @@ class Observer
                     $this->PlayerSpeedCounter--;
                   }
                 }
-              }
-              elseif ($this->SpeedAMP == 3 or $this->SpeedAMP == 4) # Speed 3 and 4
-              {
-                if ($this->x_speed > 11.5)
-                {
-                  if (($tick - $this->LastDamageTick) > 30)  # deactivate 1.5 seconds after receiving damage
-                  {
-                    $this->PlayerSpeedCounter += 10;
-                  }   
-                }
-                else
-                {
-                  if ($this->PlayerSpeedCounter > 0)
-                  { 
-                    $this->PlayerSpeedCounter--;
-                  }
-                }
-              }
-              elseif ($this->SpeedAMP > 4) #Speed 5 and higher
-              {
-                 $this->PlayerSpeedCounter++; # do nothing
-                 $this->PlayerSpeedCounter--; # do nothing
-              }
-              else
-              {
-                if ($this->PlayerSpeedCounter > 0)
-                { 
-                  $this->PlayerSpeedCounter--;
-                }
-              }
-            }
-            elseif ($this->x_speed > 8.75)
-            {
-              if (($tick - $this->LastDamageTick) > 30)  # deactivate 1.5 seconds after receiving damage
-              {
-                $this->PlayerSpeedCounter += 10;
-              }
             }
             else
             {
-              if ($this->PlayerSpeedCounter > 0)
-              { 
-                $this->PlayerSpeedCounter--;
-              }
+                $this->LastIceTick = $this->Server->getTick();
             }
           }
-
           if ($this->PlayerSpeedCounter > $this->GetConfigEntry("Speed-Threshold") * 10)
           {
             if ($this->GetConfigEntry("Speed-Punishment") == "kick")
@@ -907,6 +921,11 @@ class Observer
     }
   }
   
+  public function OnSwing($event)
+  {
+    #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > Player Swing Event: $this->PlayerName!");
+  }
+  
   public function PlayerHasDamaged($event)
   {
     $damaged_entity             = $event->getEntity();
@@ -939,12 +958,23 @@ class Observer
     
     $tick_count = (double)$this->Server->getTick() - $this->LastMoveTick; 
     $tps        = (double)$this->Server->getTicksPerSecond();
-    $aimconsistency = abs($angle_xz - $this->LastAngle);
     if ($tps != 0) $delta_t    = (double)($tick_count) / (double)$tps;
     else           $delta_t    = 0; 
     
+    $orient = ($damager_xz_direction->x * $entity_xz_direction->z) - ($damager_xz_direction->z * $entity_xz_direction->x);
+    if ($orient > 0)
+    {
+      $trueangle = $angle_xz;
+    }
+    else
+    {
+      $trueangle = -$angle_xz;
+    } 
+    $aimconsistency = abs($trueangle - $this->LastAngle);
+    
     #$this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > Kill Aura Counter: $this->PlayerKillAuraCounter     V2: $this->PlayerKillAuraV2Counter  Speed: $this->x_speed");
     #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > $this->PlayerName : consistency = $aimconsistency, VL= $this->PlayerKillAuraV2Counter");
+    #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > $this->PlayerName : Trueangle = $trueangle");
     if ($this->Player->getGameMode() == 1 or $this->Player->getGameMode() == 3) return;
     // Kill Aura
     if ($this->GetConfigEntry("KillAura"))
@@ -1176,7 +1206,7 @@ class Observer
       }
       */
     }
-    $this->LastAngle = $angle_xz;
+    $this->LastAngle = $trueangle;
   }
 
 
