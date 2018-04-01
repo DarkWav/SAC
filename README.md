@@ -1,6 +1,6 @@
 # SAC (ShadowAntiCheat)
 
-### Status: Continueation in progress... (I dont have much time right now, sorry)
+### Status: Active. Happy Easter!
 
 ## Current Release: 3.3.9
 
