@@ -1,7 +1,7 @@
 ---
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #ShadowAntiCheat main configuration file.
-#Current version: 3.3.9
+#Current version: 3.3.10
 #What should be blocked?
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #true = ENABLE
@@ -9,7 +9,7 @@
 #block = block Hack
 #kick = Player kick
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
-   Plugin-Version: 3.3.9
+   Plugin-Version: 3.3.10
    Config-Version: 3.6.4
 #Enables i am waching you message
 
