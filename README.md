@@ -2,7 +2,7 @@
 
 ### Status: Active. Happy Easter!
 
-## Current Release: 3.3.9
+## Current Release: 3.3.10
 
 ## An AntiCheat plugin for [PocketMine-MP](https://github.com/pmmp/pocketmine-mp).<br>Compatible with MCPE 1.X.X.
 
