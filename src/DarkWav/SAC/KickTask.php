@@ -1,18 +1,20 @@
 <?php
 namespace DarkWav\SAC;
 
-use pocketmine\scheduler\PluginTask;
 use pocketmine\utils\TextFormat;
 use pocketmine\command\ConsoleCommandSender;
 use DarkWav\SAC\Observer;
+use DarkWav\SAC\SAC;
+use pocketmine\plugin\Plugin;
+use pocketmine\scheduler\Task;
+use pocketmine\scheduler\TaskScheduler;
 
-class KickTask extends PluginTask
+class KickTask extends Task
 {
-
-  public function __construct($plugin)
+  
+  public function __construct(SAC $Main)
   {
-    parent::__construct($plugin);
-    $this->plugin = $plugin;
+    $this->plugin = $Main;
   }
 
   public function onRun(int $currentTick)
