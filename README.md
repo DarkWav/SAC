@@ -2,7 +2,7 @@
 
 ### Status: Active. Happy Easter!
 
-## Current Release: 3.4.0<br>Supported PMMP-API Versions: 3.0.0, 3.0.1
+## Current Release: 3.4.0<br>Supported PMMP-API Versions: 3.0.0, 3.0.1, 3.0.2
 
 ## An AntiCheat plugin for [PocketMine-MP](https://github.com/pmmp/pocketmine-mp).<br>Compatible with MCPE 1.X.X.
 
