@@ -109,20 +109,6 @@ class EventListener implements Listener
     }  
   }
 
-  public function onPlayerAnimationEvent(PlayerAnimationEvent $event)
-  {
-    $player   = $event->getPlayer();
-    $hash     = spl_object_hash($player);
-    
-    if($event->getAnimationType() == 1)
-    {
-      if (array_key_exists($hash , $this->Main->PlayerObservers))
-      {    
-        $this->Main->PlayerObservers[$hash]->OnSwing($event);
-      }  
-    }
-  }
-
   public function onEntityRegainHealthEvent(EntityRegainHealthEvent $event)
   {
     if ($event->getRegainReason() != EntityDamageEvent::CAUSE_MAGIC and $event->getRegainReason() != EntityDamageEvent::CAUSE_CUSTOM)
@@ -147,18 +133,17 @@ class EventListener implements Listener
   public function onDamage(EntityDamageEvent $event)
   {
     $evname = $event->getEventName();
-    if ($event instanceof EntityDamageByEntityEvent)
+    $ThisEntity = $event->getEntity();
+    if($ThisEntity instanceof Player)
     {
-      $ThisEntity = $event->getEntity();
-      if($ThisEntity instanceof Player)
+      $hash = spl_object_hash($ThisEntity);
+      if (array_key_exists($hash , $this->Main->PlayerObservers))
       {
-        $hash = spl_object_hash($ThisEntity);
-        if (array_key_exists($hash , $this->Main->PlayerObservers))
-        {
-          $this->Main->PlayerObservers[$hash]->PlayerWasDamaged($event);
-        }
+        $this->Main->PlayerObservers[$hash]->PlayerWasDamaged($event);
       }
-      
+    }
+    if ($event instanceof EntityDamageByEntityEvent)
+    { 
       $ThisDamager = $event->getDamager();
       if($ThisDamager instanceof Player)
       {

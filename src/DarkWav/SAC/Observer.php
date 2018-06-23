@@ -110,23 +110,35 @@ class Observer
     }
     if     ($this->GetConfigEntry("DeepHeuristics") == 1)
     {
-      $this->dist_thr3 = 4.0;
+      $this->dist_thr3     = 4.0;
+      $this->dist_thr4     = 3.75;
       $this->accuracy_thr1 = 3.0;
+      $this->aim_thr1      = 1.0;
+      $this->aim_thr2      = 20;
     }
     if     ($this->GetConfigEntry("DeepHeuristics") == 2)
     {
-      $this->dist_thr3 = 3.875;
-      $this->accuracy_thr1 = 4.0;
+      $this->dist_thr3     = 3.875;
+      $this->dist_thr4     = 3.625;
+      $this->accuracy_thr1 = 3.5;
+      $this->aim_thr1      = 2.0;
+      $this->aim_thr2      = 40;
     }
     elseif ($this->GetConfigEntry("DeepHeuristics") == 3)
     {
-      $this->dist_thr3 = 3.75;
-      $this->accuracy_thr1 = 5.0;
+      $this->dist_thr3     = 3.75;
+      $this->dist_thr4     = 3.5;
+      $this->accuracy_thr1 = 4.0;
+      $this->aim_thr1      = 3.0;
+      $this->aim_thr2      = 60;
     }
     else
     {
-      $this->dist_thr3 = 0.000;
+      $this->dist_thr3     = 0.000;
+      $this->dist_thr4     = 0.000;
       $this->accuracy_thr1 = 0.000;
+      $this->aim_thr1      = 0.000;
+      $this->aim_thr2      = 0.000;
     }
   }  
   
@@ -921,11 +933,6 @@ class Observer
     }
   }
   
-  public function OnSwing($event)
-  {
-    #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > Player Swing Event: $this->PlayerName!");
-  }
-  
   public function PlayerHasDamaged($event)
   {
     $damaged_entity             = $event->getEntity();
@@ -999,57 +1006,69 @@ class Observer
           if ($this->hs_arr_idx >= $this->hs_arr_size) $this->hs_arr_idx = 0;          
           $this->hs_hit_time = $this->hs_time_sum / $this->hs_arr_size;
           #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > THD $this->PlayerName : hittime = $this->hs_hit_time");
-        
-          if ($this->hs_hit_time < 0.1)
+          if ($this->GetConfigEntry("FastClick"))
           {
-            $this->PlayerHitCounter += 2;
-          }
-          else
-          {
-            if($this->PlayerHitCounter > 0)
+            if ($this->hs_hit_time < 0.1)
             {
-              $this->PlayerHitCounter--;
+              $this->PlayerHitCounter += 2;
             }
-          }
-          //Allow a maximum of 7 Unlegit hits, couter derceases x2 slower
-          if($this->PlayerHitCounter > 15)
-          {
-            $event->setCancelled(true);
-            $this->ResetObserver();
-            $message = $this->GetConfigEntry("KillAura-LogMessage");
-            $reason  = $this->GetConfigEntry("KillAura-Message");
-            $this->NotifyAdmins($message);
-            $this->KickPlayer($reason);
-            return;
+            else
+            {
+              if($this->PlayerHitCounter > 0)
+              {
+                $this->PlayerHitCounter--;
+              }
+            }
+            //Allow a maximum of 7 Unlegit hits, couter derceases x2 slower
+            if($this->PlayerHitCounter > 15)
+            {
+              $event->setCancelled(true);
+              $this->ResetObserver();
+              $message = $this->GetConfigEntry("KillAura-LogMessage");
+              $reason  = $this->GetConfigEntry("KillAura-Message");
+              $this->NotifyAdmins($message);
+              $this->KickPlayer($reason);
+              return;
+            }
           }
           $this->PlayerHitFirstTick = $tick;
           if ($distance_xz >= 0.5)
           {
-            # V2
+            # Killaura Heuristics
             if ($this->dist_thr1 != 0.00)
             {
-              if (($distance >= $this->dist_thr1) and 
+              # AKAHAD
+              if (($distance >= $this->dist_thr2) and 
                   ($delta_t  <  0.5             ) and
-                  ($angle_xz >  22.5            ) and
+                  ($angle_xz >  45.0            ) and
                   (
-                    (($this->x_speed > 1.5) and ($this->hs_hit_time < 0.625)) or ($this->x_speed > 4.625)
+                   (($this->x_speed > 1.2) and ($this->hs_hit_time < 0.625)) or ($this->x_speed > 4.125)
                   ))
               {
-                $this->PlayerKillAuraV2Counter+=3;
+                $this->PlayerKillAuraV2Counter+=6;
               }
-              elseif (($distance >= $this->dist_thr2) and 
+              elseif (($distance >= $this->dist_thr1) and 
                       ($delta_t  <  0.5             ) and
-                      ($angle_xz >  45.0            ) and
+                      ($angle_xz >  22.5            ) and
                       (
-                        (($this->x_speed > 1.5) and ($this->hs_hit_time < 0.625)) or ($this->x_speed > 4.125)
+                       (($this->x_speed > 1.2) and ($this->hs_hit_time < 0.625)) or ($this->x_speed > 4.625)
                       ))
               {
                 $this->PlayerKillAuraV2Counter+=6;
               }
+              elseif (($distance >= $this->dist_thr4) and 
+                      ($delta_t  <  0.5             ) and
+                      ($angle_xz >  11.25           ) and
+                      (
+                       (($this->x_speed > 1.2) and ($this->hs_hit_time < 0.625)) or ($this->x_speed > 4.625)
+                      ))
+              {
+                $this->PlayerKillAuraV2Counter+=3;
+              }                         
               elseif (($distance >= $this->dist_thr3) and 
                       ($delta_t  <  0.5             ) and
                       (
-                       (($this->x_speed > 1.5) and ($this->hs_hit_time < 0.625)) or ($this->x_speed > 4.625)
+                       (($this->x_speed > 1.2) and ($this->hs_hit_time < 0.625)) or ($this->x_speed > 4.625)
                       ))
               {
                 if ($this->dist_thr3 != 0.000)
@@ -1057,6 +1076,7 @@ class Observer
                   $this->PlayerKillAuraV2Counter+=3;
                 }
               }
+              # AimConsistency
               elseif (($aimconsistency <= $this->accuracy_thr1) and
                       ($aimconsistency >= 0.625               ) and
                       ($delta_t  <  0.5                       ) and
@@ -1069,6 +1089,14 @@ class Observer
                   $this->PlayerKillAuraV2Counter+=2;
                 }
               }
+              # AimAcurracy
+              elseif (($angle_xz < $this->aim_thr1) and ($angle < $this->aim_thr2) and ($aimconsistency > 0.625) and ($delta_t < 0.5) and ($this->x_speed > 4.125))
+              {
+                if ($this->dist_thr3 != 0.000)
+                {
+                  $this->PlayerKillAuraV2Counter+=5;
+                }
+              }
               else
               {
                 if ($this->PlayerKillAuraV2Counter > 0)
@@ -1077,7 +1105,7 @@ class Observer
                 }
               }
             }
-            
+            # Normal Killaura Detection
             if ($angle_xz > 45)
             {
               if ($this->GetConfigEntry("Angle"))
@@ -1095,29 +1123,14 @@ class Observer
                   $this->PlayerKillAuraCounter+=9;
                 }
               }
-            }            
-            if ($this->GetConfigEntry("AimbotCatcher"))
-            {
-              #$this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > counter V2: $this->PlayerKillAuraV2Counter");
-              # V1
-              if (($angle_xz < 1.0) and ($angle < 20) and ($aimconsistency > 0.625) and ($delta_t < 0.5) and ($this->x_speed > 6.0))
-              {
-                $this->PlayerKillAuraCounter+=2;
-                $this->PlayerKillAuraV2Counter+=2;
-              }
-              if (($angle_xz >= 1.0) or ($angle >= 20) or ($delta_t > 2.0) or ($aimconsistency <= 0.625))
-              {
-                if ($this->PlayerKillAuraCounter > 0)
-                {
-                  if (!$angle_xz > 90)
-                  {
-                    $this->PlayerKillAuraCounter--;
-                  }
-                }   
-              }      
-              #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > counter V1: $this->PlayerKillAuraCounter  V2: $this->PlayerKillAuraV2Counter distance: $distance_xz  deltat: $delta_t  speedx: $this->x_speed anglexz: $angle_xz");
             }
-            #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "AAA[SAC] > counter V1: $this->PlayerKillAuraCounter  V2: $this->PlayerKillAuraV2Counter distance: $distance_xz  deltat: $delta_t  speedx: $this->x_speed anglexz: $angle_xz");
+            if ($this->PlayerKillAuraCounter > 0)
+            {
+              if (!$angle_xz > 45)
+              {
+                $this->PlayerKillAuraCounter--;
+              }
+            }
           }  
       
           if (($this->PlayerKillAuraCounter >= $this->GetConfigEntry("KillAura-Threshold")))

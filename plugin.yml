@@ -1,10 +1,10 @@
 name: SAC
 main: DarkWav\SAC\SAC
-version: 3.4.0
+version: 3.4.1
 load: STARTUP
 enable: STARTUP
 author: DarkWav
-api: [3.0.0,3.0.1]
+api: [3.0.0,3.0.1,3.0.2,4.0.0]
 commands:
       shadowanticheat:
            description: Shows ShadowAntiCheat version

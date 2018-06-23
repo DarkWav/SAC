@@ -9,8 +9,8 @@
 #block = block Hack
 #kick = Player kick
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
-   Plugin-Version: 3.4.0
-   Config-Version: 3.6.4
+   Plugin-Version: 3.4.1
+   Config-Version: 3.6.5
 #Enables i am waching you message
 
    I-AM-WATCHING-YOU: false
@@ -41,6 +41,10 @@
 #1 = Instant Ban
 
    Max-Hacking-Times: 5
+
+#Enable Self-Protection to prevent anyone from disabling SAC?
+
+   SelfProtection: true
 
 #What commands should be executed then?
 #Use %PLAYER% for the Players name.
@@ -178,14 +182,12 @@
 
    DeepHeuristics: 2
 
-#AimbotCatcher
-#This is and old mechanisim to catch aimaura and aimbots in
-#general. It is known for causing a lot of false alerts
-#on windows 10 edition. it will work on MCPE but
-#it is a risk to activate it. I would NOT recommend to
-#enable this. USE AT YOUR OWN RISK!
+#FastClick
+#This kicks players that hit more
+#than 10 times per second
+#It will block too fast hit speeds.
 
-   AimbotCatcher: false
+   FastClick: true
 
 #How many times must a player hack before detection?
 #35 Should work fine. (Standard)
