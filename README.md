@@ -14,7 +14,7 @@
 ## - AntiKillAura<br>- AntiReach<br>- AntiFly<br>- AntiSpider (W.I.P)<br>- AntiSpeed<br>- AntiGlide<br>- AntiNoClip (W.I.P)<br>- AntiRegen<br>- AntiFastClick<br>- AntiFastBow<br>- AutoBanSytem<br>  Read more about Block Hacks [Here](https://github.com/DarkWav/SAC/wiki/About-Block-Hack-Detection).
 
 ## Requirements:
-### - latest PocketMine-MP release (forks and dev builds might work, but not guaranteed)<br>- EXTREMELY IMPORTANT: VERY HIGH CPU POWER: This plugin performs a lot of operations,<br>therefor it needs a lot of computing power to not slow down your server<br>- At least 4GB of RAM<br>- PHP 7.2 or higher
+### - latest PocketMine-MP release (forks and dev builds might work, but not guaranteed)<br>- EXTREMELY IMPORTANT: VERY HIGH CPU POWER: This plugin performs a lot of<br>   operations, therefor it needs a lot of computing power to not slow down your server<br>- At least 4GB of RAM<br>- PHP 7.2 or higher
 
 ### Read the [License](https://github.com/DarkWav/ShadowAntiCheat/blob/master/LICENSE) before downloading the source.
 ### With downloading the source or the Plugin, you AGREE to the [License](https://github.com/DarkWav/ShadowAntiCheat/blob/master/LICENSE)!
