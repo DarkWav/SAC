@@ -2,11 +2,13 @@
 
 ### A powerfull AntiCheat software made to detect unfair gamplay advantages.
 
-## Current Release: 3.4.1<br>Supported PMMP-API Versions: 3.0.0, 3.0.1, 3.0.2, 4.0.0
+## Current Release: 3.4.1<br>Supported PMMP-API Versions: 3.0.0, 3.0.1, 3.0.2, 3.0.3, 3.0.4, 3.0.5, 4.0.0
 
 ## An AntiCheat plugin for [PocketMine-MP](https://github.com/pmmp/pocketmine-mp).<br>Compatible with MCPE 1.X.X.
 
 ## Find The Wiki and Phar Downloads [Here](https://github.com/DarkWav/ShadowAntiCheat/wiki).
+
+## For Developers: [Developer API](https://github.com/DarkWav/SAC/wiki/Developer-API)
 
 ## [Issues / Help / Support / Bug Report](https://github.com/DarkWav/SAC/issues)
 
