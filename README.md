@@ -21,5 +21,5 @@
 ### - At least 4GB of RAM
 ### - PHP 7.2 or higher
 
-### Read the [License](https://github.com/DarkWav/ShadowAntiCheat/blob/master/LICENSE) before downloading the source.
-### With downloading the source or the Plugin, you AGREE to the [License](https://github.com/DarkWav/ShadowAntiCheat/blob/master/LICENSE)!
+### Read the [License](https://github.com/DarkWav/ShadowAntiCheat/blob/master/LICENSE) before downloading this Software.
+### By downloading this Software you AGREE to the [License](https://github.com/DarkWav/ShadowAntiCheat/blob/master/LICENSE)!
