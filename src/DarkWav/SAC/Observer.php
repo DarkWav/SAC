@@ -111,7 +111,7 @@ class Observer
     if     ($this->GetConfigEntry("DeepHeuristics") == 1)
     {
       $this->dist_thr3     = 4.0;
-      $this->dist_thr4     = 3.75;
+      $this->dist_thr4     = 3.875;
       $this->accuracy_thr1 = 3.0;
       $this->aim_thr1      = 1.0;
       $this->aim_thr2      = 20;
@@ -119,7 +119,7 @@ class Observer
     if     ($this->GetConfigEntry("DeepHeuristics") == 2)
     {
       $this->dist_thr3     = 3.875;
-      $this->dist_thr4     = 3.625;
+      $this->dist_thr4     = 3.75;
       $this->accuracy_thr1 = 3.5;
       $this->aim_thr1      = 2.0;
       $this->aim_thr2      = 40;
@@ -127,7 +127,7 @@ class Observer
     elseif ($this->GetConfigEntry("DeepHeuristics") == 3)
     {
       $this->dist_thr3     = 3.75;
-      $this->dist_thr4     = 3.5;
+      $this->dist_thr4     = 3.625;
       $this->accuracy_thr1 = 4.0;
       $this->aim_thr1      = 3.0;
       $this->aim_thr2      = 60;
@@ -152,6 +152,7 @@ class Observer
     $this->PlayerKillAuraV2Counter =  0;
 
     $this->ResetMovement();
+    $this->PlayerNoClipCounter     =  0;
   }
 
   
@@ -160,7 +161,6 @@ class Observer
     $this->PlayerAirCounter      = 0;
     $this->PlayerSpeedCounter    = 0;
     $this->PlayerGlideCounter    = 0;
-    $this->PlayerNoClipCounter   = 0;
     $this->LastMoveTick          = 0;
 
     $this->prev_tick     = -1.0;
@@ -234,7 +234,7 @@ class Observer
     $pos4    = strpos(strtoupper($newmsg3), "%NOCLIPVL%");
     if ($pos4 !== false)
     {
-      $newmsg4 = substr_replace($newmsg3, $this->PlayerNoClipCounter, $pos4, 10);
+      $newmsg4 = substr_replace($newmsg3, $this->PlayerNoClipCounter/10, $pos4, 10);
     }    
     else
     {
@@ -909,6 +909,153 @@ class Observer
     }    
   }  
   
+  public function CheckTPNoClip($event)
+  {
+    # No Clip
+    if ($this->GetConfigEntry("NoClip"))
+    {
+      if ($this->Player->hasPermission("sac.noclip")) return;
+      $level    = $this->Player->getLevel();
+      $pos      = new Vector3($event->getTo()->getX(), $event->getTo()->getY(), $event->getTo()->getZ());
+      $BlockID  = $level->getBlock($pos)->getId();
+      $pos2     = new Vector3($event->getTo()->getX(), $event->getTo()->getY()+1, $event->getTo()->getZ());
+      $BlockID2 = $level->getBlock($pos2)->getId();
+
+      //ANTI-FALSE-POSITIVES
+      if ((
+
+      //BUILDING MATERIAL
+
+         $BlockID == 1
+      or $BlockID == 2
+      or $BlockID == 3
+      or $BlockID == 4
+      or $BlockID == 5
+      or $BlockID == 7
+      or $BlockID == 17
+      or $BlockID == 18
+      or $BlockID == 20
+      or $BlockID == 43
+      or $BlockID == 45
+      or $BlockID == 47
+      or $BlockID == 48
+      or $BlockID == 49
+      or $BlockID == 79
+      or $BlockID == 80
+      or $BlockID == 87
+      or $BlockID == 89
+      or $BlockID == 97
+      or $BlockID == 98
+      or $BlockID == 110
+      or $BlockID == 112
+      or $BlockID == 121
+      or $BlockID == 155
+      or $BlockID == 157
+      or $BlockID == 159
+      or $BlockID == 161
+      or $BlockID == 162
+      or $BlockID == 170
+      or $BlockID == 172
+      or $BlockID == 174
+      or $BlockID == 243
+
+      //ORES (for Prison mines)
+
+      or $BlockID == 14  //GOLD     (-)
+      or $BlockID == 15  //IRON     (-)
+      or $BlockID == 16  //COAL     (-)
+      or $BlockID == 21  //LAPIS    (-)
+      or $BlockID == 56  //DIAMOND  (-)
+      or $BlockID == 73  //REDSTONE (DARK)
+      or $BlockID == 73  //REDSTONE (GLOWING)
+      or $BlockID == 129 //EMERALD  (-)
+      )
+      and
+      (
+
+      //BUILDING MATERIAL
+
+         $BlockID2 == 1
+      or $BlockID2 == 2
+      or $BlockID2 == 3
+      or $BlockID2 == 4
+      or $BlockID2 == 5
+      or $BlockID2 == 7
+      or $BlockID2 == 17
+      or $BlockID2 == 18
+      or $BlockID2 == 20
+      or $BlockID2 == 43
+      or $BlockID2 == 45
+      or $BlockID2 == 47
+      or $BlockID2 == 48
+      or $BlockID2 == 49
+      or $BlockID2 == 79
+      or $BlockID2 == 80
+      or $BlockID2 == 87
+      or $BlockID2 == 89
+      or $BlockID2 == 97
+      or $BlockID2 == 98
+      or $BlockID2 == 110
+      or $BlockID2 == 112
+      or $BlockID2 == 121
+      or $BlockID2 == 155
+      or $BlockID2 == 157
+      or $BlockID2 == 159
+      or $BlockID2 == 161
+      or $BlockID2 == 162
+      or $BlockID2 == 170
+      or $BlockID2 == 172
+      or $BlockID2 == 174
+      or $BlockID2 == 243
+
+      //ORES (for Prison mines)
+
+      or $BlockID2 == 14  //GOLD     (-)
+      or $BlockID2 == 15  //IRON     (-)
+      or $BlockID2 == 16  //COAL     (-)
+      or $BlockID2 == 21  //LAPIS    (-)
+      or $BlockID2 == 56  //DIAMOND  (-)
+      or $BlockID2 == 73  //REDSTONE (DARK)
+      or $BlockID2 == 73  //REDSTONE (GLOWING)
+      or $BlockID2 == 129 //EMERALD  (-)
+      ))
+      {
+        if ($this->GetConfigEntry("NoClip-Punishment") == "kick")
+        {
+          $this->PlayerNoClipCounter += 10;
+          $event->setTo($event->getFrom());
+          if ($this->PlayerNoClipCounter > $this->GetConfigEntry("NoClip-Threshold") * 10)
+          {
+            $reason = $this->GetConfigEntry("NoClip-Message");
+            $this->ResetObserver();
+            $event->setCancelled(true);
+            $this->KickPlayer($reason);
+          }
+          if ($this->PlayerNoClipCounter > $this->GetConfigEntry("NoClip-Threshold") * 5)
+          {
+            $message = $this->GetConfigEntry("NoClip-LogMessage");
+            $this->NotifyAdmins($message);
+            $event->setCancelled(true);
+          }
+        }
+        if ($this->GetConfigEntry("NoClip-Punishment") == "block")
+        {
+            $message = $this->GetConfigEntry("NoClip-LogMessage");
+            $this->NotifyAdmins($message);
+            $event->setTo($event->getFrom());
+            $event->setCancelled(true);
+        }
+      }
+      else
+      {
+        if($this->PlayerNoClipCounter > 0)
+        {
+          $this->PlayerNoClipCounter--;
+        }
+      }
+    }    
+  }  
+  
   public function OnPlayerGameModeChangeEvent($event)
   {
     if ($this->GetConfigEntry("ForceGameMode"))
@@ -1315,6 +1462,9 @@ class Observer
 
   public function onTeleport($event)
   {
+    $this->CheckForceOP($event);
+    if ($this->Player->getGameMode() == 1 or $this->Player->getGameMode() == 3) return;
+    $this->CheckTPNoClip($event);
     $this->ResetMovement();
     $this->LastDamageTick = $this->Server->getTick();  // remember time of last damage
   }

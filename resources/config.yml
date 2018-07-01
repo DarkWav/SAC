@@ -1,7 +1,7 @@
 ---
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #ShadowAntiCheat main configuration file.
-#Current version: 3.4.0
+#Current version: 3.4.2
 #What should be blocked?
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #true = ENABLE
@@ -9,8 +9,8 @@
 #block = block Hack
 #kick = Player kick
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
-   Plugin-Version: 3.4.1
-   Config-Version: 3.6.5
+   Plugin-Version: 3.4.2
+   Config-Version: 3.6.6
 #Enables i am waching you message
 
    I-AM-WATCHING-YOU: false
@@ -81,11 +81,11 @@
    Fly: true
 
 #How many moves may a player be flying before detection?
-#15 Should work fine. (Standard)
+#12 Should work fine. (Standard)
 #NEVER set this lower than 10
 #Increase if Fly causes false poitives.
 
-   Fly-Threshold: 15
+   Fly-Threshold: 12
 
 #Wich Punishment should take place if Fly is detected?
 
@@ -209,7 +209,7 @@
 #Which Log Message Sould be shown if KillAura is detected?
 
    KillAura-LogMessage: "[SAC] > %PLAYER% is is suspected for KillAura (VL = %AURAVL%, Type = Angle)!"
-   KillAura-HEUR-LogMessage: "[SAC] > %PLAYER% is is suspected for KillAura (VL = %HEURVL%, Type = Heuristic)!"
+   KillAura-HEUR-LogMessage: "[SAC] > %PLAYER% is is suspected for KillAura (VL = %HEURVL%, Type = Generic)!"
 
 #------------------Regen------------------#
 #Do you want to enable Regen check?
@@ -265,7 +265,7 @@
 #5 Should work fine. (Standard)
 #NEVER set this to 0
 
-   Speed-Threshold: 5
+   Speed-Threshold: 4
 
 #Wich Message Sould be shown if Speed is detected?
 
@@ -332,13 +332,17 @@
 #If this caueses bugs, please report it to the Author!
 #Lag with stairs has been highly decreased with the update
 #3.0.2. IT STILL MAY CAUSE GLICHES!
+#Also Prevents players from teleporting inside of Blocks with
+#Ender Pearls as of Update 3.4.2
 
    NoClip: true
 
 #Which Punishment should take place?
-#I do NOT reccomand to kick players for NoClip due to glitches!
+#Kicking works fine as of the 3.4.X Updates
+#BUT you might run into false positives with PISTONS
+#so kicking is turned off by deafault
 
-   NoClip-Punishment: kick
+   NoClip-Punishment: block
 
 #How many times must a player be hacking before kick?
 #i reccomand setting this to above 50 because of pocketmines
