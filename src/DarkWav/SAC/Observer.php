@@ -86,6 +86,7 @@ class Observer
     $this->LastDamageTick = 0;
     $this->LastIceTick    = 0;
     $this->LastMoveTick   = 0;
+    $this->mindist        = $this->GetConfigEntry("CheckMinDistance");
     $this->Colorized      = $this->GetConfigEntry("Color");
     
     if     ($this->GetConfigEntry("Heuristics") == 1)
@@ -1155,7 +1156,7 @@ class Observer
           #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > THD $this->PlayerName : hittime = $this->hs_hit_time");
           if ($this->GetConfigEntry("FastClick"))
           {
-            if ($this->hs_hit_time < 0.1)
+            if ($this->hs_hit_time < 0.12)
             {
               $this->PlayerHitCounter += 2;
             }
@@ -1166,8 +1167,8 @@ class Observer
                 $this->PlayerHitCounter--;
               }
             }
-            //Allow a maximum of 7 Unlegit hits, couter derceases x2 slower
-            if($this->PlayerHitCounter > 15)
+            //Allow a maximum of 10 Unlegit hits, couter derceases x2 slower
+            if($this->PlayerHitCounter > 20)
             {
               $event->setCancelled(true);
               $this->ResetObserver();
@@ -1179,7 +1180,7 @@ class Observer
             }
           }
           $this->PlayerHitFirstTick = $tick;
-          if ($distance_xz >= 0.5)
+          if ($distance_xz >= $this->mindist)
           {
             # Killaura Heuristics
             if ($this->dist_thr1 != 0.00)
