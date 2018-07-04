@@ -3,12 +3,11 @@
 #  METADATA OF CONFIG                   #
 #  DO NOT CHANGE UNLESS YOU KNOW WHAT   #
 #  YOU ARE DOING!!!                     #
-   Plugin-Version: 3.4.3                #
+   Plugin-Version: 3.4.4                #
    Config-Version: 3.6.7                #
 #########################################
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #ShadowAntiCheat main configuration file.
-#Current version: 3.4.3
 #What should be blocked?
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #true = ENABLE

@@ -1,6 +1,6 @@
-name: SAC
+name: ShadowAntiCheat
 main: DarkWav\SAC\SAC
-version: 3.4.3
+version: 3.4.4
 load: STARTUP
 enable: STARTUP
 author: DarkWav
