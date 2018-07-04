@@ -2,7 +2,7 @@
 branches:
 - master
 projects:
-  SAC:
+  ShadowAntiCheat:
     path: ""
     icon: meta/poggit-icon.png
 ...
