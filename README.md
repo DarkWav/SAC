@@ -1,8 +1,6 @@
 # SAC (ShadowAntiCheat)
 
-[![](https://poggit.pmmp.io/shield.state/ShadowAntiCheat)](https://poggit.pmmp.io/p/ShadowAntiCheat)
-
-<a href="https://poggit.pmmp.io/p/ShadowAntiCheat"><img src="https://poggit.pmmp.io/shield.state/ShadowAntiCheat"></a>
+[![](https://poggit.pmmp.io/shield.state/ShadowAntiCheat)](https://poggit.pmmp.io/p/ShadowAntiCheat)<img src="https://poggit.pmmp.io/shield.state/ShadowAntiCheat">
 
 ### A powerfull AntiCheat software made to detect unfair gamplay advantages.
 
