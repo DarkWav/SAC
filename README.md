@@ -1,5 +1,9 @@
 # SAC (ShadowAntiCheat)
 
+[![](https://poggit.pmmp.io/shield.state/ShadowAntiCheat)](https://poggit.pmmp.io/p/ShadowAntiCheat)
+
+<a href="https://poggit.pmmp.io/p/ShadowAntiCheat"><img src="https://poggit.pmmp.io/shield.state/ShadowAntiCheat"></a>
+
 ### A powerfull AntiCheat software made to detect unfair gamplay advantages.
 
 ## Current Release: 3.4.3<br>Supported PMMP-API Versions: 3.0.X, 4.0.X
