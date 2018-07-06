@@ -2,7 +2,7 @@
 
 ### A powerfull AntiCheat software made to detect unfair gamplay advantages.
 
-## Current Release: 3.4.3<br>Supported PMMP-API Versions: 3.0.X, 4.0.X
+## Current Release: 3.4.4<br>Supported PMMP-API Versions: 3.0.X, 4.0.X
 
 ## An AntiCheat plugin for [PocketMine-MP](https://github.com/pmmp/pocketmine-mp).<br>Compatible with MCPE 1.X.X.
 
