@@ -1373,9 +1373,9 @@ class Observer
 
   public function PlayerWasDamaged($event)
   {
-    if ($event->getFinalDamage() >= 1)
+    if ($event->getOriginalBaseDamage() >= 1)
     {
-      #$this->Logger->info(TextFormat::ESCAPE. "$this->Colorized" . "PWD-success");
+      //$this->Logger->info(TextFormat::ESCAPE. "$this->Colorized" . "PWD-success");
       $this->LastDamageTick = $this->Server->getTick();  // remember time of last damage
       $this->PlayerSpeedCounter -= 8;
       $this->PlayerAirCounter -= 2;
