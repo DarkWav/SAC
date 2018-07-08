@@ -3,8 +3,8 @@
 #  METADATA OF CONFIG                   #
 #  DO NOT CHANGE UNLESS YOU KNOW WHAT   #
 #  YOU ARE DOING!!!                     #
-   Plugin-Version: 3.4.4                #
-   Config-Version: 3.6.7                #
+   Plugin-Version: 3.4.5                #
+   Config-Version: 3.6.8                #
 #########################################
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #ShadowAntiCheat main configuration file.
@@ -15,6 +15,10 @@
 #false = DISABLE
 #block = block Hack
 #kick = Player kick
+#||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
+#REMEMBER: This AntiCheat software was made to prevent cheats
+#which are not detected by pocketmine itself. I still highly
+#reccomend to turn Pocketmine's Native AntiCheat on!
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #Enables i am waching you message
 
@@ -121,13 +125,6 @@
 
    KillAura: true
 
-#Minimum check distance
-#How many blocks must 2 Players be away from each
-#other to be checked.
-#NEVER set this lower than 1.0!
-
-   CheckMinDistance: 2.0
-
 #Angle (3rd-person-pvp prevention)
 #This will block hitting with impossible angles.
 #(blocks hitting behind yourself)
@@ -138,6 +135,15 @@
 #Do you want to enable Angle?
 
    Angle: true
+   
+#Minimum check distance
+#How many blocks must 2 Players be away from each
+#other to be violated for angle if they hit with more
+#than 180 degrees angle?.
+#NEVER set this lower than 1.0!
+
+   AngleViolationMinDistance: 2.5
+
 
 #Advanced KillAura Heuristics And Detection
 #This is an advanced algorithm to catch a lot more

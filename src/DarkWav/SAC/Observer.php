@@ -86,7 +86,7 @@ class Observer
     $this->LastDamageTick = 0;
     $this->LastIceTick    = 0;
     $this->LastMoveTick   = 0;
-    $this->mindist        = $this->GetConfigEntry("CheckMinDistance");
+    $this->mindist        = $this->GetConfigEntry("AngleViolationMinDistance");
     $this->Colorized      = $this->GetConfigEntry("Color");
     
     if     ($this->GetConfigEntry("Heuristics") == 1)
@@ -1180,7 +1180,7 @@ class Observer
             }
           }
           $this->PlayerHitFirstTick = $tick;
-          if ($distance_xz >= $this->mindist)
+          if ($distance_xz >= 0.5)
           {
             # Killaura Heuristics
             if ($this->dist_thr1 != 0.00)
@@ -1254,12 +1254,8 @@ class Observer
               }
             }
             # Normal Killaura Detection
-            if ($angle_xz > 45)
+            if ($distance_xz >= $this->mindist)
             {
-              if ($this->GetConfigEntry("Angle"))
-              {
-                $event->setCancelled(true);
-              }
               if ($angle_xz > 90)
               {
                 if ($this->dist_thr1 != 0.00)
@@ -1270,6 +1266,13 @@ class Observer
                 {
                   $this->PlayerKillAuraCounter+=9;
                 }
+              }
+            }
+            if ($angle_xz > 45)
+            {
+              if ($this->GetConfigEntry("Angle"))
+              {
+                $event->setCancelled(true);
               }
             }
             if ($this->PlayerKillAuraCounter > 0)
