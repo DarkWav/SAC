@@ -2,7 +2,7 @@
 
 ### A powerfull AntiCheat software made to detect unfair gamplay advantages.
 
-### Remember: SAC is ment to be an addition to PocketMine's Native Anticheat,<br>I highly reccomend to turn it on aswell!
+### Remember: SAC is ment to be an addition to PocketMine's Native Anticheat,<br>I highly recommend to turn it on aswell!
 
 ## Current Release: 3.4.5<br>Supported PMMP-API Versions: 3.X.X, 4.X.X
 
