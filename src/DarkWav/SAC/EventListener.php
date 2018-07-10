@@ -10,26 +10,23 @@ use pocketmine\utils\Config;
 use pocketmine\permission\Permission;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
-use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\entity\EntityRegainHealthEvent;
+use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\event\entity\EntityTeleportEvent;
 use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\entity\Effect;
-use pocketmine\event\player\PlayerEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerRespawnEvent;
 use pocketmine\event\player\PlayerDeathEvent;
-use pocketmine\event\player\PlayerAnimationEvent;
-
-
 use pocketmine\math\Vector3;
 use pocketmine\event\player\PlayerGameModeChangeEvent;
-use DarkWav\SAC\SAC;
-use DarkWav\SAC\Observer;
 use pocketmine\event\Cancellable;
 use pocketmine\Player;
+
+use DarkWav\SAC\SAC;
+use DarkWav\SAC\Observer;
 
 class EventListener implements Listener
 {
@@ -194,15 +191,23 @@ class EventListener implements Listener
     }      
   }  
   
+  //public function onEntityLevelChangeEvent(EntityLevelChangeEvent $event)
+  //{
+  //  $hash = spl_object_hash($event->getEntity());
+  //  if (array_key_exists($hash , $this->Main->PlayerObservers))
+  //  {
+  //    $this->Main->PlayerObservers[$hash]->onWorldChange($event);
+  //  }
+  //}
+  
   public function onEntityTeleportEvent(EntityTeleportEvent $event)
   {
     $hash = spl_object_hash($event->getEntity());
     if (array_key_exists($hash , $this->Main->PlayerObservers))
     {
       $this->Main->PlayerObservers[$hash]->onTeleport($event);
-    }   
+    }
   }
-  
 }
 
 //////////////////////////////////////////////////////

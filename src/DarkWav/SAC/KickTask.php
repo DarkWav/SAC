@@ -3,11 +3,12 @@ namespace DarkWav\SAC;
 
 use pocketmine\utils\TextFormat;
 use pocketmine\command\ConsoleCommandSender;
-use DarkWav\SAC\Observer;
-use DarkWav\SAC\SAC;
 use pocketmine\plugin\Plugin;
 use pocketmine\scheduler\Task;
 use pocketmine\scheduler\TaskScheduler;
+
+use DarkWav\SAC\Observer;
+use DarkWav\SAC\SAC;
 
 class KickTask extends Task
 {

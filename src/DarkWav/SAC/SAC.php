@@ -13,6 +13,7 @@ use pocketmine\Plugin;
 use pocketmine\plugin\PluginLoader;
 use pocketmine\scheduler\Task;
 use pocketmine\scheduler\TaskScheduler;
+
 use DarkWav\SAC\EventListener;
 use DarkWav\SAC\Observer;
 use DarkWav\SAC\KickTask;
@@ -27,7 +28,7 @@ class SAC extends PluginBase
 
   public function onEnable()
   {
-    $this->getScheduler()->scheduleRepeatingTask(new KickTask($this), 20);
+    $this->getScheduler()->scheduleRepeatingTask(new KickTask($this), 100);
     @mkdir($this->getDataFolder());
     $this->saveDefaultConfig();
     $this->saveResource("AntiForceOP.txt");
@@ -40,7 +41,7 @@ class SAC extends PluginBase
     
     $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
     $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > ShadowAntiCheat Activated"            );
-    $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > ShadowAntiCheat v3.4.5 [ShadowX]");
+    $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > ShadowAntiCheat v3.4.6 [ShadowX]");
     $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > Loading Modules");
     if($Config->get("ForceOP"    )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiForceOP"    );
     if($Config->get("NoClip"     )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiNoClip"     );
@@ -53,28 +54,16 @@ class SAC extends PluginBase
     if($Config->get("FastBow"    )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiFastBow"    );
     if($Config->get("Regen"      )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiRegen"      );
 
-    if($Config->get("Config-Version") !== "3.6.8")
+    if($Config->get("Config-Version") !== "3.6.9")
     {
       $Logger->warning(TextFormat::ESCAPE."$cl"."[SAC] > Your Config is out of date!");
     }
-    if($Config->get("Plugin-Version") !== "3.4.5")
+    if($Config->get("Plugin-Version") !== "3.4.6" and $Config->get("Plugin-Version") !== "3.4.5")
     {
       $Logger->error(TextFormat::ESCAPE."$cl"."[SAC] > Your Config is incompatible with this plugin version, please update immediately!");
       $Server->shutdown();
     }
-    if(($Server->getProperty("player.anti-cheat.allow-movement-cheats")) or ($Server->getAllowFlight()))
-    {
-      $Logger->warning(TextFormat::YELLOW."[SAC] > It seems like PocketMine's native AntiCheat is disabled!");
-      $Logger->warning(TextFormat::YELLOW."[SAC] > Please make sure to enable all of PocketMine's native Checks!");
-    }
-    if($Server->getAllowFlight())
-    {
-      $Logger->warning(TextFormat::YELLOW."[SAC] > AntiCheat Component not enabled: allow-flight=on in server.properties");
-    } 
-    if($Server->getProperty("player.anti-cheat.allow-movement-cheats"))
-    {
-      $Logger->warning(TextFormat::YELLOW."[SAC] > AntiCheat Component not enabled: allow-movement-cheats: true in pocketmine.yml");
-    }
+
     foreach($Server->getOnlinePlayers() as $player)
     {
       $hash     = spl_object_hash($player);
@@ -150,7 +139,7 @@ class SAC extends PluginBase
     }
     if ($command->getName() === "sac" or $command->getName() === "shadowanticheat")
     {
-      $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > ShadowAntiCheat v3.4.5 [ShadowX] (~DarkWav/Darku)");
+      $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > ShadowAntiCheat v3.4.6 [ShadowX] (~DarkWav/Darku)");
     }
 	return false;
   }

@@ -3,12 +3,12 @@
 #  METADATA OF CONFIG                   #
 #  DO NOT CHANGE UNLESS YOU KNOW WHAT   #
 #  YOU ARE DOING!!!                     #
-   Plugin-Version: 3.4.5                #
-   Config-Version: 3.6.8                #
+   Plugin-Version: 3.4.6                #
+   Config-Version: 3.6.9                #
 #########################################
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #ShadowAntiCheat main configuration file.
-#Current version: 3.4.4
+#Current version: 3.4.6
 #What should be blocked?
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #true = ENABLE
@@ -17,8 +17,10 @@
 #kick = Player kick
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #REMEMBER: This AntiCheat software was made to prevent cheats
-#which are not detected by pocketmine itself. I still highly
-#reccomend to turn Pocketmine's Native AntiCheat on!
+#which are not detected by pocketmine itself. While SAC can
+#run as a standalone plugin I still highly
+#reccomend to turn Pocketmine's Native AntiCheat on if it
+#doesn't cause issues for you.
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #Enables i am waching you message
 
@@ -49,7 +51,7 @@
 #0 = Disabled
 #1 = Instant Ban
 
-   Max-Hacking-Times: 5
+   Max-Hacking-Times: 8
 
 #Enable Self-Protection to prevent anyone from disabling SAC?
 
@@ -92,12 +94,12 @@
    Fly: true
 
 #How many moves may a player be flying before detection?
-#18 Should work fine. (Standard)
+#16 Should work fine. (Standard)
 #NEVER set this lower than 10
 #Increase if Fly causes false poitives.
 #Decrease of Hackers bypass this.
 
-   Fly-Threshold: 18
+   Fly-Threshold: 16
 
 #Wich Punishment should take place if Fly is detected?
 
@@ -223,11 +225,10 @@
 #How many times must a player hack before detection?
 #35 Should work fine. (Standard)
 #NEVER set this lower than 25
-#Optimal settings:
-#For PREMISSIVE Heuristics: 25-30
-#For   NORMAL   Heuristics: 35-40
-#For AGGRESSIVE Heuristics: 45-50
-#ALWAYS SET TO AT LEAST 40 IF USING AGGRESSIVE Heuristics!
+#Suitable settings:
+#For PREMISSIVE Heuristics: 10-30 (I would reccomend about 20)
+#For   NORMAL   Heuristics: 30-50 (I would reccomend about 40)
+#For AGGRESSIVE Heuristics: 50-70 (I would reccomend about 60)
 #Increase if KillAura causes false poitives.
 
    KillAura-Threshold: 40
@@ -239,8 +240,8 @@
 
 #Which Log Message Sould be shown if KillAura is detected?
 
-   KillAura-LogMessage: "[SAC] > %PLAYER% is is suspected for KillAura (VL = %AURAVL%, Type = Angle)!"
-   KillAura-HEUR-LogMessage: "[SAC] > %PLAYER% is is suspected for KillAura (VL = %HEURVL%, Type = Generic)!"
+   KillAura-LogMessage: "[SAC] > %PLAYER% is suspected for KillAura (VL = %AURAVL%, Type = Angle)!"
+   KillAura-HEUR-LogMessage: "[SAC] > %PLAYER% is suspected for KillAura (VL = %HEURVL%, Type = Generic)!"
 
 #------------------Regen------------------#
 #Do you want to enable Regen check?
@@ -279,7 +280,7 @@
 
 #Which Log Message Sould be shown if FastBow is detected?
 
-   FastBow-LogMessage: "[SAC] > %PLAYER% is hacking FastBow!"
+   FastBow-LogMessage: "[SAC] > %PLAYER% is suspected for FastBow (VL = %FASTBOWVL%)!"
 
 #-----------------Speed-------------------#
 #Do you want to enable Speed check?
@@ -300,7 +301,7 @@
 #5 Should work fine. (Standard)
 #NEVER set this to 0
 
-   Speed-Threshold: 5
+   Speed-Threshold: 4
 
 #Wich Message Sould be shown if Speed is detected?
 
@@ -388,7 +389,7 @@
 #bugs and glitches.
 #NEVER set this to 0
 
-   NoClip-Threshold: 50
+   NoClip-Threshold: 40
 
 #Which Message Should be shown if NoClip is detected?
 

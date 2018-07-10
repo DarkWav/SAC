@@ -5,10 +5,12 @@ namespace DarkWav\SAC;
 use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
+use pocketmine\level\Level;
 use pocketmine\block\BlockIds;
 use pocketmine\block\Block;
-use DarkWav\SAC\EventListener;
 use pocketmine\entity\Effect;
+
+use DarkWav\SAC\EventListener;
 
 class Observer
 {
@@ -115,7 +117,7 @@ class Observer
       $this->dist_thr4     = 3.875;
       $this->accuracy_thr1 = 3.0;
       $this->aim_thr1      = 1.0;
-      $this->aim_thr2      = 20;
+      $this->aim_thr2      = 25;
     }
     if     ($this->GetConfigEntry("DeepHeuristics") == 2)
     {
@@ -123,7 +125,7 @@ class Observer
       $this->dist_thr4     = 3.75;
       $this->accuracy_thr1 = 3.5;
       $this->aim_thr1      = 2.0;
-      $this->aim_thr2      = 40;
+      $this->aim_thr2      = 50;
     }
     elseif ($this->GetConfigEntry("DeepHeuristics") == 3)
     {
@@ -131,7 +133,7 @@ class Observer
       $this->dist_thr4     = 3.625;
       $this->accuracy_thr1 = 4.0;
       $this->aim_thr1      = 3.0;
-      $this->aim_thr2      = 60;
+      $this->aim_thr2      = 75;
     }
     else
     {
@@ -209,6 +211,7 @@ class Observer
     $newmsg2 = $message;
     $newmsg3 = $message;
     $newmsg4 = $message;
+    $newmsg5 = $message;
     
     if ($pos !== false)
     {
@@ -241,7 +244,16 @@ class Observer
     {
       $newmsg4 = $newmsg3;
     }
-    return $newmsg4;
+    $pos5    = strpos(strtoupper($newmsg4), "%FASTBOWVL%");
+    if ($pos5 !== false)
+    {
+      $newmsg5 = substr_replace($newmsg4, $this->PlayerShootCounter, $pos5, 11);
+    }    
+    else
+    {
+      $newmsg5 = $newmsg4;
+    }
+    return $newmsg5;
   }
 
   public function GetConfigEntry($cfgkey)
@@ -1404,7 +1416,7 @@ class Observer
       $tps  = (double)$this->Server->getTicksPerSecond();
       if ($this->PlayerShootFirstTick == -1)
       {
-        $this->PlayerShootFirstTick = $tick;
+        $this->PlayerShootFirstTick = $tick - 30;
       }        
       $tick_count = (double)($tick - $this->PlayerShootFirstTick);   // server ticks since last hit
       $delta_t    = (double)($tick_count) / (double)$tps;          // seconds since last hit
@@ -1422,7 +1434,10 @@ class Observer
         {
           $this->PlayerShootCounter += 3;
         }
+        $message = $this->GetConfigEntry("FastBow-LogMessage");
+        $this->NotifyAdmins($message);
         $event->setCancelled(true);
+        
       }
       else
       {
@@ -1438,9 +1453,7 @@ class Observer
         {
           $event->setCancelled(true);
           $this->ResetObserver();
-          $message = $this->GetConfigEntry("FastBow-LogMessage");
           $reason  = $this->GetConfigEntry("FastBow-Message");
-          $this->NotifyAdmins($message);
           $this->KickPlayer($reason);
           return;
         }
@@ -1461,14 +1474,20 @@ class Observer
   {
     $this->ResetMovement();
     $this->LastDamageTick = $this->Server->getTick();  // remember time of last damage
-  }  
-  
+  }
 
   public function onTeleport($event)
   {
+    $this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > 1");
     $this->CheckForceOP($event);
+    $fromworldname = $event->getFrom()->getLevel()->getName();
+    $toworldname   = $event->getTo()->getLevel()->getName();
     if ($this->Player->getGameMode() == 1 or $this->Player->getGameMode() == 3) return;
-    $this->CheckTPNoClip($event);
+    if ($fromworldname == $toworldname)
+    {
+      $this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > 2, Time: $this->TimeSinceLastWorldChangeTick, L1: $fromworldname, L2: $toworldname");
+      $this->CheckTPNoClip($event);
+    }
     $this->ResetMovement();
     $this->LastDamageTick = $this->Server->getTick();  // remember time of last damage
   }
