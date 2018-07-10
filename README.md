@@ -1,4 +1,4 @@
-# SAC (ShadowAntiCheat) [![](https://poggit.pmmp.io/shield.state/ShadowAntiCheat)](https://poggit.pmmp.io/p/ShadowAntiCheat) [![](https://img.shields.io/github/license/DarkWav/SAC.svg?label=License)](LICENSE)
+# SAC (ShadowAntiCheat) [![](https://poggit.pmmp.io/shield.state/ShadowAntiCheat)](https://poggit.pmmp.io/p/ShadowAntiCheat) [![](https://img.shields.io/github/license/DarkWav/SAC.svg?label=License)](https://github.com/DarkWav/SAC/LICENSE)
 
 ### A powerfull AntiCheat software made to detect unfair gamplay advantages.
 
