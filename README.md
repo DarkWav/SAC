@@ -2,8 +2,6 @@
 
 ### A powerfull AntiCheat software made to detect unfair gamplay advantages.
 
-# Note: Development is paused until PocketMine-MP fully supports MCPE 1.5 as i cannot test without it.<br>You can watch the progress [Here](https://github.com/pmmp/pocketmine-mp/tree/mc-broken-ed-1.5).
-
 ## Current Release: 3.4.6<br>Supported PMMP-API Versions: 3.X.X
 
 ## An AntiCheat plugin for [PocketMine-MP](https://github.com/pmmp/pocketmine-mp).<br>Compatible with MCPE 1.X.X.
