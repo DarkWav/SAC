@@ -3,12 +3,12 @@
 #  METADATA OF CONFIG                   #
 #  DO NOT CHANGE UNLESS YOU KNOW WHAT   #
 #  YOU ARE DOING!!!                     #
-   Plugin-Version: 3.4.6                #
-   Config-Version: 3.6.9                #
+   Plugin-Version: 3.4.7                #
+   Config-Version: 3.7.0                #
 #########################################
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #ShadowAntiCheat main configuration file.
-#Current version: 3.4.6
+#Current version: 3.4.7
 #What should be blocked?
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #true = ENABLE
@@ -145,7 +145,6 @@
 #NEVER set this lower than 1.0!
 
    AngleViolationMinDistance: 2.5
-
 
 #Advanced KillAura Heuristics And Detection
 #This is an advanced algorithm to catch a lot more
@@ -335,6 +334,13 @@
 #hacker without any warning or dragback before.
 
    Glide: true
+
+#How fast must a player be falling to not get violated for glide?
+#Tweaks:
+#Set to 5 for Mininimal false positives.
+#Set to 10 for Maxiumum protection.
+
+   MinDownfallSpeed: 7.5
 
 #Wich Punishment should take place if Glide is detected?
 

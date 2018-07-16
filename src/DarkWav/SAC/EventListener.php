@@ -22,6 +22,7 @@ use pocketmine\event\player\PlayerRespawnEvent;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\math\Vector3;
 use pocketmine\event\player\PlayerGameModeChangeEvent;
+use pocketmine\event\entity\EntityMotionEvent;
 use pocketmine\event\Cancellable;
 use pocketmine\Player;
 
@@ -103,6 +104,16 @@ class EventListener implements Listener
       //THIS IS IN-DEV AND NOT USEABLE
       $this->Main->PlayerObservers[$hash]->getRealKnockBack($event);
       */
+    }  
+  }
+  
+  public function onEntityMotionEvent(EntityMotionEvent $event)
+  {
+    $hash     = spl_object_hash($event->getEntity());
+
+    if (array_key_exists($hash , $this->Main->PlayerObservers))
+    {    
+      $this->Main->PlayerObservers[$hash]->OnMotion($event);
     }  
   }
 

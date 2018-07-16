@@ -88,6 +88,7 @@ class Observer
     $this->LastDamageTick = 0;
     $this->LastIceTick    = 0;
     $this->LastMoveTick   = 0;
+    $this->LastMotionTick = 0;
     $this->mindist        = $this->GetConfigEntry("AngleViolationMinDistance");
     $this->Colorized      = $this->GetConfigEntry("Color");
     
@@ -165,6 +166,7 @@ class Observer
     $this->PlayerSpeedCounter    = 0;
     $this->PlayerGlideCounter    = 0;
     $this->LastMoveTick          = 0;
+    $this->LastMotionTick        = 0;
 
     $this->prev_tick     = -1.0;
     
@@ -317,6 +319,31 @@ class Observer
   }
 
   public function AllBlocksAir()
+  {
+    $level       = $this->Player->getLevel();
+    $posX        = $this->Player->getX();
+    $posY        = $this->Player->getY();
+    $posZ        = $this->Player->getZ();    
+
+    for ($xidx = $posX-1; $xidx <= $posX+1; $xidx = $xidx + 1)
+    {
+      for ($zidx = $posZ-1; $zidx <= $posZ+1; $zidx = $zidx + 1)
+      {
+        for ($yidx = $posY-1; $yidx <= $posY; $yidx = $yidx + 1)
+        {
+          $pos   = new Vector3($xidx, $yidx, $zidx);
+          $block = $level->getBlock($pos)->getId();
+          if ($block != Block::AIR)
+          {
+            return false;
+          }   
+        }
+      }
+    }
+    return true;
+  }
+  
+  public function AllBlocksAboveAir()
   {
     $level       = $this->Player->getLevel();
     $posX        = $this->Player->getX();
@@ -598,7 +625,9 @@ class Observer
                and !in_array(Block::DETECTOR_RAIL     , $this->clipsurroundings )
                and !in_array(Block::ACTIVATOR_RAIL    , $this->clipsurroundings ))
             {
-            # $this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > $this->PlayerName failed InArray!"); 
+              //if ($this->AllBlocksAboveAir())
+              //{
+              $this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > $this->PlayerName failed InArray!"); 
             # Anti Speed
                 if ($this->Player->hasEffect(Effect::SPEED))
                 {
@@ -607,7 +636,7 @@ class Observer
                   {
                     if ($this->x_speed > 10)
                     {
-                      if (($tick - $this->LastDamageTick) > 30 and ($tick - $this->LastIceTick) > 60 )  # deactivate 1.5 seconds after receiving damage and 3.0 seconds after being near ice.
+                      if (($tick - $this->LastDamageTick) > 30 and ($tick - $this->LastIceTick) > 60 and ($tick - $this->LastMotionTick) > 90)  # deactivate 1.5 seconds after receiving damage and 3.0 seconds after being near ice.
                       {
                         $this->PlayerSpeedCounter += 10;
                       }   
@@ -624,7 +653,7 @@ class Observer
                   {
                     if ($this->x_speed > 11.5)
                     {
-                      if (($tick - $this->LastDamageTick) > 30 and ($tick - $this->LastIceTick) > 60 )  # deactivate 1.5 seconds after receiving damage and 3.0 seconds after being near ice.
+                      if (($tick - $this->LastDamageTick) > 30 and ($tick - $this->LastIceTick) > 60  and ($tick - $this->LastMotionTick) > 90)  # deactivate 1.5 seconds after receiving damage and 3.0 seconds after being near ice.
                       {
                         $this->PlayerSpeedCounter += 10;
                       }   
@@ -652,7 +681,7 @@ class Observer
                 }
                 elseif ($this->x_speed > 8.325)
                 {
-                  if (($tick - $this->LastDamageTick) > 30 and ($tick - $this->LastIceTick) > 60 )  # deactivate 1.5 seconds after receiving damage and 3.0 seconds after being near ice.
+                  if (($tick - $this->LastDamageTick) > 30 and ($tick - $this->LastIceTick) > 60  and ($tick - $this->LastMotionTick) > 90)  # deactivate 1.5 seconds after receiving damage and 3.0 seconds after being near ice.
                   {
                     $this->PlayerSpeedCounter += 10;
                   }
@@ -664,6 +693,7 @@ class Observer
                     $this->PlayerSpeedCounter--;
                   }
                 }
+              //}
             }
             else
             {
@@ -714,7 +744,13 @@ class Observer
           {
             if (!$this->Player->hasPermission("sac.glide"))
             {
-              $this->PlayerGlideCounter++;
+              if ($this->y_speed < $this->GetConfigEntry("MinDownfallSpeed"))
+              {
+                if (($tick - $this->LastMotionTick) > 90)
+                {
+                $this->PlayerGlideCounter+=3;
+                }
+              }
             }
           }
         }
@@ -723,10 +759,9 @@ class Observer
           # Player moves up or horizontal
           if ($this->GetConfigEntry("Fly"))
           {
-            $this->PlayerAirCounter++;
-            if ($this->PlayerGlideCounter > 0)
+            if (($tick - $this->LastMotionTick) > 90)
             {
-              $this->PlayerGlideCounter--;
+              $this->PlayerAirCounter++;
             }
           }
         }
@@ -738,7 +773,7 @@ class Observer
       $this->PlayerGlideCounter = 0;
     }
     
-    if ($this->PlayerGlideCounter > 25 and $this->y_speed < 20)
+    if ($this->PlayerGlideCounter > 75)
     {
       if ($this->GetConfigEntry("Glide-Punishment") == "kick")
       {
@@ -1396,6 +1431,15 @@ class Observer
       $this->PlayerAirCounter -= 2;
       $this->PlayerGlideCounter -= 2;
     }
+  }
+  
+  public function OnMotion($event)
+  {
+    $this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > $this->PlayerName : OnMotion");
+    $this->PlayerSpeedCounter = 0;
+    $this->PlayerAirCounter   = 0;
+    $this->PlayerGlideCounter = 0;
+    $this->LastMotionTick = $this->Server->getTick();
   }
   
 
