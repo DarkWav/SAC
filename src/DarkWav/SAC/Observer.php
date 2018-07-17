@@ -347,22 +347,19 @@ class Observer
   {
     $level       = $this->Player->getLevel();
     $posX        = $this->Player->getX();
-    $posY        = $this->Player->getY();
+    $posY        = $this->Player->getY() + 2;
     $posZ        = $this->Player->getZ();    
 
     for ($xidx = $posX-1; $xidx <= $posX+1; $xidx = $xidx + 1)
     {
       for ($zidx = $posZ-1; $zidx <= $posZ+1; $zidx = $zidx + 1)
       {
-        for ($yidx = $posY-1; $yidx <= $posY; $yidx = $yidx + 1)
+        $pos   = new Vector3($xidx, $posY, $zidx);
+        $block = $level->getBlock($pos)->getId();
+        if ($block != Block::AIR)
         {
-          $pos   = new Vector3($xidx, $yidx, $zidx);
-          $block = $level->getBlock($pos)->getId();
-          if ($block != Block::AIR)
-          {
-            return false;
-          }   
-        }
+          return false;
+        }   
       }
     }
     return true;
@@ -625,10 +622,10 @@ class Observer
                and !in_array(Block::DETECTOR_RAIL     , $this->clipsurroundings )
                and !in_array(Block::ACTIVATOR_RAIL    , $this->clipsurroundings ))
             {
-              //if ($this->AllBlocksAboveAir())
-              //{
-              $this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > $this->PlayerName failed InArray!"); 
-            # Anti Speed
+              if ($this->AllBlocksAboveAir())
+              {
+              #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > $this->PlayerName failed InArray!"); 
+              # Anti Speed
                 if ($this->Player->hasEffect(Effect::SPEED))
                 {
                   $this->SpeedAMP = $this->Player->getEffect(Effect::SPEED)->getAmplifier();
@@ -693,7 +690,7 @@ class Observer
                     $this->PlayerSpeedCounter--;
                   }
                 }
-              //}
+              }
             }
             else
             {
@@ -1435,7 +1432,7 @@ class Observer
   
   public function OnMotion($event)
   {
-    $this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > $this->PlayerName : OnMotion");
+    //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > $this->PlayerName : OnMotion");
     $this->PlayerSpeedCounter = 0;
     $this->PlayerAirCounter   = 0;
     $this->PlayerGlideCounter = 0;
