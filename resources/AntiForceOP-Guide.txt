@@ -1,0 +1,24 @@
+#######################################################
+# USE THIS AT YOUR OWN RISK. I GUARANTEE FOR NOTHING! #
+#######################################################
+This will teach you how to use AntiForceOP.
+
+Step 1: Enter ALL of your OP's names in LegitOPs.yml!
+
+Step 2: Enabling in config:
+
+        Set "ForceOP" to "true"
+
+Step 3: Now Restart your server.
+
+Step 4: You are now protected against ForceOP! Don´t forget to enter you new OPs names in LegitOPs.yml BEFORE OPing them!
+
+Have fun with this tool!
+
+//////////////////////////////////////////////////////
+//                                                  //
+//     SAC by DarkWav.                              //
+//     Distributed under the GGPL License.          //
+//     Copyright (C) 2018 DarkWav                   //
+//                                                  //
+//////////////////////////////////////////////////////

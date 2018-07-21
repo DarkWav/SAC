@@ -28,11 +28,11 @@ class SAC extends PluginBase
 
   public function onEnable()
   {
-    $this->getScheduler()->scheduleRepeatingTask(new KickTask($this), 100);
+    $this->getScheduler()->scheduleRepeatingTask(new KickTask($this), 1);
     @mkdir($this->getDataFolder());
     $this->saveDefaultConfig();
-    $this->saveResource("AntiForceOP.txt");
-    $this->saveResource("AntiForceGM.txt");
+    $this->saveResource("AntiForceOP-Guide.txt");
+    $this->saveResource("LegitOPs.yml");
     $cl              = $this->getConfig()->get("Color");
   
     $Config = $this->getConfig();
@@ -41,7 +41,7 @@ class SAC extends PluginBase
     
     $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
     $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > ShadowAntiCheat Activated"            );
-    $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > ShadowAntiCheat v3.4.7 [ShadowX]");
+    $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > ShadowAntiCheat v3.4.8 [ShadowX]");
     $Logger->info(TextFormat::ESCAPE."$cl" . "[SAC] > Loading Modules");
     if($Config->get("ForceOP"    )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiForceOP"    );
     if($Config->get("NoClip"     )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiNoClip"     );
@@ -54,11 +54,11 @@ class SAC extends PluginBase
     if($Config->get("FastBow"    )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiFastBow"    );
     if($Config->get("Regen"      )) $Logger->info(TextFormat::ESCAPE."$cl"."[SAC] > Enabling AntiRegen"      );
 
-    if($Config->get("Config-Version") !== "3.7.0")
+    if($Config->get("Config-Version") !== "3.7.1")
     {
       $Logger->warning(TextFormat::ESCAPE."$cl"."[SAC] > Your Config is out of date!");
     }
-    if($Config->get("Plugin-Version") !== "3.4.7")
+    if($Config->get("Plugin-Version") !== "3.4.8")
     {
       $Logger->error(TextFormat::ESCAPE."$cl"."[SAC] > Your Config is incompatible with this plugin version, please update immediately!");
       $Server->shutdown();
@@ -119,13 +119,14 @@ class SAC extends PluginBase
     
   public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool
   {
-    $Logger = $this->getServer()->getLogger();
-    $cl              = $this->getConfig()->get("Color");
+    $Logger            = $this->getServer()->getLogger();
+    $cl                = $this->getConfig()->get("Color");
+    $LegitOPsYML       = new Config($this->getDataFolder() . "LegitOPs.yml", Config::YAML);
     if ($this->getConfig()->get("ForceOP"))
     {
       if ($sender->isOp())
       {
-        if (!$sender->hasPermission($this->getConfig()->get("ForceOP-Permission")))
+        if (!in_array($sender->getName(), $LegitOPsYML->get("LegitOPs")))
         {
           if ($sender instanceof Player)
           {
@@ -139,7 +140,7 @@ class SAC extends PluginBase
     }
     if ($command->getName() === "sac" or $command->getName() === "shadowanticheat")
     {
-      $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > ShadowAntiCheat v3.4.7 [ShadowX] (~DarkWav/Darku)");
+      $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > ShadowAntiCheat v3.4.8 [ShadowX] (~DarkWav/Darku)");
     }
 	return false;
   }
@@ -166,5 +167,6 @@ class SAC extends PluginBase
 //                                                  //
 //     SAC by DarkWav.                              //
 //     Distributed under the GGPL License.          //
+//     Copyright (C) 2018 DarkWav                   //
 //                                                  //
 //////////////////////////////////////////////////////

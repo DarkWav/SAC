@@ -3,8 +3,8 @@
 #  METADATA OF CONFIG                   #
 #  DO NOT CHANGE UNLESS YOU KNOW WHAT   #
 #  YOU ARE DOING!!!                     #
-   Plugin-Version: 3.4.7                #
-   Config-Version: 3.7.0                #
+   Plugin-Version: 3.4.8                #
+   Config-Version: 3.7.1                #
 #########################################
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
 #ShadowAntiCheat main configuration file.
@@ -317,7 +317,7 @@
    Reach: true
 
 #How much Range may a player have to be legit?
-#This wont affect killaura detection, it just blocks the hits.
+#This will support the KillAura Checks if enabled.
 #Maxrange will be the maximum range.
 #Players are not kicked for that due to
 #False Positives.
@@ -365,12 +365,6 @@
 
    ForceOP: false
 
-#Which Permission should ForceOP check?
-#THIS NEEDS TO BE AN EXISTING PERMISSION
-#WICH IS NOT DEFAULTLY GIVEN TO OPS!
-
-   ForceOP-Permission: "legitop"
-
 #-----------------NoClip------------------#
 #Do you want to enable NoClip Detection?
 #This prevents players form glitching through blocks.
@@ -405,33 +399,11 @@
 
    NoClip-LogMessage: "[SAC] > %PLAYER% is suspected for NoClip (VL = %NOCLIPVL%)!"
 
-#--------------ForceGameMode--------------#
-#######################################################
-# USE THIS AT YOUR OWN RISK. I GUARANTEE FOR NOTHING! #
-# THIS IS OBSOLETE AS OF NOW. I CANT GUARANTEE IT     #
-# CAN HELP YOU ANYTHING!                              #
-#######################################################
-#Do you want to enable ForceGameMode Detection?
-#USE THIS WITH CAUTION!
-#This WILL BLOCK ANY PLAYER THAT IS CHANGEING ITS GAMEMODE
-#AND IS NOT OP ALSO IF DONE VIA ADMIN/PLUGIN!
-#I WONT GUARANTEE FOR ANY FALSE POSITIVES WITH THAT.
-#READ AntiForceGM.txt BEFORE ENABLING!
-
-   FoceGameMode: false
-
-#Which Message Should be shown if ForceGameMode is detected?
-
-   ForceGameMode-Message: "[SAC] > ForceGameMode is not allowed!"
-
-#Which Log Message Sould be shown if ForceGameMode is detected?
-
-   ForceGameMode-LogMessage: "[SAC] > %PLAYER% is hacking ForceGameMode!"
-
 #//////////////////////////////////////////////////////
 #//                                                  //
 #//     SAC by DarkWav.                              //
 #//     Distributed under the GGPL License.          //
+#//     Copyright (C) 2018 DarkWav                   //
 #//                                                  //
 #//////////////////////////////////////////////////////
 ...

@@ -1,6 +1,6 @@
 name: SAC
 main: DarkWav\SAC\SAC
-version: 3.4.7
+version: 3.4.8
 load: STARTUP
 enable: STARTUP
 author: DarkWav
@@ -13,9 +13,6 @@ commands:
            description: Shows ShadowAntiCheat version
            aliases: ["ShadowAntiCheat","AntiCheat","SAC"]
 permissions:
-    legitop:
-        description: "A permission."
-        default: false
     sac:
         description: "Allows to use all SAC features."
         default: false
@@ -38,16 +35,16 @@ permissions:
             sac.reach:
                 description: "A permission."
                 default: false
-            sac.instantkill:
-                description: "A permission."
-                default: false
             sac.killaura:
                 description: "A permission."
                 default: false
             sac.regen:
                 description: "A permission."
                 default: false
-            sac.forcegamemode:
-                description: "A permission."
-                default: false
-
+#//////////////////////////////////////////////////////
+#//                                                  //
+#//     SAC by DarkWav.                              //
+#//     Distributed under the GGPL License.          //
+#//     Copyright (C) 2018 DarkWav                   //
+#//                                                  //
+#//////////////////////////////////////////////////////

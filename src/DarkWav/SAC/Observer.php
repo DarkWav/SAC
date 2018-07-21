@@ -9,6 +9,7 @@ use pocketmine\level\Level;
 use pocketmine\block\BlockIds;
 use pocketmine\block\Block;
 use pocketmine\entity\Effect;
+use pocketmine\utils\Config;
 
 use DarkWav\SAC\EventListener;
 
@@ -25,6 +26,7 @@ class Observer
     $this->ClientID                = $player->getClientId();
     $this->Logger                  = $SAC->getServer()->getLogger();
     $this->Server                  = $SAC->getServer();
+    $this->LegitOPsYML             = new Config($SAC->getDataFolder() . "LegitOPs.yml", Config::YAML);
     $this->JoinCounter             = 0;
     $this->KickMessage             = "";
 
@@ -152,6 +154,7 @@ class Observer
     $this->PlayerReachFirstTick    = -1;
     $this->PlayerHitFirstTick      = -1;
     $this->PlayerHitCounter        =  0;
+    $this->PlayerShootCounter      =  0;
     $this->PlayerKillAuraCounter   =  0;
     $this->PlayerKillAuraV2Counter =  0;
 
@@ -262,6 +265,12 @@ class Observer
   {
     $msg = $this->Main->getConfig()->get($cfgkey);
     return $this->ScanMessage($msg);    
+  }
+  
+  public function GetFromLegitOPsYML($cfgkey)
+  {
+    $entry = $this->LegitOPsYML->get($cfgkey);
+    return $entry;    
   }
 
   public function KickPlayer($reason)
@@ -461,7 +470,7 @@ class Observer
     {
       if ($this->Player->isOp())
       {
-        if (!$this->Player->hasPermission($this->GetConfigEntry("ForceOP-Permission")))
+        if (!in_array($this->PlayerName, $this->GetFromLegitOPsYML("LegitOPs")))
         {
           $event->setCancelled(true);
           $message = "[SAC] > %PLAYER% used ForceOP!";
@@ -1099,30 +1108,6 @@ class Observer
         }
       }
     }    
-  }  
-  
-  public function OnPlayerGameModeChangeEvent($event)
-  {
-    if ($this->GetConfigEntry("ForceGameMode"))
-    {
-      if ($this->Player->hasPermission("sac.forcegamemode")) return;
-      if(!$event->getPlayer()->isOp())
-      {
-        $message = $this->GetConfigEntry("ForceGameMode-LogMessage");
-        $this->NotifyAdmins($message);
-        $reason  = $this->GetConfigEntry("ForceGameMode-Message");
-        $this->KickPlayer($reason);
-        $event->$event->setCancelled(true);
-      }
-      else
-      {
-        return;
-      }
-    }
-    else
-    {
-      return;
-    }
   }
   
   public function PlayerHasDamaged($event)
@@ -1234,7 +1219,7 @@ class Observer
                   ($delta_t  <  0.5             ) and
                   ($angle_xz >  45.0            ) and
                   (
-                   (($this->x_speed > 1.2) and ($this->hs_hit_time < 0.625)) or ($this->x_speed > 4.125)
+                   (($this->x_speed > 1.25) and ($this->hs_hit_time < 0.75)) or ($this->x_speed > 4.0)
                   ))
               {
                 $this->PlayerKillAuraV2Counter+=6;
@@ -1243,7 +1228,7 @@ class Observer
                       ($delta_t  <  0.5             ) and
                       ($angle_xz >  22.5            ) and
                       (
-                       (($this->x_speed > 1.2) and ($this->hs_hit_time < 0.625)) or ($this->x_speed > 4.625)
+                       (($this->x_speed > 1.25) and ($this->hs_hit_time < 0.75)) or ($this->x_speed > 4.5)
                       ))
               {
                 $this->PlayerKillAuraV2Counter+=6;
@@ -1252,20 +1237,20 @@ class Observer
                       ($delta_t  <  0.5             ) and
                       ($angle_xz >  11.25           ) and
                       (
-                       (($this->x_speed > 1.2) and ($this->hs_hit_time < 0.625)) or ($this->x_speed > 4.625)
+                       (($this->x_speed > 1.25) and ($this->hs_hit_time < 0.75)) or ($this->x_speed > 4.5)
                       ))
               {
-                $this->PlayerKillAuraV2Counter+=3;
+                $this->PlayerKillAuraV2Counter+=4;
               }                         
               elseif (($distance >= $this->dist_thr3) and 
                       ($delta_t  <  0.5             ) and
                       (
-                       (($this->x_speed > 1.2) and ($this->hs_hit_time < 0.625)) or ($this->x_speed > 4.625)
+                       (($this->x_speed > 1.25) and ($this->hs_hit_time < 0.75)) or ($this->x_speed > 4.5)
                       ))
               {
                 if ($this->dist_thr3 != 0.000)
                 {
-                  $this->PlayerKillAuraV2Counter+=3;
+                  $this->PlayerKillAuraV2Counter+=4;
                 }
               }
               # AimConsistency
@@ -1278,15 +1263,15 @@ class Observer
               {
                 if ($this->dist_thr3 != 0.000)
                 {
-                  $this->PlayerKillAuraV2Counter+=2;
+                  $this->PlayerKillAuraV2Counter+=4;
                 }
               }
               # AimAcurracy
-              elseif (($angle_xz < $this->aim_thr1) and ($angle < $this->aim_thr2) and ($aimconsistency > 0.625) and ($delta_t < 0.5) and ($this->x_speed > 4.125))
+              elseif (($angle_xz < $this->aim_thr1) and ($angle < $this->aim_thr2) and ($aimconsistency > 0.625) and ($delta_t < 0.5) and ($this->x_speed > 4.0))
               {
                 if ($this->dist_thr3 != 0.000)
                 {
-                  $this->PlayerKillAuraV2Counter+=5;
+                  $this->PlayerKillAuraV2Counter+=6;
                 }
               }
               else
@@ -1308,7 +1293,7 @@ class Observer
                 }
                 if ($this->GetConfigEntry("Angle"))
                 {
-                  $this->PlayerKillAuraCounter+=9;
+                  $this->PlayerKillAuraCounter+=8;
                 }
               }
             }
@@ -1366,6 +1351,14 @@ class Observer
       
         if ($reach_distance > $this->GetConfigEntry("MaxRange"))
         {
+          if ($this->GetConfigEntry("KillAura"))
+          {
+            $this->PlayerKillAuraCounter+=6;
+            if ($this->dist_thr1 != 0.00)
+            {
+               $this->PlayerKillAuraV2Counter+=6;
+            }
+          }
           $event->setCancelled(true);
         }
       }
@@ -1538,5 +1531,6 @@ class Observer
 //                                                  //
 //     SAC by DarkWav.                              //
 //     Distributed under the GGPL License.          //
+//     Copyright (C) 2018 DarkWav                   //
 //                                                  //
 //////////////////////////////////////////////////////

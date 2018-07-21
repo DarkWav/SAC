@@ -8,23 +8,25 @@ use pocketmine\utils\TextFormat;
 use pocketmine\event\Listener;
 use pocketmine\utils\Config;
 use pocketmine\permission\Permission;
+use pocketmine\math\Vector3;
+use pocketmine\Player;
+
+use pocketmine\event\entity\Effect;
+use pocketmine\event\Cancellable;
+
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityRegainHealthEvent;
 use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\event\entity\EntityTeleportEvent;
 use pocketmine\event\entity\EntityShootBowEvent;
-use pocketmine\event\entity\Effect;
+use pocketmine\event\entity\EntityMotionEvent;
+
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerRespawnEvent;
 use pocketmine\event\player\PlayerDeathEvent;
-use pocketmine\math\Vector3;
-use pocketmine\event\player\PlayerGameModeChangeEvent;
-use pocketmine\event\entity\EntityMotionEvent;
-use pocketmine\event\Cancellable;
-use pocketmine\Player;
 
 use DarkWav\SAC\SAC;
 use DarkWav\SAC\Observer;
@@ -129,15 +131,6 @@ class EventListener implements Listener
     }
   }
 
-  public function onPlayerGameModeChangeEvent(PlayerGameModeChangeEvent $event)
-  {
-    $hash = spl_object_hash($event->getPlayer());
-    if (array_key_exists($hash , $this->Main->PlayerObservers))
-    {
-      $this->Main->PlayerObservers[$hash]->OnPlayerGameModeChangeEvent($event);
-    }  
-  }
-
   public function onDamage(EntityDamageEvent $event)
   {
     $evname = $event->getEventName();
@@ -225,5 +218,6 @@ class EventListener implements Listener
 //                                                  //
 //     SAC by DarkWav.                              //
 //     Distributed under the GGPL License.          //
+//     Copyright (C) 2018 DarkWav                   //
 //                                                  //
 //////////////////////////////////////////////////////

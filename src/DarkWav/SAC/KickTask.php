@@ -59,5 +59,6 @@ class KickTask extends Task
 //                                                  //
 //     SAC by DarkWav.                              //
 //     Distributed under the GGPL License.          //
+//     Copyright (C) 2018 DarkWav                   //
 //                                                  //
 //////////////////////////////////////////////////////
