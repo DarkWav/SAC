@@ -2,7 +2,7 @@
 
 ### A powerfull AntiCheat software made to detect unfair gamplay advantages.
 
-## Current Release: 3.4.8<br>Supported PMMP-API Versions: 3.X.X
+## Current Release: 3.5.0<br>Supported PMMP-API Versions: 3.X.X
 
 ## An AntiCheat plugin for [PocketMine-MP](https://github.com/pmmp/pocketmine-mp).<br>Compatible with MCPE 1.X.X.
 
@@ -13,7 +13,7 @@
 ## [Issues / Help / Support / Bug Report](https://github.com/DarkWav/SAC/issues)
 
 # Features:<br>
-## - AntiKillAura (BETA)<br>- AntiReach<br>- AntiFly<br>- AntiSpider (W.I.P)<br>- AntiSpeed<br>- AntiGlide<br>- AntiNoClip (BETA)<br>- AntiRegen<br>- AntiFastClick<br>- AntiFastBow<br>- AutoBanSytem<br>  Read more about Block Hacks [Here](https://github.com/DarkWav/SAC/wiki/About-Block-Hack-Detection).
+## - AntiKillAura<br>- AntiReach<br>- AntiFly<br>- AntiSpider (W.I.P)<br>- AntiSpeed<br>- AntiGlide<br>- AntiNoClip (BETA)<br>- AntiRegen<br>- AntiFastClick<br>- AntiFastBow<br>- AutoBanSytem<br>  Read more about Block Hacks [Here](https://github.com/DarkWav/SAC/wiki/About-Block-Hack-Detection).
 
 ## Requirements:
 ### - Latest PocketMine-MP release (forks and dev builds might work, but not guaranteed)
