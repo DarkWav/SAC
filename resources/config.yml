@@ -1,27 +1,26 @@
 ---
-#########################################
-#  METADATA OF CONFIG                   #
-#  DO NOT CHANGE UNLESS YOU KNOW WHAT   #
-#  YOU ARE DOING!!!                     #
-   Plugin-Version: 3.4.8                #
-   Config-Version: 3.7.1                #
-#########################################
-#||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
-#ShadowAntiCheat main configuration file.
-#Current version: 3.4.7
-#What should be blocked?
-#||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
-#true = ENABLE
-#false = DISABLE
-#block = block Hack
-#kick = Player kick
-#||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
-#REMEMBER: This AntiCheat software was made to prevent cheats
-#which are not detected by pocketmine itself. While SAC can
-#run as a standalone plugin I still highly
-#reccomend to turn Pocketmine's Native AntiCheat on if it
-#doesn't cause issues for you.
-#||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||#
+###########################################################################
+#  METADATA OF CONFIG                                                     #
+#  DO NOT CHANGE UNLESS YOU KNOW WHAT                                     #
+#  YOU ARE DOING!!!                                                       #
+   Plugin-Version: 3.5.0                                                  #
+   Config-Version: 4.0.0                                                  #
+###########################################################################
+# ShadowAntiCheat main configuration file.                                #
+# Current version: 3.5.0                                                  #
+# What should be blocked?                                                 #
+###########################################################################
+# true = ENABLE                                                           #
+# false = DISABLE                                                         #
+# block = block Hack                                                      #
+# kick = Player kick                                                      #
+###########################################################################
+# REMEMBER: This AntiCheat software was made to prevent cheats            #
+# which are not detected by pocketmine itself. While SAC can              #
+#r un as a standalone plugin I still highly                               #
+# reccomend to turn Pocketmine's Native AntiCheat on if it                #
+# doesn't cause issues for you.                                           #
+###########################################################################
 #Enables i am waching you message
 
    I-AM-WATCHING-YOU: false
@@ -51,7 +50,7 @@
 #0 = Disabled
 #1 = Instant Ban
 
-   Max-Hacking-Times: 8
+   Max-Hacking-Times: 0
 
 #Enable Self-Protection to prevent anyone from disabling SAC?
 
@@ -68,21 +67,22 @@
 #If yes, which message should be shown?
 
    KickPlayerMessageBool: true
-   KickPlayerMessage: "[SAC] > %PLAYER% was kicked for hacking. I am always watching you."
+   KickPlayerMessage: "<< SAC >> %PLAYER% was kicked for hacking. I am always watching you."
 
 #Should SAC show a message when someone gets banned?
 #If yes, which message should be shown?
 
    BanPlayerMessageBool: true
-   BanPlayerMessage: "[SAC] > %PLAYER% was BANNED for hacking. I am always watching you."
+   BanPlayerMessage: "<< SAC >> %PLAYER% was BANNED for hacking. I am always watching you."
 
 
 #Enable verbose output???
 #Sends a mesage to all OPs if someone is hacking.
+#In some rare cases this might send messages 
 
    Verbose: true
 
-#-------------------Fly-------------------#
+#------------------------# Fly #------------------------#
 #Do you want to enable Fly check?
 #This wont have any problems with falling or jumping,
 #even if the player has JumpBoost 2.
@@ -107,14 +107,14 @@
 
 #Wich Message Sould be shown if Fly is detected?
 
-   Fly-Message: "[SAC] > Fly is not allowed!"
+   Fly-Message: "<< SAC >> Fly is not allowed!"
 
 #Which Log Message Sould be shown if Fly is detected?
 
-   Fly-LogMessage: "[SAC] > %PLAYER% is hacking Fly!"
+   Fly-LogMessage: "<< SAC >> %PLAYER% is hacking Fly!"
 
-#----------------KillAura-----------------#
-#BETA, REPORT BUGS!
+#---------------------# KillAura #----------------------#
+#Probaby the best part of this plugin.
 #Do you want to enable KillAura check?
 #This also catches AimAura and KillAuraLegit.
 #This will block anything that gives the player
@@ -157,7 +157,7 @@
 #
 # 0 = DISABLE
 # 1 = PERMISSIVE
-# 2 = NORMAL
+# 2 = NORMAL (Default)
 # 3 = AGGRESSIVE
 #
 # PREMISSIVE will cause close to zero false positives
@@ -173,12 +173,12 @@
 # even some triggerbots are detected. This configuration is
 # very agressive and may cause false positives depending
 # on the situation. If you set "KillAura-Threshold" to
-# at least 45 it can be very effective. USE AT YOUR OWN RISK!
+# at least 50 it can be very effective. USE AT YOUR OWN RISK!
 #
 #I reccomand to use PERMISSIVE if you have a big server.
 #For other servers, use NORMAL for a normal server , only
-#use AGGRESSIVE if you have a smaller server or massive
-#problems with KillAura hackers.
+#use AGGRESSIVE if you have a smaller server or need
+#really fast detection. Use high thresholds for this.
 
    Heuristics: 2
 
@@ -194,7 +194,7 @@
 #
 # 0 = DISABLE
 # 1 = PERMISSIVE
-# 2 = NORMAL
+# 2 = NORMAL (Default)
 # 3 = AGGRESSIVE
 #
 # PERMISSIVE and NORMAL will catch some Macros and helps the KillAura
@@ -206,7 +206,7 @@
 # but should be used with high thresholds. False Alarms much more likely.
 # Works best with Heuristics set to AGGRESSIVE. USE AT YOUR OWN RISK!
 #
-#I would recommend to use AGGRESSIVE if you have many hackers,
+#I would recommend to use AGGRESSIVE for fast detection,
 #for any other case use NORMAL.
 #Only use PERMISSIVE if you get False Detections with NORMAL.
 
@@ -214,12 +214,17 @@
 
 #FastClick
 #This kicks players that hit more
-#than 12 times per second
+#than a specific amount of times per second
 #It will block too fast hit speeds.
 #This check is sneaky. It will suddenly kick the
 #hacker without any warning or hit canceling before.
 
    FastClick: true
+
+#How many hits per second should players be allowed to get?
+#Higher this if false positives occur.
+
+   MaxCPS: 15
 
 #How many times must a player hack before detection?
 #35 Should work fine. (Standard)
@@ -234,15 +239,15 @@
 
 #Wich Message Sould be shown if KillAura is detected?
 
-   KillAura-Message: "[SAC] > KillAura is not allowed!"
-   KillAura-HEUR-Message: "[SAC] > KillAura is not allowed!"
+   KillAura-Message: "<< SAC >> KillAura is not allowed!"
+   KillAura-HEUR-Message: "<< SAC >> KillAura is not allowed!"
 
 #Which Log Message Sould be shown if KillAura is detected?
 
-   KillAura-LogMessage: "[SAC] > %PLAYER% is suspected for KillAura (VL = %AURAVL%, Type = Angle)!"
-   KillAura-HEUR-LogMessage: "[SAC] > %PLAYER% is suspected for KillAura (VL = %HEURVL%, Type = Generic)!"
+   KillAura-LogMessage: "<< SAC >> %PLAYER% is suspected for KillAura (VL = %AURAVL%, Type = Angle)!"
+   KillAura-HEUR-LogMessage: "<< SAC >> %PLAYER% is suspected for KillAura (VL = %HEURVL%, Type = Generic)!"
 
-#------------------Regen------------------#
+#-----------------------# Regen #-----------------------#
 #Do you want to enable Regen check?
 #Stops INSANE regeneration.
 #This check immediately takes action upon violation.
@@ -255,13 +260,13 @@
 
 #Wich Message Sould be shown if Regen is detected?
 
-   Regen-Message: "[SAC] > Regen is not allowed!"
+   Regen-Message: "<< SAC >> Regen is not allowed!"
 
 #Which Log Message Sould be shown if Regen is detected?
 
-   Regen-LogMessage: "[SAC] > %PLAYER% is hacking Regen!"
+   Regen-LogMessage: "<< SAC >> %PLAYER% is hacking Regen!"
 
-#-----------------FastBow-----------------#
+#----------------------# FastBow #----------------------#
 #Do you want to enable FastBow check?
 #Prevent players from shooting arrows too fast.
 #Works Well as of version 3.3.4.
@@ -275,13 +280,13 @@
 
 #Wich Message Sould be shown if FastBow is detected?
 
-   FastBow-Message: "[SAC] > FastBow is not allowed!"
+   FastBow-Message: "<< SAC >> FastBow is not allowed!"
 
 #Which Log Message Sould be shown if FastBow is detected?
 
-   FastBow-LogMessage: "[SAC] > %PLAYER% is suspected for FastBow (VL = %FASTBOWVL%)!"
+   FastBow-LogMessage: "<< SAC >> %PLAYER% is suspected for FastBow (VL = %FASTBOWVL%)!"
 
-#-----------------Speed-------------------#
+#----------------------# Speed #------------------------#
 #Do you want to enable Speed check?
 #This works with falling.
 #This also catches most TP-Aura hacks.
@@ -300,17 +305,17 @@
 #5 Should work fine. (Standard)
 #NEVER set this to 0
 
-   Speed-Threshold: 4
+   Speed-Threshold: 6
 
 #Wich Message Sould be shown if Speed is detected?
 
-   Speed-Message: "[SAC] > Speed is not allowed!"
+   Speed-Message: "<< SAC >> Speed is not allowed!"
 
 #Which Log Message Sould be shown if Speed is detected?
 
-   Speed-LogMessage: "[SAC] > %PLAYER% is hacking Speed!"
+   Speed-LogMessage: "<< SAC >> %PLAYER% is hacking Speed!"
 
-#-----------------Reach-------------------#
+#----------------------# Reach #------------------------#
 #Do you want to enable Reach check?
 #This check immediately takes action upon violation.
 
@@ -327,7 +332,7 @@
 
    MaxRange:  4.0
    
-#-----------------Glide-------------------#
+#----------------------# Glide #------------------------#
 #Do you want to enable Glide check?
 #NoDownlGlide is handled by Fly.
 #This check is sneaky. It will suddenly kick or freeze the
@@ -348,13 +353,13 @@
 
 #Wich Message Sould be shown if Glide is detected?
 
-   Glide-Message: "[SAC] > Glide is not allowed!"
+   Glide-Message: "<< SAC >> Glide is not allowed!"
 
 #Which Log Message Sould be shown if Glide is detected?
 
-   Glide-LogMessage: "[SAC] > %PLAYER% is hacking Glide!"
+   Glide-LogMessage: "<< SAC >> %PLAYER% is hacking Glide!"
 
-#----------------ForceOP------------------#
+#----------------------# ForceOP #-----------------------#
 #######################################################
 # USE THIS AT YOUR OWN RISK. I GUARANTEE FOR NOTHING! #
 # THIS IS OBSOLETE AS OF NOW. I CANT GUARANTEE IT     #
@@ -365,7 +370,7 @@
 
    ForceOP: false
 
-#-----------------NoClip------------------#
+#-----------------------# NoClip #-----------------------#
 #Do you want to enable NoClip Detection?
 #This prevents players form glitching through blocks.
 #If this caueses bugs, please report it to the Author!
@@ -380,7 +385,7 @@
 #Which Punishment should take place?
 #Kicking works fine as of the 3.4.X Updates
 #BUT you might run into false positives with PISTONS
-#so kicking is turned off by deafault
+#so kicking is turned off by default
 
    NoClip-Punishment: block
 
@@ -393,11 +398,11 @@
 
 #Which Message Should be shown if NoClip is detected?
 
-   NoClip-Message: "[SAC] > NoClip is not allowed!"
+   NoClip-Message: "<< SAC >> NoClip is not allowed!"
 
 #Which Log Message Sould be shown if NoClip is detected?
 
-   NoClip-LogMessage: "[SAC] > %PLAYER% is suspected for NoClip (VL = %NOCLIPVL%)!"
+   NoClip-LogMessage: "<< SAC >> %PLAYER% is suspected for NoClip (VL = %NOCLIPVL%)!"
 
 #//////////////////////////////////////////////////////
 #//                                                  //

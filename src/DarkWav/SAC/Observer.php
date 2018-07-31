@@ -146,6 +146,7 @@ class Observer
       $this->aim_thr1      = 0.000;
       $this->aim_thr2      = 0.000;
     }
+    $this->cps_thr1        = $this->GetConfigEntry("MaxCPS")/100;
   }  
   
   public function ResetObserver()
@@ -304,7 +305,7 @@ class Observer
   {
     if ($this->GetConfigEntry("I-AM-WATCHING-YOU"))
     {
-      $this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > $this->PlayerName is no longer watched...");
+      $this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> $this->PlayerName is no longer watched...");
     }
   }
 
@@ -313,7 +314,7 @@ class Observer
     $this->JoinCounter++;
     if ($this->GetConfigEntry("I-AM-WATCHING-YOU"))
     {
-      $this->Player->sendMessage(TextFormat::ESCAPE."$this->Colorized"."[SAC] > $this->PlayerName, I am watching you ...");
+      $this->Player->sendMessage(TextFormat::ESCAPE."$this->Colorized"."<< SAC >> $this->PlayerName, I am watching you ...");
     }
   }
   
@@ -322,8 +323,8 @@ class Observer
     $this->JoinCounter++;
     if ($this->GetConfigEntry("I-AM-WATCHING-YOU"))
     {
-      $this->Player->sendMessage(TextFormat::ESCAPE."$this->Colorized"."[SAC] > $this->PlayerName, I am still watching you ...");
-      $this->Logger->debug      (TextFormat::ESCAPE."$this->Colorized"."[SAC] > $this->PlayerName joined this server $this->JoinCounter times since server start");
+      $this->Player->sendMessage(TextFormat::ESCAPE."$this->Colorized"."<< SAC >> $this->PlayerName, I am still watching you ...");
+      $this->Logger->debug      (TextFormat::ESCAPE."$this->Colorized"."<< SAC >> $this->PlayerName joined this server $this->JoinCounter times since server start");
     }
   }
 
@@ -473,8 +474,8 @@ class Observer
         if (!in_array($this->PlayerName, $this->GetFromLegitOPsYML("LegitOPs")))
         {
           $event->setCancelled(true);
-          $message = "[SAC] > %PLAYER% used ForceOP!";
-          $reason = "[SAC] > ForceOP detected!";
+          $message = "<< SAC >> %PLAYER% used ForceOP!";
+          $reason = "<< SAC >> ForceOP detected!";
           $this->NotifyAdmins($message);
           $this->KickPlayer($reason);
         }
@@ -633,7 +634,7 @@ class Observer
             {
               if ($this->AllBlocksAboveAir())
               {
-              #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > $this->PlayerName failed InArray!"); 
+              #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> $this->PlayerName failed InArray!"); 
               # Anti Speed
                 if ($this->Player->hasEffect(Effect::SPEED))
                 {
@@ -929,7 +930,7 @@ class Observer
       or $BlockID2 == 129 //EMERALD  (-)
       ))
       {
-        #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > Not_In_Array, VL: $this->PlayerNoClipCounter");        
+        #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> Not_In_Array, VL: $this->PlayerNoClipCounter");        
         if ($this->GetConfigEntry("NoClip-Punishment") == "kick")
         {
           $this->PlayerNoClipCounter += 10;
@@ -1156,9 +1157,9 @@ class Observer
     } 
     $aimconsistency = abs($trueangle - $this->LastAngle);
     
-    #$this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > Kill Aura Counter: $this->PlayerKillAuraCounter     V2: $this->PlayerKillAuraV2Counter  Speed: $this->x_speed");
-    #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > $this->PlayerName : consistency = $aimconsistency, VL= $this->PlayerKillAuraV2Counter");
-    #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > $this->PlayerName : Trueangle = $trueangle");
+    #$this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> Kill Aura Counter: $this->PlayerKillAuraCounter     V2: $this->PlayerKillAuraV2Counter  Speed: $this->x_speed");
+    #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> $this->PlayerName : consistency = $aimconsistency, VL= $this->PlayerKillAuraV2Counter");
+    #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> $this->PlayerName : Trueangle = $trueangle");
     if ($this->Player->getGameMode() == 1 or $this->Player->getGameMode() == 3) return;
     // Kill Aura
     if ($this->GetConfigEntry("KillAura"))
@@ -1182,10 +1183,10 @@ class Observer
           $this->hs_arr_idx++;                                                                               // Update ringbuffer position
           if ($this->hs_arr_idx >= $this->hs_arr_size) $this->hs_arr_idx = 0;          
           $this->hs_hit_time = $this->hs_time_sum / $this->hs_arr_size;
-          #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > THD $this->PlayerName : hittime = $this->hs_hit_time");
+          #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> THD $this->PlayerName : hittime = $this->hs_hit_time");
           if ($this->GetConfigEntry("FastClick"))
           {
-            if ($this->hs_hit_time < 0.12)
+            if ($this->hs_hit_time < $this->cps_thr1)
             {
               $this->PlayerHitCounter += 2;
             }
@@ -1255,7 +1256,7 @@ class Observer
               }
               # AimConsistency
               elseif (($aimconsistency <= $this->accuracy_thr1) and
-                      ($aimconsistency >= 0.625               ) and
+                      ($aimconsistency >= 0.5                 ) and
                       ($delta_t  <  0.5                       ) and
                       (
                        ($this->x_speed > 4.0)
@@ -1267,7 +1268,7 @@ class Observer
                 }
               }
               # AimAcurracy
-              elseif (($angle_xz < $this->aim_thr1) and ($angle < $this->aim_thr2) and ($aimconsistency > 0.625) and ($delta_t < 0.5) and ($this->x_speed > 4.0))
+              elseif (($angle_xz < $this->aim_thr1) and ($angle < $this->aim_thr2) and ($aimconsistency > 0.5) and ($delta_t < 0.5) and ($this->x_speed > 4.0))
               {
                 if ($this->dist_thr3 != 0.000)
                 {
@@ -1347,7 +1348,7 @@ class Observer
       if (!$this->Player->hasPermission("sac.reach"))
       {
         $reach_distance = $damager_position->distance($damaged_entity_position); 
-        #$this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > Reach distance $this->PlayerName : $reach_distance");
+        #$this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> Reach distance $this->PlayerName : $reach_distance");
       
         if ($reach_distance > $this->GetConfigEntry("MaxRange"))
         {
@@ -1366,7 +1367,7 @@ class Observer
       if ($reach_distance > $this->GetConfigEntry("KickRange"))
       {
         $this->PlayerReachCounter++;
-        #$this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > $this->PlayerName  ReachCounter: $this->PlayerReachCounter");
+        #$this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> $this->PlayerName  ReachCounter: $this->PlayerReachCounter");
         $tick = (double)$this->Server->getTick(); 
         $tps  = (double)$this->Server->getTicksPerSecond();
         
@@ -1425,7 +1426,7 @@ class Observer
   
   public function OnMotion($event)
   {
-    //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > $this->PlayerName : OnMotion");
+    //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> $this->PlayerName : OnMotion");
     $this->PlayerSpeedCounter = 0;
     $this->PlayerAirCounter   = 0;
     $this->PlayerGlideCounter = 0;
@@ -1460,7 +1461,7 @@ class Observer
       $this->hs_arr_idx++;                                                                               // Update ringbuffer position
       if ($this->hs_arr_idx >= $this->hs_arr_size) $this->hs_arr_idx = 0;          
       $this->hs_hit_time = $this->hs_time_sum / $this->hs_arr_size;
-      #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > $this->PlayerName : Shottime = $this->hs_hit_time");
+      #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> $this->PlayerName : Shottime = $this->hs_hit_time");
     
       if ($this->hs_hit_time < 0.65)
       {
@@ -1512,14 +1513,12 @@ class Observer
 
   public function onTeleport($event)
   {
-    $this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > 1");
     $this->CheckForceOP($event);
     $fromworldname = $event->getFrom()->getLevel()->getName();
     $toworldname   = $event->getTo()->getLevel()->getName();
     if ($this->Player->getGameMode() == 1 or $this->Player->getGameMode() == 3) return;
     if ($fromworldname == $toworldname)
     {
-      $this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > 2, Time: $this->TimeSinceLastWorldChangeTick, L1: $fromworldname, L2: $toworldname");
       $this->CheckTPNoClip($event);
     }
     $this->ResetMovement();
