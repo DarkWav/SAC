@@ -6,7 +6,7 @@
 
 ## An AntiCheat plugin for [PocketMine-MP](https://github.com/pmmp/pocketmine-mp).<br>Compatible with MCPE 1.X.X.
 
-## Find The Wiki and Phar Downloads [Here](https://github.com/DarkWav/ShadowAntiCheat/wiki).
+## Find The Wiki and Phar Downloads [Here](https://github.com/DarkWav/ShadowAntiCheat/wiki).<br>[FAQ](https://github.com/DarkWav/SAC/wiki/FAQ)
 
 ## For Developers: [Developer API](https://github.com/DarkWav/SAC/wiki/Developer-API)
 
