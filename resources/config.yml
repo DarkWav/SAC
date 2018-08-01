@@ -3,11 +3,11 @@
 #  METADATA OF CONFIG                                                     #
 #  DO NOT CHANGE UNLESS YOU KNOW WHAT                                     #
 #  YOU ARE DOING!!!                                                       #
-   Plugin-Version: 3.5.0                                                  #
-   Config-Version: 4.0.0                                                  #
+   Plugin-Version: 3.5.1                                                  #
+   Config-Version: 4.0.1                                                  #
 ###########################################################################
 # ShadowAntiCheat main configuration file.                                #
-# Current version: 3.5.0                                                  #
+# Current version: 3.5.1                                                  #
 # What should be blocked?                                                 #
 ###########################################################################
 # true = ENABLE                                                           #
@@ -145,6 +145,10 @@
 #NEVER set this lower than 1.0!
 
    AngleViolationMinDistance: 2.5
+
+#How far must a player hit in order to be violated immediately?
+
+   ViolationRange: 4.5
 
 #Advanced KillAura Heuristics And Detection
 #This is an advanced algorithm to catch a lot more

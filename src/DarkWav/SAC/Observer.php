@@ -44,6 +44,7 @@ class Observer
     $this->PlayerKillAuraV2Counter = 0;
     $this->SpeedAMP                = 0;
     $this->LastAngle               = 0;
+    $this->lastDamagerDirection    = new Vector3(0, 0, 0);
     
     //DO NOT RESET!
     $this->PlayerBanCounter    = 0;
@@ -118,23 +119,23 @@ class Observer
     {
       $this->dist_thr3     = 4.0;
       $this->dist_thr4     = 3.875;
-      $this->accuracy_thr1 = 3.0;
-      $this->aim_thr1      = 1.0;
+      $this->accuracy_thr1 = 2.0;
+      $this->aim_thr1      = 2.0;
       $this->aim_thr2      = 25;
     }
     if     ($this->GetConfigEntry("DeepHeuristics") == 2)
     {
       $this->dist_thr3     = 3.875;
       $this->dist_thr4     = 3.75;
-      $this->accuracy_thr1 = 3.5;
-      $this->aim_thr1      = 2.0;
+      $this->accuracy_thr1 = 2.5;
+      $this->aim_thr1      = 2.5;
       $this->aim_thr2      = 50;
     }
     elseif ($this->GetConfigEntry("DeepHeuristics") == 3)
     {
       $this->dist_thr3     = 3.75;
       $this->dist_thr4     = 3.625;
-      $this->accuracy_thr1 = 4.0;
+      $this->accuracy_thr1 = 3.0;
       $this->aim_thr1      = 3.0;
       $this->aim_thr2      = 75;
     }
@@ -146,7 +147,7 @@ class Observer
       $this->aim_thr1      = 0.000;
       $this->aim_thr2      = 0.000;
     }
-    $this->cps_thr1        = $this->GetConfigEntry("MaxCPS")/100;
+    $this->cps_thr1        = 1/$this->GetConfigEntry("MaxCPS");
   }  
   
   public function ResetObserver()
@@ -1124,6 +1125,7 @@ class Observer
     
     $damager_direction          = $damager->getDirectionVector();
     $damager_direction          = $damager_direction->normalize();
+    $headmove                   = $damager_direction->distance($this->lastDamagerDirection);
     
     $damager_xz_direction       = $damager->getDirectionVector();
     $damager_xz_direction->y    = 0;
@@ -1157,7 +1159,7 @@ class Observer
     } 
     $aimconsistency = abs($trueangle - $this->LastAngle);
     
-    #$this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> Kill Aura Counter: $this->PlayerKillAuraCounter     V2: $this->PlayerKillAuraV2Counter  Speed: $this->x_speed");
+    #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> Kill Aura Counter: $this->PlayerKillAuraCounter V2: $this->PlayerKillAuraV2Counter Speed: $this->x_speed Hit: $this->PlayerHitCounter HeadMove: $headmove");
     #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> $this->PlayerName : consistency = $aimconsistency, VL= $this->PlayerKillAuraV2Counter");
     #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> $this->PlayerName : Trueangle = $trueangle");
     if ($this->Player->getGameMode() == 1 or $this->Player->getGameMode() == 3) return;
@@ -1198,7 +1200,7 @@ class Observer
               }
             }
             //Allow a maximum of 10 Unlegit hits, couter derceases x2 slower
-            if($this->PlayerHitCounter > 20)
+            if($this->PlayerHitCounter > 40)
             {
               $event->setCancelled(true);
               $this->ResetObserver();
@@ -1223,6 +1225,7 @@ class Observer
                    (($this->x_speed > 1.25) and ($this->hs_hit_time < 0.75)) or ($this->x_speed > 4.0)
                   ))
               {
+                //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> AKAHAD L1: FAIL");
                 $this->PlayerKillAuraV2Counter+=6;
               }
               elseif (($distance >= $this->dist_thr1) and 
@@ -1232,6 +1235,7 @@ class Observer
                        (($this->x_speed > 1.25) and ($this->hs_hit_time < 0.75)) or ($this->x_speed > 4.5)
                       ))
               {
+                //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> AKAHAD L2: FAIL");
                 $this->PlayerKillAuraV2Counter+=6;
               }
               elseif (($distance >= $this->dist_thr4) and 
@@ -1241,6 +1245,7 @@ class Observer
                        (($this->x_speed > 1.25) and ($this->hs_hit_time < 0.75)) or ($this->x_speed > 4.5)
                       ))
               {
+                //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> AKAHAD L3: FAIL");
                 $this->PlayerKillAuraV2Counter+=4;
               }                         
               elseif (($distance >= $this->dist_thr3) and 
@@ -1251,12 +1256,13 @@ class Observer
               {
                 if ($this->dist_thr3 != 0.000)
                 {
+                  //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> AKAHAD L4: FAIL");
                   $this->PlayerKillAuraV2Counter+=4;
                 }
               }
               # AimConsistency
               elseif (($aimconsistency <= $this->accuracy_thr1) and
-                      ($aimconsistency >= 0.5                 ) and
+                      ($headmove >= 0.2                       ) and
                       ($delta_t  <  0.5                       ) and
                       (
                        ($this->x_speed > 4.0)
@@ -1265,13 +1271,15 @@ class Observer
                 if ($this->dist_thr3 != 0.000)
                 {
                   $this->PlayerKillAuraV2Counter+=4;
+                  //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> Consistency: FAIL > Consistency: $aimconsistency");
                 }
               }
               # AimAcurracy
-              elseif (($angle_xz < $this->aim_thr1) and ($angle < $this->aim_thr2) and ($aimconsistency > 0.5) and ($delta_t < 0.5) and ($this->x_speed > 4.0))
+              elseif (($angle_xz < $this->aim_thr1) and ($angle < $this->aim_thr2) and ($headmove > 0.2) and ($delta_t < 0.5) and ($this->x_speed > 4.0))
               {
                 if ($this->dist_thr3 != 0.000)
                 {
+                  //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> Accuracy: FAIL");
                   $this->PlayerKillAuraV2Counter+=6;
                 }
               }
@@ -1298,6 +1306,15 @@ class Observer
                 }
               }
             }
+            # Reach detection
+            if ($distance_xz >= $this->GetConfigEntry("ViolationRange"))
+            {
+              $this->PlayerKillAuraCounter+=6;
+              if ($this->dist_thr1 != 0.00)
+              {
+                $this->PlayerKillAuraV2Counter+=6;
+              }
+            }
             if ($angle_xz > 45)
             {
               if ($this->GetConfigEntry("Angle"))
@@ -1305,11 +1322,14 @@ class Observer
                 $event->setCancelled(true);
               }
             }
-            if ($this->PlayerKillAuraCounter > 0)
+            else
             {
-              if (!$angle_xz > 45)
+              if ($this->PlayerKillAuraCounter > 0)
               {
-                $this->PlayerKillAuraCounter--;
+                if ($angle_xz < 45)
+                {
+                  $this->PlayerKillAuraCounter--;
+                }
               }
             }
           }  
@@ -1325,6 +1345,7 @@ class Observer
           {
             $message = $this->GetConfigEntry("KillAura-LogMessage");
             $this->NotifyAdmins($message);
+            //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "$message");
           }            
           if (($this->PlayerKillAuraV2Counter >= $this->GetConfigEntry("KillAura-Threshold")))
           {
@@ -1337,6 +1358,7 @@ class Observer
           {
             $message = $this->GetConfigEntry("KillAura-HEUR-LogMessage");
             $this->NotifyAdmins($message);
+            //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "$message");
           }                
         }
       }
@@ -1347,19 +1369,9 @@ class Observer
     {
       if (!$this->Player->hasPermission("sac.reach"))
       {
-        $reach_distance = $damager_position->distance($damaged_entity_position); 
-        #$this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> Reach distance $this->PlayerName : $reach_distance");
-      
-        if ($reach_distance > $this->GetConfigEntry("MaxRange"))
+        #$this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> Reach distance $this->PlayerName : distance");
+        if ($distance > $this->GetConfigEntry("MaxRange"))
         {
-          if ($this->GetConfigEntry("KillAura"))
-          {
-            $this->PlayerKillAuraCounter+=6;
-            if ($this->dist_thr1 != 0.00)
-            {
-               $this->PlayerKillAuraV2Counter+=6;
-            }
-          }
           $event->setCancelled(true);
         }
       }
@@ -1409,6 +1421,7 @@ class Observer
       */
     }
     $this->LastAngle = $trueangle;
+    $this->lastDamagerDirection = $damager_direction;
   }
 
 
