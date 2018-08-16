@@ -52,6 +52,10 @@ class EventListener implements Listener
 
     $oldhash  = null;
     $observer = null;
+    /*
+    $player->setScale(5);
+    //For testing purposes
+    */
     
     foreach ($this->Main->PlayerObservers as $key=>$obs)
     {

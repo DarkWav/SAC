@@ -4,7 +4,7 @@
 
 ## [[GitHub]](https://github.com/DarkWav/SAC) [[GitLab]](https://gitlab.com/DarkWav/SAC)
 
-## Current Release: 3.5.1<br>Supported PMMP-API Versions: 3.X.X
+## Current Release: 3.5.2<br>Supported PMMP-API Versions: 3.X.X
 
 ## An AntiCheat plugin for [PocketMine-MP](https://github.com/pmmp/pocketmine-mp) and [Altay](https://github.com/TuranicTeam/Altay).<br>Compatible with MCPE 1.X.X.
 

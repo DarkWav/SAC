@@ -3,11 +3,11 @@
 #  METADATA OF CONFIG                                                     #
 #  DO NOT CHANGE UNLESS YOU KNOW WHAT                                     #
 #  YOU ARE DOING!!!                                                       #
-   Plugin-Version: 3.5.1                                                  #
+   Plugin-Version: 3.5.2                                                  #
    Config-Version: 4.0.1                                                  #
 ###########################################################################
 # ShadowAntiCheat main configuration file.                                #
-# Current version: 3.5.1                                                  #
+# Current version: 3.5.2                                                  #
 # What should be blocked?                                                 #
 ###########################################################################
 # true = ENABLE                                                           #
@@ -52,10 +52,6 @@
 
    Max-Hacking-Times: 0
 
-#Enable Self-Protection to prevent anyone from disabling SAC?
-
-   SelfProtection: true
-
 #What commands should be executed then?
 #Use %PLAYER% for the Players name.
 
@@ -75,6 +71,9 @@
    BanPlayerMessageBool: true
    BanPlayerMessage: "<< SAC >> %PLAYER% was BANNED for hacking. I am always watching you."
 
+#Enable Self-Protection to prevent anyone from disabling SAC?
+
+   SelfProtection: true
 
 #Enable verbose output???
 #Sends a mesage to all OPs if someone is hacking.

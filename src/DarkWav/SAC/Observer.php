@@ -207,8 +207,27 @@ class Observer
 
   public function SACIsOnGround($pp)
   {
-    if     ( $this->AllBlocksAir()      ) return false;
-    else                                  return $this->Player->IsOnGround();
+    /*
+    $pscale                               =      $this->Player->getScale();
+    $c1                                   =      $this->AllBlocksAir();
+    $c2                                   =      $this->Player->IsOnGround();
+    $this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> $this->PlayerName has Scale $pscale Check 1:$c1 Check 2:$c2");
+    */
+    if($this->Player->getScale() == 1)
+    {
+      if($this->AllBlocksAir())
+      {
+        return false;
+      }
+      else
+      {
+        return $this->Player->IsOnGround();
+      }
+    }
+    else
+    {
+      return $this->Player->IsOnGround();
+    }
   }
 
   public function ScanMessage($message)
