@@ -3,11 +3,11 @@
 #  METADATA OF CONFIG                                                     #
 #  DO NOT CHANGE UNLESS YOU KNOW WHAT                                     #
 #  YOU ARE DOING!!!                                                       #
-   Plugin-Version: 3.5.2                                                  #
-   Config-Version: 4.0.1                                                  #
+   Plugin-Version: 3.5.3                                                  #
+   Config-Version: 4.0.2                                                  #
 ###########################################################################
 # ShadowAntiCheat main configuration file.                                #
-# Current version: 3.5.2                                                  #
+# Current version: 3.5.3                                                  #
 # What should be blocked?                                                 #
 ###########################################################################
 # true = ENABLE                                                           #
@@ -100,6 +100,16 @@
 
    Fly-Threshold: 16
 
+#Fow how long (in seconds) should the Fly check
+#turn off after the player touched a slime block?
+#Increase if high slime bounces cause false kicks.
+#Decrease if slime is built into your maps ground
+#for decoration purposes and bypasses occur because of this.
+#Set to 0 if you only use slime blocks for decoration purposes
+#and their movement effect cant be triggered by any player.
+
+   SlimeSeconds: 10
+   
 #Wich Punishment should take place if Fly is detected?
 
    Fly-Punishment: kick

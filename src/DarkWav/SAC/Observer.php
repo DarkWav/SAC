@@ -92,6 +92,7 @@ class Observer
     $this->LastIceTick    = 0;
     $this->LastMoveTick   = 0;
     $this->LastMotionTick = 0;
+    $this->LastSlimeTick  = 0;
     $this->mindist        = $this->GetConfigEntry("AngleViolationMinDistance");
     $this->Colorized      = $this->GetConfigEntry("Color");
     
@@ -480,6 +481,19 @@ class Observer
     $this->GetSurroundingBlocks();
     $this->CheckSpeedFlyGlide($event);
     $this->CheckNoClip($event);
+    /*
+    $level = $this->Player->getLevel();
+    $posX         = $this->Player->getX();
+    $posY         = $this->Player->getY();
+    $posZ         = $this->Player->getZ();
+    $blockunder   = new Vector3($posX, $posY-1, $posZ);
+    $blockunderid = $level->getBlock($blockunder)->getId();
+    $this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> BlockUnderID: $blockunderid");
+    */
+    if (in_array(Block::SLIME_BLOCK, $this->clipsurroundings))
+    {
+      $this->LastSlimeTick = $this->Server->getTick();
+    }
   }
 
   # -------------------------------------------------------------------------------------
@@ -607,8 +621,8 @@ class Observer
       $this->y_pos_new  = $event->getTo()->getY();  
       $this->y_distance = $this->y_pos_old - $this->y_pos_new;
 
-      $tick = (double)$this->Server->getTick(); 
-      $tps  = (double)$this->Server->getTicksPerSecond();
+      $tick  = (double)$this->Server->getTick(); 
+      $tps   = (double)$this->Server->getTicksPerSecond();
 
       if ($tps > 0.0 and $this->prev_tick != -1.0)
       {
@@ -775,7 +789,7 @@ class Observer
               {
                 if (($tick - $this->LastMotionTick) > 90)
                 {
-                $this->PlayerGlideCounter+=3;
+                  $this->PlayerGlideCounter+=3;
                 }
               }
             }
@@ -788,7 +802,15 @@ class Observer
           {
             if (($tick - $this->LastMotionTick) > 90)
             {
-              $this->PlayerAirCounter++;
+              if (($tick - $this->LastSlimeTick) > $this->GetConfigEntry("SlimeSeconds") * 20)
+              {
+                //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> $this->PlayerName: outSlime");
+                $this->PlayerAirCounter++;
+              }
+              else
+              {
+                //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> $this->PlayerName: inSlime");
+              }
             }
           }
         }
@@ -1546,12 +1568,31 @@ class Observer
   public function onTeleport($event)
   {
     $this->CheckForceOP($event);
-    $fromworldname = $event->getFrom()->getLevel()->getName();
-    $toworldname   = $event->getTo()->getLevel()->getName();
+    if ($this->Server->isLevelLoaded($event->getFrom()->getLevel()->getName()))
+    {
+      $fromworldname = $event->getFrom()->getLevel()->getName();
+      //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> From world is LOADED");
+    }
+    else
+    {
+      //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> From world is NOT LOADED");
+      return;
+    }
+    if ($this->Server->isLevelLoaded($event->getTo()->getLevel()->getName()))
+    {
+      $toworldname   = $event->getTo()->getLevel()->getName();
+      //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "To world is LOADED");
+    }
+    else
+    {
+      //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "To world is NOT LOADED");
+      return;
+    }
     if ($this->Player->getGameMode() == 1 or $this->Player->getGameMode() == 3) return;
     if ($fromworldname == $toworldname)
     {
       $this->CheckTPNoClip($event);
+      //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "1");
     }
     $this->ResetMovement();
     $this->LastDamageTick = $this->Server->getTick();  // remember time of last damage
