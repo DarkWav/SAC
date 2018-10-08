@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=0);
+
 namespace DarkWav\SAC;
 
 use pocketmine\utils\TextFormat;
@@ -128,7 +130,7 @@ class Observer
     {
       $this->dist_thr3     = 3.875;
       $this->dist_thr4     = 3.75;
-      $this->accuracy_thr1 = 2.5;
+      $this->accuracy_thr1 = 2.25;
       $this->aim_thr1      = 2.5;
       $this->aim_thr2      = 50;
     }
@@ -136,7 +138,7 @@ class Observer
     {
       $this->dist_thr3     = 3.75;
       $this->dist_thr4     = 3.625;
-      $this->accuracy_thr1 = 3.0;
+      $this->accuracy_thr1 = 2.5;
       $this->aim_thr1      = 3.0;
       $this->aim_thr2      = 75;
     }
@@ -151,7 +153,7 @@ class Observer
     $this->cps_thr1        = 1/$this->GetConfigEntry("MaxCPS");
   }  
   
-  public function ResetObserver()
+  public function ResetObserver() : void
   {
     $this->PlayerReachCounter      =  0;
     $this->PlayerReachFirstTick    = -1;
@@ -166,7 +168,7 @@ class Observer
   }
 
   
-  public function ResetMovement()
+  public function ResetMovement() : void
   {
     $this->PlayerAirCounter      = 0;
     $this->PlayerSpeedCounter    = 0;
@@ -206,7 +208,7 @@ class Observer
     $this->hs_hit_time   = 0.5;  
   }
 
-  public function SACIsOnGround($pp)
+  public function SACIsOnGround($pp) : bool
   {
     /*
     $pscale                               =      $this->Player->getScale();
@@ -231,7 +233,7 @@ class Observer
     }
   }
 
-  public function ScanMessage($message)
+  public function ScanMessage($message) : string
   {
     $pos     = strpos(strtoupper($message), "%PLAYER%");
     $newmsg  = $message;
@@ -295,7 +297,7 @@ class Observer
     return $entry;    
   }
 
-  public function KickPlayer($reason)
+  public function KickPlayer($reason) : void
   {
     if (!in_array($this, $this->Main->PlayersToKick))
     {
@@ -305,7 +307,7 @@ class Observer
     }
   }
 
-  public function NotifyAdmins($message)
+  public function NotifyAdmins($message) : void
   {
     if($this->GetConfigEntry("Verbose"))
     {
@@ -322,7 +324,7 @@ class Observer
     }  
   }
   
-  public function PlayerQuit()
+  public function PlayerQuit() : void
   {
     if ($this->GetConfigEntry("I-AM-WATCHING-YOU"))
     {
@@ -330,7 +332,7 @@ class Observer
     }
   }
 
-  public function PlayerJoin()
+  public function PlayerJoin() : void
   {
     $this->JoinCounter++;
     if ($this->GetConfigEntry("I-AM-WATCHING-YOU"))
@@ -339,7 +341,7 @@ class Observer
     }
   }
   
-  public function PlayerRejoin()
+  public function PlayerRejoin() : void
   {
     $this->JoinCounter++;
     if ($this->GetConfigEntry("I-AM-WATCHING-YOU"))
@@ -349,7 +351,7 @@ class Observer
     }
   }
 
-  public function AllBlocksAir()
+  public function AllBlocksAir() : bool
   {
     $level       = $this->Player->getLevel();
     $posX        = $this->Player->getX();
@@ -374,7 +376,7 @@ class Observer
     return true;
   }
   
-  public function AllBlocksAboveAir()
+  public function AllBlocksAboveAir() : bool
   {
     $level       = $this->Player->getLevel();
     $posX        = $this->Player->getX();
@@ -396,7 +398,7 @@ class Observer
     return true;
   }
 
-  public function PlayerRegainHealth($event)
+  public function PlayerRegainHealth($event) : void
   {
     if($this->GetConfigEntry("Regen"))
     {
@@ -472,7 +474,7 @@ class Observer
   # -------------------------------------------------------------------------------------
   # OnMove: Player has made a move
   # -------------------------------------------------------------------------------------
-  public function OnMove($event)
+  public function OnMove($event) : void
   {
     $this->LastMoveTick = (double)$this->Server->getTick();
     $this->CheckForceOP($event);
@@ -499,7 +501,7 @@ class Observer
   # -------------------------------------------------------------------------------------
   # CheckForceOP: Check if the player is a legit OP
   # -------------------------------------------------------------------------------------
-  public function CheckForceOP($event)
+  public function CheckForceOP($event) : void
   {
     if ($this->GetConfigEntry("ForceOP"))
     {
@@ -606,7 +608,7 @@ class Observer
   # -------------------------------------------------------------------------------------
   # CheckSpeedFlyGlide: Check if player is flying, gliding or moving too fast
   # -------------------------------------------------------------------------------------
-  public function CheckSpeedFlyGlide($event)
+  public function CheckSpeedFlyGlide($event) : void
   {
     if ($this->Player->hasPermission("sac.fly")) return;
     if ($this->Player->getAllowFlight()) return;
@@ -1006,7 +1008,7 @@ class Observer
     }    
   }  
   
-  public function CheckTPNoClip($event)
+  public function CheckTPNoClip($event) : void
   {
     # No Clip
     if ($this->GetConfigEntry("NoClip"))
@@ -1153,7 +1155,7 @@ class Observer
     }    
   }
   
-  public function PlayerHasDamaged($event)
+  public function PlayerHasDamaged($event) : void
   {
     $damaged_entity             = $event->getEntity();
     $is_damaged_entity_a_player = $damaged_entity instanceof Player;
@@ -1466,7 +1468,7 @@ class Observer
   }
 
 
-  public function PlayerWasDamaged($event)
+  public function PlayerWasDamaged($event) : void
   {
     if ($event->getOriginalBaseDamage() >= 1)
     {
@@ -1478,7 +1480,7 @@ class Observer
     }
   }
   
-  public function OnMotion($event)
+  public function OnMotion($event) : void
   {
     //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> $this->PlayerName : OnMotion");
     $this->PlayerSpeedCounter = 0;
@@ -1488,7 +1490,7 @@ class Observer
   }
   
 
-  public function PlayerShotArrow($event)
+  public function PlayerShotArrow($event) : void
   { 
     $damager                    = $this->Player;    
     $damager_position           = new Vector3($damager->getX()       , $damager->getY()       , $damager->getZ()       );
@@ -1552,23 +1554,23 @@ class Observer
   }
 
 
-  public function onDeath($event)
+  public function onDeath($event) : void
   {
     $this->ResetMovement();
     $this->LastDamageTick = $this->Server->getTick();  // remember time of last damage
   }  
 
 
-  public function onRespawn($event)
+  public function onRespawn($event) : void
   {
     $this->ResetMovement();
     $this->LastDamageTick = $this->Server->getTick();  // remember time of last damage
   }
 
-  public function onTeleport($event)
+  public function onTeleport($event) : void
   {
     $this->CheckForceOP($event);
-    if ($this->Server->isLevelLoaded($event->getFrom()->getLevel()->getName()))
+    if ($event->getFrom()->getLevel() != null)
     {
       $fromworldname = $event->getFrom()->getLevel()->getName();
       //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> From world is LOADED");
@@ -1578,7 +1580,7 @@ class Observer
       //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> From world is NOT LOADED");
       return;
     }
-    if ($this->Server->isLevelLoaded($event->getTo()->getLevel()->getName()))
+    if ($event->getTo()->getLevel() != null)
     {
       $toworldname   = $event->getTo()->getLevel()->getName();
       //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "To world is LOADED");

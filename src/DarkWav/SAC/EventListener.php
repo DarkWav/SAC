@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=0);
+
 namespace DarkWav\SAC;
 
 use pocketmine\plugin\PluginBase;
@@ -44,7 +46,7 @@ class EventListener implements Listener
     $this->Server = $Main->getServer();
   }
 
-  public function onJoin(PlayerJoinEvent $event)
+  public function onJoin(PlayerJoinEvent $event) : void
   {
     $player   = $event->getPlayer();
     $hash     = spl_object_hash($player);
@@ -81,7 +83,7 @@ class EventListener implements Listener
     }
   }
   
-  public function onQuit(PlayerQuitEvent $event)
+  public function onQuit(PlayerQuitEvent $event) : void
   {
     $player   = $event->getPlayer();
     $hash     = spl_object_hash($player);
@@ -98,7 +100,7 @@ class EventListener implements Listener
   }
 
 
-  public function onMove(PlayerMoveEvent $event)
+  public function onMove(PlayerMoveEvent $event) : void
   {
     $player   = $event->getPlayer();
     $hash     = spl_object_hash($player);
@@ -113,7 +115,7 @@ class EventListener implements Listener
     }  
   }
   
-  public function onEntityMotionEvent(EntityMotionEvent $event)
+  public function onEntityMotionEvent(EntityMotionEvent $event) : void
   {
     $hash     = spl_object_hash($event->getEntity());
 
@@ -123,7 +125,7 @@ class EventListener implements Listener
     }  
   }
 
-  public function onEntityRegainHealthEvent(EntityRegainHealthEvent $event)
+  public function onEntityRegainHealthEvent(EntityRegainHealthEvent $event) : void
   {
     if ($event->getRegainReason() != EntityDamageEvent::CAUSE_MAGIC and $event->getRegainReason() != EntityDamageEvent::CAUSE_CUSTOM)
     {
@@ -135,7 +137,7 @@ class EventListener implements Listener
     }
   }
 
-  public function onDamage(EntityDamageEvent $event)
+  public function onDamage(EntityDamageEvent $event) : void
   {
     $evname = $event->getEventName();
     $ThisEntity = $event->getEntity();
@@ -164,7 +166,7 @@ class EventListener implements Listener
     }
   }
 
-  public function onEntityShootBowEvent(EntityShootBowEvent $event)
+  public function onEntityShootBowEvent(EntityShootBowEvent $event) : void
   {
     $ThisEntity = $event->getEntity();
     if($ThisEntity instanceof Player)
@@ -177,7 +179,7 @@ class EventListener implements Listener
     }  
   }
   
-  public function onPlayerDeathEvent(PlayerDeathEvent $event)
+  public function onPlayerDeathEvent(PlayerDeathEvent $event) : void
   {
     $player   = $event->getPlayer();
     $hash     = spl_object_hash($player);
@@ -188,7 +190,7 @@ class EventListener implements Listener
     }      
   }
 
-  public function onPlayerRespawnEvent(PlayerRespawnEvent $event)
+  public function onPlayerRespawnEvent(PlayerRespawnEvent $event) : void
   {
     $player   = $event->getPlayer();
     $hash     = spl_object_hash($player);
@@ -208,7 +210,7 @@ class EventListener implements Listener
   //  }
   //}
   
-  public function onEntityTeleportEvent(EntityTeleportEvent $event)
+  public function onEntityTeleportEvent(EntityTeleportEvent $event) : void
   {
     $hash = spl_object_hash($event->getEntity());
     if (array_key_exists($hash , $this->Main->PlayerObservers))

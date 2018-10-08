@@ -2,9 +2,7 @@
 
 ### A powerfull AntiCheat software made to detect unfair gamplay advantages.
 
-## 2nd Anniversery Special: [Download AntiCheat v1.0 (First Release Ever) updated for PMMP-API 3.0.0 now!](https://github.com/DarkWav/DarkWav.github.io/raw/master/ac/AntiCheat_v1.0-Anniversery.phar)
-
-## Current Release: 3.5.3<br>Supported PMMP-API Versions: 3.X.X
+## Current Release: 3.5.4<br>Supported PMMP-API Versions: 3.X.X, 4.X.X
 
 ## An AntiCheat plugin for [PocketMine-MP](https://github.com/pmmp/pocketmine-mp) and [Altay](https://github.com/TuranicTeam/Altay).<br>Compatible with MCPE 1.X.X.
 

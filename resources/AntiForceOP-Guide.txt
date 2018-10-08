@@ -11,7 +11,7 @@ Step 2: Enabling in config:
 
 Step 3: Now Restart your server.
 
-Step 4: You are now protected against ForceOP! Don´t forget to enter you new OPs names in LegitOPs.yml BEFORE OPing them!
+Step 4: You are now protected against ForceOP! Don't forget to enter you new OPs names in LegitOPs.yml BEFORE OPing them!
 
 Have fun with this tool!
 

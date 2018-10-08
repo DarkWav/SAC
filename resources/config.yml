@@ -3,11 +3,11 @@
 #  METADATA OF CONFIG                                                     #
 #  DO NOT CHANGE UNLESS YOU KNOW WHAT                                     #
 #  YOU ARE DOING!!!                                                       #
-   Plugin-Version: 3.5.3                                                  #
+   Plugin-Version: 3.5.4                                                  #
    Config-Version: 4.0.2                                                  #
 ###########################################################################
 # ShadowAntiCheat main configuration file.                                #
-# Current version: 3.5.3                                                  #
+# Current version: 3.5.4                                                  #
 # What should be blocked?                                                 #
 ###########################################################################
 # true = ENABLE                                                           #
@@ -77,7 +77,7 @@
 
 #Enable verbose output???
 #Sends a mesage to all OPs if someone is hacking.
-#In some rare cases this might send messages 
+#In some rare cases this might send messages to ranom people.
 
    Verbose: true
 
@@ -315,7 +315,7 @@
    Speed-Punishment: kick
 
 #How many times must a player be hacking before detection?
-#5 Should work fine. (Standard)
+#6 Should work fine. (Standard)
 #NEVER set this to 0
 
    Speed-Threshold: 6

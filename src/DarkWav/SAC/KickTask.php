@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=0);
+
 namespace DarkWav\SAC;
 
 use pocketmine\utils\TextFormat;
@@ -6,6 +9,7 @@ use pocketmine\command\ConsoleCommandSender;
 use pocketmine\plugin\Plugin;
 use pocketmine\scheduler\Task;
 use pocketmine\scheduler\TaskScheduler;
+//use pocketmine\Server;
 
 use DarkWav\SAC\Observer;
 use DarkWav\SAC\SAC;
@@ -18,7 +22,7 @@ class KickTask extends Task
     $this->plugin = $Main;
   }
 
-  public function onRun(int $currentTick)
+  public function onRun(int $currentTick) : void
   {
     $cl = $this->plugin->getConfig()->get("Color");
     foreach($this->plugin->PlayersToKick as $key=>$obs)
