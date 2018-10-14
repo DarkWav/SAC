@@ -1,6 +1,6 @@
 name: SAC
 main: DarkWav\SAC\SAC
-version: 3.5.4
+version: 3.5.5
 load: STARTUP
 author: DarkWav
 api: [3.0.0,4.0.0]

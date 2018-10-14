@@ -47,7 +47,7 @@ class SAC extends PluginBase
     $Logger->info(TextFormat::DARK_PURPLE."<< ShadowAPI >> ShadowAPI Loaded");
     $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
     $Logger->info(TextFormat::ESCAPE."$cl" . "<< SAC >> ShadowAntiCheat Activated"            );
-    $Logger->info(TextFormat::ESCAPE."$cl" . "<< SAC >> ShadowAntiCheat v3.5.4 [Phantom]" . TextFormat::DARK_PURPLE." @ ShadowAPI Build 5 [Phantom]");
+    $Logger->info(TextFormat::ESCAPE."$cl" . "<< SAC >> ShadowAntiCheat v3.5.5 [Phantom]" . TextFormat::DARK_PURPLE." @ ShadowAPI Build 6 [Phantom]");
     $Logger->info(TextFormat::ESCAPE."$cl" . "<< SAC >> Loading Modules");
     if($Config->get("ForceOP"    )) $Logger->info(TextFormat::ESCAPE."$cl"."<< SAC >> Enabling AntiForceOP"    );
     if($Config->get("NoClip"     )) $Logger->info(TextFormat::ESCAPE."$cl"."<< SAC >> Enabling AntiNoClip"     );
@@ -60,15 +60,29 @@ class SAC extends PluginBase
     if($Config->get("FastBow"    )) $Logger->info(TextFormat::ESCAPE."$cl"."<< SAC >> Enabling AntiFastBow"    );
     if($Config->get("Regen"      )) $Logger->info(TextFormat::ESCAPE."$cl"."<< SAC >> Enabling AntiRegen"      );
 
-    if($Config->get("Config-Version") !== "4.0.2")
+    $configversion = $Config->get("Config-Version");
+    switch($configversion)
     {
-      $Logger->warning(TextFormat::ESCAPE."$cl"."<< SAC >> Your Config is out of date!");
+      case "4.0.2":
+        break;
+      default:
+        $Logger->warning(TextFormat::ESCAPE."$cl"."<< SAC >> Your Config is out of date!");
+        break;
     }
-    if($Config->get("Plugin-Version") !== "3.5.3" and $Config->get("Plugin-Version") !== "3.5.4")
+    $pluginversion = $Config->get("Plugin-Version");
+    switch($pluginversion)
     {
-      $Logger->error(TextFormat::ESCAPE."$cl"."<< SAC >> Your Config is incompatible with this plugin version, please update immediately!");
-      $Server->forceshutdown();
-    }
+	    case "3.5.3":
+	      break;
+	    case "3.5.4":
+	      break;
+	    case "3.5.5":
+	      break;
+	    default:
+        $Logger->error(TextFormat::ESCAPE."$cl"."<< SAC >> Your Config is incompatible with this plugin version, please update immediately!");
+        $Server->forceshutdown();
+        break;
+	  }
 
     foreach($Server->getOnlinePlayers() as $player)
     {
@@ -147,7 +161,7 @@ class SAC extends PluginBase
     }
     if ($command->getName() === "sac" or $command->getName() === "shadowanticheat")
     {
-      $sender->sendMessage(TextFormat::ESCAPE."$cl"."<< SAC >> ShadowAntiCheat v3.5.4 [Phantom]" . TextFormat::DARK_PURPLE." @ ShadowAPI Build 5 [Phantom] " . TextFormat::ESCAPE ."$cl". "by DarkWav");
+      $sender->sendMessage(TextFormat::ESCAPE."$cl"."<< SAC >> ShadowAntiCheat v3.5.5 [Phantom]" . TextFormat::DARK_PURPLE." @ ShadowAPI Build 6 [Phantom] " . TextFormat::ESCAPE ."$cl". "by DarkWav");
     }
 	return false;
   }

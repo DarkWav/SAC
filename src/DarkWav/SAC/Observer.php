@@ -791,7 +791,10 @@ class Observer
               {
                 if (($tick - $this->LastMotionTick) > 90)
                 {
-                  $this->PlayerGlideCounter+=3;
+                  if(!$this->Player->hasEffect(Effect::JUMP_BOOST) and !$this->Player->hasEffect(Effect::LEVITATION))
+                  {
+                    $this->PlayerGlideCounter+=3;
+                  }
                 }
               }
             }
@@ -807,7 +810,10 @@ class Observer
               if (($tick - $this->LastSlimeTick) > $this->GetConfigEntry("SlimeSeconds") * 20)
               {
                 //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> $this->PlayerName: outSlime");
-                $this->PlayerAirCounter++;
+                if(!$this->Player->hasEffect(Effect::JUMP_BOOST) and !$this->Player->hasEffect(Effect::LEVITATION))
+                {
+                  $this->PlayerAirCounter++;
+                }
               }
               else
               {
