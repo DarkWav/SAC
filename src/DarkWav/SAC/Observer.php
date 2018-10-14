@@ -1596,7 +1596,14 @@ class Observer
       //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "To world is NOT LOADED");
       return;
     }
-    if ($this->Player->getGameMode() == 1 or $this->Player->getGameMode() == 3) return;
+    if ($this->Player->getGameMode() != null)
+    {
+      if ($this->Player->getGameMode() == 1 or $this->Player->getGameMode() == 3) return;
+    }
+    else
+    {
+      return;
+    }
     if ($fromworldname == $toworldname)
     {
       $this->CheckTPNoClip($event);
