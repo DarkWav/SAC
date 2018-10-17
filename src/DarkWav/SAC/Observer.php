@@ -89,7 +89,7 @@ class Observer
     
     $this->surroundings     = array();
     $this->clipsurroundings = array();
-   
+    
     $this->LastDamageTick = 0;
     $this->LastIceTick    = 0;
     $this->LastMoveTick   = 0;

@@ -212,10 +212,14 @@ class EventListener implements Listener
   
   public function onEntityTeleportEvent(EntityTeleportEvent $event) : void
   {
+    $ThisEntity = $event->getEntity();
     $hash = spl_object_hash($event->getEntity());
-    if (array_key_exists($hash , $this->Main->PlayerObservers))
+    if($ThisEntity instanceof Player)
     {
-      $this->Main->PlayerObservers[$hash]->onTeleport($event);
+      if (array_key_exists($hash , $this->Main->PlayerObservers))
+      {
+        $this->Main->PlayerObservers[$hash]->onTeleport($event);
+      }
     }
   }
 }
