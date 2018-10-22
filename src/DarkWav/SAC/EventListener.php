@@ -104,25 +104,34 @@ class EventListener implements Listener
   {
     $player   = $event->getPlayer();
     $hash     = spl_object_hash($player);
-
-    if (array_key_exists($hash , $this->Main->PlayerObservers))
-    {    
-      $this->Main->PlayerObservers[$hash]->OnMove($event);
-      /*
-      //THIS IS IN-DEV AND NOT USEABLE
-      $this->Main->PlayerObservers[$hash]->getRealKnockBack($event);
-      */
-    }  
+    
+    if($player != null and $player->getGameMode() != null)
+    {
+      if (array_key_exists($hash , $this->Main->PlayerObservers))
+      { 
+        $this->Main->PlayerObservers[$hash]->OnMove($event);
+        /*
+        //THIS IS IN-DEV AND NOT USEABLE
+        $this->Main->PlayerObservers[$hash]->getRealKnockBack($event);
+        */
+      }
+    }
   }
   
   public function onEntityMotionEvent(EntityMotionEvent $event) : void
   {
+    $ThisEntity = $event->getEntity();
     $hash     = spl_object_hash($event->getEntity());
-
-    if (array_key_exists($hash , $this->Main->PlayerObservers))
-    {    
-      $this->Main->PlayerObservers[$hash]->OnMotion($event);
-    }  
+    if($ThisEntity instanceof Player)
+    {
+      if($ThisEntity != null and $ThisEntity->getGameMode() != null)
+      {
+        if (array_key_exists($hash , $this->Main->PlayerObservers))
+        {
+          $this->Main->PlayerObservers[$hash]->OnMotion($event);
+        }
+      }
+    }
   }
 
   public function onEntityRegainHealthEvent(EntityRegainHealthEvent $event) : void
@@ -216,9 +225,12 @@ class EventListener implements Listener
     $hash = spl_object_hash($event->getEntity());
     if($ThisEntity instanceof Player)
     {
-      if (array_key_exists($hash , $this->Main->PlayerObservers))
+      if($ThisEntity != null and $ThisEntity->getGameMode() != null)
       {
-        $this->Main->PlayerObservers[$hash]->onTeleport($event);
+        if (array_key_exists($hash , $this->Main->PlayerObservers))
+        {
+          $this->Main->PlayerObservers[$hash]->onTeleport($event);
+        }
       }
     }
   }

@@ -27,6 +27,7 @@ class SAC extends PluginBase
   public $cl;
   public $PlayerObservers = array();
   public $PlayersToKick   = array();
+  public $selfprot;
 
   public function onLoad() : void
   {
@@ -34,20 +35,21 @@ class SAC extends PluginBase
   }
   public function onEnable() : void
   {
+    $this->selfprot = 1;
     $this->getScheduler()->scheduleRepeatingTask(new KickTask($this), 1);
     @mkdir($this->getDataFolder());
     $this->saveDefaultConfig();
     $this->saveResource("AntiForceOP-Guide.txt");
     $this->saveResource("LegitOPs.yml");
     $cl              = $this->getConfig()->get("Color");
-  
+
     $Config = $this->getConfig();
     $Logger = $this->getServer()->getLogger();
     $Server = $this->getServer();
     $Logger->info(TextFormat::DARK_PURPLE."<< ShadowAPI >> ShadowAPI Loaded");
     $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
     $Logger->info(TextFormat::ESCAPE."$cl" . "<< SAC >> ShadowAntiCheat Activated"            );
-    $Logger->info(TextFormat::ESCAPE."$cl" . "<< SAC >> ShadowAntiCheat v3.5.7 [Phantom]" . TextFormat::DARK_PURPLE." @ ShadowAPI Build 8 [Phantom]");
+    $Logger->info(TextFormat::ESCAPE."$cl" . "<< SAC >> ShadowAntiCheat v3.5.8 [Phantom]" . TextFormat::DARK_PURPLE." @ ShadowAPI Build 9 [Phantom]");
     $Logger->info(TextFormat::ESCAPE."$cl" . "<< SAC >> Loading Modules");
     if($Config->get("ForceOP"    )) $Logger->info(TextFormat::ESCAPE."$cl"."<< SAC >> Enabling AntiForceOP"    );
     if($Config->get("NoClip"     )) $Logger->info(TextFormat::ESCAPE."$cl"."<< SAC >> Enabling AntiNoClip"     );
@@ -82,9 +84,12 @@ class SAC extends PluginBase
           break;
         case "3.5.7":
           break;
+        case "3.5.8":
+          break;
         default:
         $Logger->error(TextFormat::ESCAPE."$cl"."<< SAC >> Your Config is incompatible with this plugin version, please update immediately!");
-        $Server->forceshutdown();
+        $this->selfprot = 0;
+        $Server->getPluginManager()->disablePlugin($this);
         break;
     }
 
@@ -94,7 +99,7 @@ class SAC extends PluginBase
       $name     = $player->getName();
       $oldhash  = null;
       $observer = null;
-      
+
       foreach ($this->PlayerObservers as $key=>$obs)
       {
         if ($obs->PlayerName == $name)
@@ -109,15 +114,15 @@ class SAC extends PluginBase
         unset($this->PlayerObservers[$oldhash]);
         $this->PlayerObservers[$hash] = $observer;
         $this->PlayerObservers[$hash]->PlayerRejoin();
-      }  
+      }
       else
       {
         $observer = new Observer($player, $this);
         $this->PlayerObservers[$hash] = $observer;
-        $this->PlayerObservers[$hash]->PlayerJoin();      
-      } 
+        $this->PlayerObservers[$hash]->PlayerJoin();
+      }
     }
-    if($Config->get("SelfProtection"))
+    if(($Config->get("SelfProtection")) and ($this->selfprot == 1))
     {
       $Logger->info(TextFormat::ESCAPE."$cl"."<< SAC >> Self-Protection is now Active");
     }
@@ -129,7 +134,7 @@ class SAC extends PluginBase
     $Logger = $this->getServer()->getLogger();
     $Server = $this->getServer();
     $Config = $this->getConfig();
-    if (!$Config->get("SelfProtection"))
+    if ((!$Config->get("SelfProtection")) or ($this->selfprot == 0))
     {
       $Logger->warning(TextFormat::ESCAPE."$cl"."<< SAC >> You are no longer protected from cheats!");
       $Logger->info(TextFormat::ESCAPE."$cl"."<< SAC >> ShadowAntiCheat Deactivated");
@@ -141,7 +146,7 @@ class SAC extends PluginBase
       $Server->enablePlugin($this);
     }
   }
-    
+
   public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool
   {
     $Logger            = $this->getServer()->getLogger();
@@ -165,11 +170,11 @@ class SAC extends PluginBase
     }
     if ($command->getName() === "sac" or $command->getName() === "shadowanticheat")
     {
-      $sender->sendMessage(TextFormat::ESCAPE."$cl"."<< SAC >> ShadowAntiCheat v3.5.7 [Phantom]" . TextFormat::DARK_PURPLE." @ ShadowAPI Build 8 [Phantom] " . TextFormat::ESCAPE ."$cl". "by DarkWav");
+      $sender->sendMessage(TextFormat::ESCAPE."$cl"."<< SAC >> ShadowAntiCheat v3.5.8 [Phantom]" . TextFormat::DARK_PURPLE." @ ShadowAPI Build 9 [Phantom] " . TextFormat::ESCAPE ."$cl". "by DarkWav");
     }
     return false;
   }
-  
+
   public function NotifyAdmins($message) : void
   {
     $cl              = $this->getConfig()->get("Color");
@@ -183,9 +188,9 @@ class SAC extends PluginBase
           $player->sendMessage(TextFormat::ESCAPE."$cl" . $message);
         }
       }
-    }  
-  }  
-  
+    }
+  }
+
 }
 
 //////////////////////////////////////////////////////
