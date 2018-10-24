@@ -95,7 +95,7 @@ class EventListener implements Listener
       {
         $observer->PlayerQuit();
       }   
-      $this->Main->PlayerObservers[$hash]->Player = null;
+      unset($this->Main->PlayerObservers[$hash]);
     }
   }
 
