@@ -16,7 +16,7 @@ use DarkWav\SAC\SAC;
 
 class KickTask extends Task
 {
-  
+
   public function __construct(SAC $Main)
   {
     $this->plugin = $Main;
@@ -52,11 +52,10 @@ class KickTask extends Task
           $smsg = $obs->ScanMessage($msg);
           $this->plugin->getServer()->broadcastMessage(TextFormat::ESCAPE."$cl" . $smsg);
         }
-      }   
+      }
       unset ($this->plugin->PlayersToKick[$key]);
-    }  
+    }
   }
-  
 }
 
 //////////////////////////////////////////////////////

@@ -3,11 +3,11 @@
 #  METADATA OF CONFIG                                                     #
 #  DO NOT CHANGE UNLESS YOU KNOW WHAT                                     #
 #  YOU ARE DOING!!!                                                       #
-   Plugin-Version: 3.5.9                                                  #
-   Config-Version: 4.0.2                                                  #
+   Plugin-Version: 3.6.0                                                  #
+   Config-Version: 4.0.3                                                  #
 ###########################################################################
 # ShadowAntiCheat main configuration file.                                #
-# Current version: 3.5.9                                                  #
+# Current version: 3.6.0                                                  #
 # What should be blocked?                                                 #
 ###########################################################################
 # true = ENABLE                                                           #
@@ -70,10 +70,6 @@
 
    BanPlayerMessageBool: true
    BanPlayerMessage: "<< SAC >> %PLAYER% was BANNED for hacking. I am always watching you."
-
-#Enable Self-Protection to prevent anyone from disabling SAC?
-
-   SelfProtection: true
 
 #Enable verbose output???
 #Sends a mesage to all OPs if someone is hacking.
@@ -153,7 +149,7 @@
 #than 180 degrees angle?.
 #NEVER set this lower than 1.0!
 
-   AngleViolationMinDistance: 2.5
+   AngleViolationMinDistance: 2.25
 
 #How far must a player hit in order to be violated immediately?
 
@@ -237,7 +233,7 @@
 #How many hits per second should players be allowed to get?
 #Higher this if false positives occur.
 
-   MaxCPS: 15
+   MaxCPS: 12
 
 #How many times must a player hack before detection?
 #35 Should work fine. (Standard)
@@ -253,12 +249,12 @@
 #Wich Message Sould be shown if KillAura is detected?
 
    KillAura-Message: "<< SAC >> KillAura is not allowed!"
-   KillAura-HEUR-Message: "<< SAC >> KillAura is not allowed!"
+   KillAura-HEUR-Message: "<< SAC >> Suspicious Combat Behavoir!"
 
 #Which Log Message Sould be shown if KillAura is detected?
 
-   KillAura-LogMessage: "<< SAC >> %PLAYER% is suspected for KillAura (VL = %AURAVL%, Type = Angle)!"
-   KillAura-HEUR-LogMessage: "<< SAC >> %PLAYER% is suspected for KillAura (VL = %HEURVL%, Type = Generic)!"
+   KillAura-LogMessage: "<< SAC >> %PLAYER% is suspected for KillAura (VL = %AURAVL%)!"
+   KillAura-HEUR-LogMessage: "<< SAC >> %PLAYER% is fighting Suspiciously (VL = %HEURVL%)!"
 
 #-----------------------# Regen #-----------------------#
 #Do you want to enable Regen check?
@@ -326,7 +322,7 @@
 
 #Which Log Message Sould be shown if Speed is detected?
 
-   Speed-LogMessage: "<< SAC >> %PLAYER% is hacking Speed!"
+   Speed-LogMessage: "<< SAC >> %PLAYER% is suspected for Speed (VL = %SPEEDVL%)!"
 
 #----------------------# Reach #------------------------#
 #Do you want to enable Reach check?
@@ -344,7 +340,7 @@
 #NEVER set this to lower than 1
 
    MaxRange:  4.0
-   
+
 #----------------------# Glide #------------------------#
 #Do you want to enable Glide check?
 #NoDownlGlide is handled by Fly.

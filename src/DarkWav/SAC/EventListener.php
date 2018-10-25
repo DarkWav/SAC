@@ -74,12 +74,12 @@ class EventListener implements Listener
       unset($this->Main->PlayerObservers[$oldhash]);
       $this->Main->PlayerObservers[$hash] = $observer;
       $this->Main->PlayerObservers[$hash]->PlayerRejoin();
-    }  
+    }
     else
     {
       $observer = new Observer($player, $this->Main);
       $this->Main->PlayerObservers[$hash] = $observer;
-      $this->Main->PlayerObservers[$hash]->PlayerJoin();      
+      $this->Main->PlayerObservers[$hash]->PlayerJoin();
     }
   }
 

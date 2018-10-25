@@ -27,15 +27,9 @@ class SAC extends PluginBase
   public $cl;
   public $PlayerObservers = array();
   public $PlayersToKick   = array();
-  public $selfprot;
 
-  public function onLoad() : void
-  {
-    $this->getServer()->enablePlugin($this);
-  }
   public function onEnable() : void
   {
-    $this->selfprot = 1;
     $this->getScheduler()->scheduleRepeatingTask(new KickTask($this), 1);
     @mkdir($this->getDataFolder());
     $this->saveDefaultConfig();
@@ -49,7 +43,7 @@ class SAC extends PluginBase
     $Logger->info(TextFormat::DARK_PURPLE."<< ShadowAPI >> ShadowAPI Loaded");
     $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
     $Logger->info(TextFormat::ESCAPE."$cl" . "<< SAC >> ShadowAntiCheat Activated"            );
-    $Logger->info(TextFormat::ESCAPE."$cl" . "<< SAC >> ShadowAntiCheat v3.5.9 [Phantom]" . TextFormat::DARK_PURPLE." @ ShadowAPI Build 10 [Phantom]");
+    $Logger->info(TextFormat::ESCAPE."$cl" . "<< SAC >> ShadowAntiCheat v3.6.0 [Phantom]" . TextFormat::DARK_PURPLE." @ ShadowAPI 1.1 [Phantom]");
     $Logger->info(TextFormat::ESCAPE."$cl" . "<< SAC >> Loading Modules");
     if($Config->get("ForceOP"    )) $Logger->info(TextFormat::ESCAPE."$cl"."<< SAC >> Enabling AntiForceOP"    );
     if($Config->get("NoClip"     )) $Logger->info(TextFormat::ESCAPE."$cl"."<< SAC >> Enabling AntiNoClip"     );
@@ -65,7 +59,7 @@ class SAC extends PluginBase
     $configversion = $Config->get("Config-Version");
     switch($configversion)
     {
-      case "4.0.2":
+      case "4.0.3":
         break;
       default:
         $Logger->warning(TextFormat::ESCAPE."$cl"."<< SAC >> Your Config is out of date!");
@@ -88,9 +82,10 @@ class SAC extends PluginBase
           break;
         case "3.5.9":
           break;
+        case "3.6.0":
+          break;
         default:
         $Logger->error(TextFormat::ESCAPE."$cl"."<< SAC >> Your Config is incompatible with this plugin version, please update immediately!");
-        $this->selfprot = 0;
         $Server->getPluginManager()->disablePlugin($this);
         break;
     }
@@ -124,29 +119,17 @@ class SAC extends PluginBase
         $this->PlayerObservers[$hash]->PlayerJoin();
       }
     }
-    if(($Config->get("SelfProtection")) and ($this->selfprot == 1))
-    {
-      $Logger->info(TextFormat::ESCAPE."$cl"."<< SAC >> Self-Protection is now Active");
-    }
   }
 
   public function onDisable() : void
   {
-    $cl              = $this->getConfig()->get("Color");
+    $cl     = $this->getConfig()->get("Color");
     $Logger = $this->getServer()->getLogger();
     $Server = $this->getServer();
     $Config = $this->getConfig();
-    if ((!$Config->get("SelfProtection")) or ($this->selfprot == 0))
-    {
-      $Logger->warning(TextFormat::ESCAPE."$cl"."<< SAC >> You are no longer protected from cheats!");
-      $Logger->info(TextFormat::ESCAPE."$cl"."<< SAC >> ShadowAntiCheat Deactivated");
-      $Logger->info(TextFormat::DARK_PURPLE."<< ShadowAPI >> ShadowAPI Unloaded");
-    }
-    else
-    {
-      $Logger->info(TextFormat::ESCAPE."$cl"."<< SAC >> Reloading");
-      $Server->enablePlugin($this);
-    }
+    $Logger->warning(TextFormat::ESCAPE."$cl"."<< SAC >> You are no longer protected from cheats!");
+    $Logger->info(TextFormat::ESCAPE."$cl"."<< SAC >> ShadowAntiCheat Deactivated");
+    $Logger->info(TextFormat::DARK_PURPLE."<< ShadowAPI >> ShadowAPI Unloaded");
   }
 
   public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool
@@ -172,7 +155,7 @@ class SAC extends PluginBase
     }
     if ($command->getName() === "sac" or $command->getName() === "shadowanticheat")
     {
-      $sender->sendMessage(TextFormat::ESCAPE."$cl"."<< SAC >> ShadowAntiCheat v3.5.9 [Phantom]" . TextFormat::DARK_PURPLE." @ ShadowAPI Build 10 [Phantom] " . TextFormat::ESCAPE ."$cl". "by DarkWav");
+      $sender->sendMessage(TextFormat::ESCAPE."$cl"."<< SAC >> ShadowAntiCheat v3.6.0 [Phantom]" . TextFormat::DARK_PURPLE." @ ShadowAPI Build 1.1 [Phantom] " . TextFormat::ESCAPE ."$cl". "by DarkWav");
     }
     return false;
   }

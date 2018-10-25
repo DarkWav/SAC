@@ -47,14 +47,14 @@ class Observer
     $this->SpeedAMP                = 0;
     $this->LastAngle               = 0;
     $this->lastDamagerDirection    = new Vector3(0, 0, 0);
-    
+
     //DO NOT RESET!
     $this->PlayerBanCounter    = 0;
     //^^^^^^^^^^^^^
 
     $this->prev_tick        = -1.0;
     $this->prev_health_tick = -1.0;
-    
+
     $this->x_arr_size   = 7;
     $this->x_arr_idx    = 0;
     $this->x_time_array = array_fill(0, $this->x_arr_size, 0.0);
@@ -63,7 +63,7 @@ class Observer
     $this->x_distance   = 0.0;
     $this->x_dist_sum   = 0.0;
     $this->x_speed      = 0.0;
-    
+
     $this->y_arr_size   = 10;
     $this->y_arr_idx    = 0;
     $this->y_time_array = array_fill(0, $this->y_arr_size, 0.0);
@@ -72,24 +72,24 @@ class Observer
     $this->y_distance   = 0.0;
     $this->y_dist_sum   = 0.0;
     $this->y_speed      = 0.0;
-    
+
     $this->hs_arr_size   = 5;
     $this->hs_arr_idx    = 0;
     $this->hs_time_array = array_fill(0, $this->hs_arr_size, 0.5);
     $this->hs_time_sum   = 0.5 * (double)$this->hs_arr_size;
-    $this->hs_hit_time   = 0.5;  
-    
+    $this->hs_hit_time   = 0.5;
+
     $this->x_pos_old    = new Vector3(0.0, 0.0, 0.0);
     $this->x_pos_new    = new Vector3(0.0, 0.0, 0.0);
     $this->y_pos_old    = 0.0;
     $this->y_pos_new    = 0.0;
-   
+
     $this->heal_counter = 0;
-    $this->heal_time    = 0;    
-    
+    $this->heal_time    = 0;
+
     $this->surroundings     = array();
     $this->clipsurroundings = array();
-    
+
     $this->LastDamageTick = 0;
     $this->LastIceTick    = 0;
     $this->LastMoveTick   = 0;
@@ -97,7 +97,7 @@ class Observer
     $this->LastSlimeTick  = 0;
     $this->mindist        = $this->GetConfigEntry("AngleViolationMinDistance");
     $this->Colorized      = $this->GetConfigEntry("Color");
-    
+
     if     ($this->GetConfigEntry("Heuristics") == 1)
     {
       $this->dist_thr1 = 3.75;
@@ -151,8 +151,8 @@ class Observer
       $this->aim_thr2      = 0.000;
     }
     $this->cps_thr1        = 1/$this->GetConfigEntry("MaxCPS");
-  }  
-  
+  }
+
   public function ResetObserver() : void
   {
     $this->PlayerReachCounter      =  0;
@@ -167,7 +167,7 @@ class Observer
     $this->PlayerNoClipCounter     =  0;
   }
 
-  
+
   public function ResetMovement() : void
   {
     $this->PlayerAirCounter      = 0;
@@ -177,7 +177,7 @@ class Observer
     $this->LastMotionTick        = 0;
 
     $this->prev_tick     = -1.0;
-    
+
     $this->x_arr_size   = 7;
     $this->x_arr_idx    = 0;
     $this->x_time_array = array_fill(0, $this->x_arr_size, 0.0);
@@ -186,7 +186,7 @@ class Observer
     $this->x_distance   = 0.0;
     $this->x_dist_sum   = 0.0;
     $this->x_speed      = 0.0;
-    
+
     $this->y_arr_size   = 10;
     $this->y_arr_idx    = 0;
     $this->y_time_array = array_fill(0, $this->y_arr_size, 0.0);
@@ -199,13 +199,13 @@ class Observer
     $this->x_pos_old    = new Vector3(0.0, 0.0, 0.0);
     $this->x_pos_new    = new Vector3(0.0, 0.0, 0.0);    
     $this->y_pos_old    = 0.0;
-    $this->y_pos_new    = 0.0;     
-    
+    $this->y_pos_new    = 0.0;
+
     $this->hs_arr_size   = 5;
     $this->hs_arr_idx    = 0;
     $this->hs_time_array = array_fill(0, $this->hs_arr_size, 0.5);
     $this->hs_time_sum   = 0.5 * (double)$this->hs_arr_size;
-    $this->hs_hit_time   = 0.5;  
+    $this->hs_hit_time   = 0.5;
   }
 
   public function SACIsOnGround($pp) : bool
@@ -241,7 +241,7 @@ class Observer
     $newmsg3 = $message;
     $newmsg4 = $message;
     $newmsg5 = $message;
-    
+
     if ($pos !== false)
     {
       $newmsg = substr_replace($message, $this->PlayerName, $pos, 8);
@@ -250,7 +250,7 @@ class Observer
     if ($pos2 !== false)
     {
       $newmsg2 = substr_replace($newmsg, $this->PlayerKillAuraCounter, $pos2, 8);
-    }    
+    }
     else
     {
       $newmsg2 = $newmsg;
@@ -259,7 +259,7 @@ class Observer
     if ($pos3 !== false)
     {
       $newmsg3 = substr_replace($newmsg2, $this->PlayerKillAuraV2Counter, $pos3, 8);
-    }    
+    }
     else
     {
       $newmsg3 = $newmsg2;
@@ -268,7 +268,7 @@ class Observer
     if ($pos4 !== false)
     {
       $newmsg4 = substr_replace($newmsg3, $this->PlayerNoClipCounter/10, $pos4, 10);
-    }    
+    }
     else
     {
       $newmsg4 = $newmsg3;
@@ -277,24 +277,33 @@ class Observer
     if ($pos5 !== false)
     {
       $newmsg5 = substr_replace($newmsg4, $this->PlayerShootCounter, $pos5, 11);
-    }    
+    }
     else
     {
       $newmsg5 = $newmsg4;
     }
-    return $newmsg5;
+    $pos6    = strpos(strtoupper($newmsg5), "%SPEEDVL%");
+    if ($pos6 !== false)
+    {
+      $newmsg6 = substr_replace($newmsg5, $this->PlayerSpeedCounter, $pos6, 9);
+    }
+    else
+    {
+      $newmsg6 = $newmsg5;
+    }
+    return $newmsg6;
   }
 
   public function GetConfigEntry($cfgkey)
   {
     $msg = $this->Main->getConfig()->get($cfgkey);
-    return $this->ScanMessage($msg);    
+    return $this->ScanMessage($msg);
   }
-  
+
   public function GetFromLegitOPsYML($cfgkey)
   {
     $entry = $this->LegitOPsYML->get($cfgkey);
-    return $entry;    
+    return $entry;
   }
 
   public function KickPlayer($reason) : void
@@ -312,7 +321,7 @@ class Observer
     if($this->GetConfigEntry("Verbose"))
     {
       $newmsg = $this->ScanMessage($message);
-    
+
       foreach ($this->Main->PlayerObservers as $observer)
       {
         $player = $observer->Player;
@@ -321,9 +330,9 @@ class Observer
           $player->sendMessage(TextFormat::ESCAPE."$this->Colorized" . $newmsg);
         }
       }
-    }  
+    }
   }
-  
+
   public function PlayerQuit() : void
   {
     if ($this->GetConfigEntry("I-AM-WATCHING-YOU"))
@@ -340,7 +349,7 @@ class Observer
       $this->Player->sendMessage(TextFormat::ESCAPE."$this->Colorized"."<< SAC >> $this->PlayerName, I am watching you ...");
     }
   }
-  
+
   public function PlayerRejoin() : void
   {
     $this->JoinCounter++;
@@ -356,7 +365,7 @@ class Observer
     $level       = $this->Player->getLevel();
     $posX        = $this->Player->getX();
     $posY        = $this->Player->getY();
-    $posZ        = $this->Player->getZ();    
+    $posZ        = $this->Player->getZ();
 
     for ($xidx = $posX-1; $xidx <= $posX+1; $xidx = $xidx + 1)
     {
@@ -369,19 +378,19 @@ class Observer
           if ($block != Block::AIR)
           {
             return false;
-          }   
+          }
         }
       }
     }
     return true;
   }
-  
+
   public function AllBlocksAboveAir() : bool
   {
     $level       = $this->Player->getLevel();
     $posX        = $this->Player->getX();
     $posY        = $this->Player->getY() + 2;
-    $posZ        = $this->Player->getZ();    
+    $posZ        = $this->Player->getZ();
 
     for ($xidx = $posX-1; $xidx <= $posX+1; $xidx = $xidx + 1)
     {
@@ -392,7 +401,7 @@ class Observer
         if ($block != Block::AIR)
         {
           return false;
-        }   
+        }
       }
     }
     return true;
@@ -404,12 +413,12 @@ class Observer
     {
       if ($this->Player->hasPermission("sac.regen")) return;
       $Reason2 = $event->getRegainReason();
-      $tick    = (double)$this->Server->getTick(); 
+      $tick    = (double)$this->Server->getTick();
       $tps     = (double)$this->Server->getTicksPerSecond();
 
       if ($Reason2 != 2)  // Ignore CAUSE_MAGIC
       {
-        $heal_amount = $event->getAmount();    
+        $heal_amount = $event->getAmount();
         if ($heal_amount > 3)
         {
           if ($this->GetConfigEntry("Regen-Punishment") == "kick")
@@ -429,7 +438,7 @@ class Observer
             $this->NotifyAdmins($message);
           }
         }
-        $tick    = (double)$this->Server->getTick(); 
+        $tick    = (double)$this->Server->getTick();
         $tps     = (double)$this->Server->getTicksPerSecond();
         if ($tps > 0.0 and $this->prev_health_tick != -1.0)
         {
@@ -464,7 +473,7 @@ class Observer
               $this->heal_counter = 0;
               $this->heal_time    = 0;
             }
-          }  
+          }
         }
         $this->prev_health_tick = $tick;
       }
@@ -479,7 +488,7 @@ class Observer
     $this->LastMoveTick = (double)$this->Server->getTick();
     $this->CheckForceOP($event);
     if ($this->Player->getGameMode() == 1 or $this->Player->getGameMode() == 3) return;
-    
+
     $this->GetSurroundingBlocks();
     $this->CheckSpeedFlyGlide($event);
     $this->CheckNoClip($event);
@@ -525,7 +534,7 @@ class Observer
 
     $posX        = $this->Player->getX();
     $posY        = $this->Player->getY();
-    $posZ        = $this->Player->getZ();    
+    $posZ        = $this->Player->getZ();
 
     $pos1        = new Vector3($posX  , $posY, $posZ  );
     $pos2        = new Vector3($posX-1, $posY, $posZ  );
@@ -563,7 +572,7 @@ class Observer
     $pos34       = new Vector3($posX  , $posY+2, $posZ+1);
     $pos35       = new Vector3($posX+1, $posY+2, $posZ-1);
     $pos36       = new Vector3($posX-1, $posY+2, $posZ+1);
-    
+
     $bpos1       = $level->getBlock($pos1)->getId();
     $bpos2       = $level->getBlock($pos2)->getId();
     $bpos3       = $level->getBlock($pos3)->getId();
@@ -600,11 +609,11 @@ class Observer
     $bpos34       = $level->getBlock($pos34)->getId();
     $bpos35       = $level->getBlock($pos35)->getId();
     $bpos36       = $level->getBlock($pos36)->getId();
-    
+
     $this->surroundings = array ($bpos1, $bpos2, $bpos3, $bpos4, $bpos5, $bpos6, $bpos7, $bpos8, $bpos9);
     $this->clipsurroundings = array ($bpos1, $bpos2, $bpos3, $bpos4, $bpos5, $bpos6, $bpos7, $bpos8, $bpos9, $bpos10, $bpos11, $bpos12, $bpos13, $bpos14, $bpos15, $bpos16, $bpos17, $bpos18, $bpos19, $bpos20, $bpos21, $bpos22, $bpos23, $bpos24, $bpos25, $bpos26, $bpos27, $bpos28, $bpos29, $bpos30, $bpos31, $bpos32, $bpos33, $bpos34, $bpos35, $bpos36);    
   }
-  
+
   # -------------------------------------------------------------------------------------
   # CheckSpeedFlyGlide: Check if player is flying, gliding or moving too fast
   # -------------------------------------------------------------------------------------
@@ -632,14 +641,14 @@ class Observer
         $delta_t    = (double)($tick_count) / (double)$tps;   // seconds since last move
 
         if ($delta_t < 2.0)  // "OnMove" message lag is less than 2 second to calculate a new moving speed
-        {    
+        {
           $this->x_time_sum = $this->x_time_sum - $this->x_time_array[$this->x_arr_idx] + $delta_t;             // ringbuffer time     sum  (remove oldest, add new)
           $this->x_dist_sum = $this->x_dist_sum - $this->x_dist_array[$this->x_arr_idx] + $this->x_distance;    // ringbuffer distance sum  (remove oldest, add new) 
           $this->x_time_array[$this->x_arr_idx] = $delta_t;                                                     // overwrite oldest delta_t  with the new one
           $this->x_dist_array[$this->x_arr_idx] = $this->x_distance;                                            // overwrite oldest distance with the new one          
           $this->x_arr_idx++;                                                                                   // Update ringbuffer position
-          if ($this->x_arr_idx >= $this->x_arr_size) $this->x_arr_idx = 0;          
-          
+          if ($this->x_arr_idx >= $this->x_arr_size) $this->x_arr_idx = 0;
+
           $this->y_time_sum = $this->y_time_sum - $this->y_time_array[$this->y_arr_idx] + $delta_t;             // ringbuffer time     sum  (remove oldest, add new)
           $this->y_dist_sum = $this->y_dist_sum - $this->y_dist_array[$this->y_arr_idx] + $this->y_distance;    // ringbuffer distance sum  (remove oldest, add new) 
           $this->y_time_array[$this->y_arr_idx] = $delta_t;                                                      // overwrite oldest delta_t  with the new one
@@ -648,14 +657,14 @@ class Observer
           if ($this->y_arr_idx >= $this->y_arr_size) $this->y_arr_idx = 0;
         }
 
-        // calculate speed: distance per time      
+        // calculate speed: distance per time
         if ($this->x_time_sum > 0) $this->x_speed = (double)$this->x_dist_sum / (double)$this->x_time_sum;
         else                       $this->x_speed = 0.0;
-        
-        // calculate speed: distance per time      
+
+        // calculate speed: distance per time
         if ($this->y_time_sum > 0) $this->y_speed = (double)$this->y_dist_sum / (double)$this->y_time_sum;
         else                       $this->y_speed = 0.0;
-     
+
         if ($this->GetConfigEntry("Speed"))
         {
           if (!$this->Player->hasPermission("sac.speed"))
@@ -670,7 +679,7 @@ class Observer
             {
               if ($this->AllBlocksAboveAir())
               {
-              #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> $this->PlayerName failed InArray!"); 
+              #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> $this->PlayerName failed InArray!");
               # Anti Speed
                 if ($this->Player->hasEffect(Effect::SPEED))
                 {
@@ -682,12 +691,12 @@ class Observer
                       if (($tick - $this->LastDamageTick) > 30 and ($tick - $this->LastIceTick) > 60 and ($tick - $this->LastMotionTick) > 90)  # deactivate 1.5 seconds after receiving damage and 3.0 seconds after being near ice.
                       {
                         $this->PlayerSpeedCounter += 10;
-                      }   
+                      }
                     }
                     else
                     {
                       if ($this->PlayerSpeedCounter > 0)
-                      { 
+                      {
                         $this->PlayerSpeedCounter--;
                       }
                     }
@@ -699,12 +708,12 @@ class Observer
                       if (($tick - $this->LastDamageTick) > 30 and ($tick - $this->LastIceTick) > 60  and ($tick - $this->LastMotionTick) > 90)  # deactivate 1.5 seconds after receiving damage and 3.0 seconds after being near ice.
                       {
                         $this->PlayerSpeedCounter += 10;
-                      }   
+                      }
                     }
                     else
                     {
                       if ($this->PlayerSpeedCounter > 0)
-                      { 
+                      {
                         $this->PlayerSpeedCounter--;
                       }
                     }
@@ -717,7 +726,7 @@ class Observer
                   else
                   {
                     if ($this->PlayerSpeedCounter > 0)
-                    { 
+                    {
                       $this->PlayerSpeedCounter--;
                     }
                   }
@@ -732,7 +741,7 @@ class Observer
                 else
                 {
                   if ($this->PlayerSpeedCounter > 0)
-                  { 
+                  {
                     $this->PlayerSpeedCounter--;
                   }
                 }
@@ -742,6 +751,11 @@ class Observer
             {
                 $this->LastIceTick = $this->Server->getTick();
             }
+          }
+          if ($this->PlayerSpeedCounter > $this->GetConfigEntry("Speed-Threshold") * 10 \ 2)
+          {
+            $message = $this->GetConfigEntry("Speed-LogMessage");
+            $this->NotifyAdmins($message);
           }
           if ($this->PlayerSpeedCounter > $this->GetConfigEntry("Speed-Threshold") * 10)
           {
@@ -761,7 +775,7 @@ class Observer
               $this->NotifyAdmins($message);
               $this->PlayerSpeedCounter = ($this->GetConfigEntry("Speed-Threshold") * 10) - 10;
             }
-          }  
+          }
         }
       }
       $this->prev_tick = $tick;
@@ -829,7 +843,7 @@ class Observer
       $this->PlayerAirCounter   = 0;
       $this->PlayerGlideCounter = 0;
     }
-    
+
     if ($this->PlayerGlideCounter > 75)
     {
       if ($this->GetConfigEntry("Glide-Punishment") == "kick")
@@ -848,7 +862,7 @@ class Observer
         $this->NotifyAdmins($message);
       }
     }
-    
+
     if ($this->PlayerAirCounter > $this->GetConfigEntry("Fly-Threshold"))
     {
       if ($this->GetConfigEntry("Fly-Punishment") == "kick")
@@ -980,7 +994,7 @@ class Observer
       or $BlockID2 == 129 //EMERALD  (-)
       ))
       {
-        #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> Not_In_Array, VL: $this->PlayerNoClipCounter");        
+        #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> Not_In_Array, VL: $this->PlayerNoClipCounter");
         if ($this->GetConfigEntry("NoClip-Punishment") == "kick")
         {
           $this->PlayerNoClipCounter += 10;
@@ -1011,9 +1025,9 @@ class Observer
           $this->PlayerNoClipCounter--;
         }
       }
-    }    
-  }  
-  
+    }
+  }
+
   public function CheckTPNoClip($event) : void
   {
     # No Clip
@@ -1158,45 +1172,45 @@ class Observer
           $this->PlayerNoClipCounter--;
         }
       }
-    }    
+    }
   }
-  
+
   public function PlayerHasDamaged($event) : void
   {
     $damaged_entity             = $event->getEntity();
     $is_damaged_entity_a_player = $damaged_entity instanceof Player;
     $damaged_entity_position    = new Vector3($damaged_entity->getX(), $damaged_entity->getY(), $damaged_entity->getZ());
     $damaged_xz_entity_position = new Vector3($damaged_entity->getX(), 0                      , $damaged_entity->getZ());
-    
+
     $damager                    = $this->Player;    
     $damager_position           = new Vector3($damager->getX()       , $damager->getY()       , $damager->getZ()       );
     $damager_xz_position        = new Vector3($damager->getX()       , 0                      , $damager->getZ()       );
-    
+
     $damager_direction          = $damager->getDirectionVector();
     $damager_direction          = $damager_direction->normalize();
     $headmove                   = $damager_direction->distance($this->lastDamagerDirection);
-    
+
     $damager_xz_direction       = $damager->getDirectionVector();
     $damager_xz_direction->y    = 0;
     $damager_xz_direction       = $damager_xz_direction->normalize();
-    
+
     $entity_xz_direction        = $damaged_xz_entity_position->subtract($damager_xz_position)->normalize();
     $entity_direction           = $damaged_entity_position->subtract($damager_position)->normalize();
 
-    $distance_xz                = $damager_xz_position->distance($damaged_xz_entity_position); 
-    $distance                   = $damager_position->distance($damaged_entity_position); 
-    
+    $distance_xz                = $damager_xz_position->distance($damaged_xz_entity_position);
+    $distance                   = $damager_position->distance($damaged_entity_position);
+
     $dot_product_xz = $damager_xz_direction->dot($entity_xz_direction);
     $angle_xz       = rad2deg(acos($dot_product_xz));
-    
+
     $dot_product    = $damager_direction->dot($entity_direction);
     $angle          = rad2deg(acos($dot_product));
-    
-    $tick_count = (double)$this->Server->getTick() - $this->LastMoveTick; 
+
+    $tick_count = (double)$this->Server->getTick() - $this->LastMoveTick;
     $tps        = (double)$this->Server->getTicksPerSecond();
     if ($tps != 0) $delta_t    = (double)($tick_count) / (double)$tps;
-    else           $delta_t    = 0; 
-    
+    else           $delta_t    = 0;
+
     $orient = ($damager_xz_direction->x * $entity_xz_direction->z) - ($damager_xz_direction->z * $entity_xz_direction->x);
     if ($orient > 0)
     {
@@ -1205,9 +1219,9 @@ class Observer
     else
     {
       $trueangle = -$angle_xz;
-    } 
+    }
     $aimconsistency = abs($trueangle - $this->LastAngle);
-    
+
     #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> Kill Aura Counter: $this->PlayerKillAuraCounter V2: $this->PlayerKillAuraV2Counter Speed: $this->x_speed Hit: $this->PlayerHitCounter HeadMove: $headmove");
     #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> $this->PlayerName : consistency = $aimconsistency, VL= $this->PlayerKillAuraV2Counter");
     #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> $this->PlayerName : Trueangle = $trueangle");
@@ -1224,7 +1238,7 @@ class Observer
           if ($this->PlayerHitFirstTick == -1)
           {
             $this->PlayerHitFirstTick = $tick;
-          }        
+          }
 
           $tick_count = (double)($tick - $this->PlayerHitFirstTick);   // server ticks since last hit
           $delta_t    = (double)($tick_count) / (double)$tps;          // seconds since last hit
@@ -1232,7 +1246,7 @@ class Observer
           $this->hs_time_sum = $this->hs_time_sum - $this->hs_time_array[$this->hs_arr_idx] + $delta_t;      // ringbuffer time sum  (remove oldest, add new)
           $this->hs_time_array[$this->hs_arr_idx] = $delta_t;                                                // overwrite oldest delta_t  with the new one
           $this->hs_arr_idx++;                                                                               // Update ringbuffer position
-          if ($this->hs_arr_idx >= $this->hs_arr_size) $this->hs_arr_idx = 0;          
+          if ($this->hs_arr_idx >= $this->hs_arr_size) $this->hs_arr_idx = 0;
           $this->hs_hit_time = $this->hs_time_sum / $this->hs_arr_size;
           #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> THD $this->PlayerName : hittime = $this->hs_hit_time");
           if ($this->GetConfigEntry("FastClick"))
@@ -1311,10 +1325,10 @@ class Observer
               }
               # AimConsistency
               elseif (($aimconsistency <= $this->accuracy_thr1) and
-                      ($headmove >= 0.2                       ) and
+                      ($headmove >= 0.25                      ) and
                       ($delta_t  <  0.5                       ) and
                       (
-                       ($this->x_speed > 4.0)
+                        ($this->x_speed > 4.0)
                       ))
               {
                 if ($this->dist_thr3 != 0.000)
@@ -1324,7 +1338,13 @@ class Observer
                 }
               }
               # AimAcurracy
-              elseif (($angle_xz < $this->aim_thr1) and ($angle < $this->aim_thr2) and ($headmove > 0.2) and ($delta_t < 0.5) and ($this->x_speed > 4.0))
+              elseif (($angle_xz < $this->aim_thr1) and
+                      ($angle < $this->aim_thr2   ) and
+                      ($headmove > 0.25           ) and
+                      ($delta_t < 0.5             ) and
+                      (
+                        ($this->x_speed > 4.0)
+                      ))
               {
                 if ($this->dist_thr3 != 0.000)
                 {
@@ -1381,21 +1401,21 @@ class Observer
                 }
               }
             }
-          }  
-      
+          }
+
           if (($this->PlayerKillAuraCounter >= $this->GetConfigEntry("KillAura-Threshold")))
           {
             $event->setCancelled(true);
             $reason = $this->GetConfigEntry("KillAura-Message");
             $this->ResetObserver();
             $this->KickPlayer($reason);
-          }        
+          }
           if (($this->PlayerKillAuraCounter > $this->GetConfigEntry("KillAura-Threshold") * 0.25))
           {
             $message = $this->GetConfigEntry("KillAura-LogMessage");
             $this->NotifyAdmins($message);
             //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "$message");
-          }            
+          }
           if (($this->PlayerKillAuraV2Counter >= $this->GetConfigEntry("KillAura-Threshold")))
           {
             $event->setCancelled(true);
@@ -1408,7 +1428,7 @@ class Observer
             $message = $this->GetConfigEntry("KillAura-HEUR-LogMessage");
             $this->NotifyAdmins($message);
             //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "$message");
-          }                
+          }
         }
       }
     }
@@ -1431,7 +1451,7 @@ class Observer
         #$this->Logger->debug(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> $this->PlayerName  ReachCounter: $this->PlayerReachCounter");
         $tick = (double)$this->Server->getTick(); 
         $tps  = (double)$this->Server->getTicksPerSecond();
-        
+
         if ($this->PlayerReachFirstTick == -1)
         {
           $this->PlayerReachFirstTick = $tick;
@@ -1440,7 +1460,7 @@ class Observer
         {
           $tick_count = (double)($tick - $this->PlayerReachFirstTick); // server ticks since last reach hack
           $delta_t    = (double)($tick_count) / (double)$tps;          // seconds since first reach hack
-          
+
           if ($delta_t < 60)
           {
             if ($this->GetConfigEntry("Reach-Punishment") == "kick")
@@ -1485,7 +1505,7 @@ class Observer
       $this->PlayerGlideCounter -= 2;
     }
   }
-  
+
   public function OnMotion($event) : void
   {
     //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> $this->PlayerName : OnMotion");
@@ -1494,18 +1514,18 @@ class Observer
     $this->PlayerGlideCounter = 0;
     $this->LastMotionTick = $this->Server->getTick();
   }
-  
+
 
   public function PlayerShotArrow($event) : void
   { 
-    $damager                    = $this->Player;    
+    $damager                    = $this->Player;
     $damager_position           = new Vector3($damager->getX()       , $damager->getY()       , $damager->getZ()       );
     $damager_xz_position        = new Vector3($damager->getX()       , 0                      , $damager->getZ()       );
-    $tick_count = (double)$this->Server->getTick() - $this->LastMoveTick; 
+    $tick_count = (double)$this->Server->getTick() - $this->LastMoveTick;
     $tps        = (double)$this->Server->getTicksPerSecond();
     if ($tps != 0) $delta_t    = (double)($tick_count) / (double)$tps;
     else           $delta_t    = 0; 
-    
+
     if ($this->Player->getGameMode() == 1 or $this->Player->getGameMode() == 3) return;
     if ($this->GetConfigEntry("FastBow"))
     {
@@ -1514,17 +1534,17 @@ class Observer
       if ($this->PlayerShootFirstTick == -1)
       {
         $this->PlayerShootFirstTick = $tick - 30;
-      }        
+      }
       $tick_count = (double)($tick - $this->PlayerShootFirstTick);   // server ticks since last hit
       $delta_t    = (double)($tick_count) / (double)$tps;          // seconds since last hit
 
       $this->hs_time_sum = $this->hs_time_sum - $this->hs_time_array[$this->hs_arr_idx] + $delta_t;      // ringbuffer time sum  (remove oldest, add new)
       $this->hs_time_array[$this->hs_arr_idx] = $delta_t;                                                // overwrite oldest delta_t  with the new one
       $this->hs_arr_idx++;                                                                               // Update ringbuffer position
-      if ($this->hs_arr_idx >= $this->hs_arr_size) $this->hs_arr_idx = 0;          
+      if ($this->hs_arr_idx >= $this->hs_arr_size) $this->hs_arr_idx = 0;
       $this->hs_hit_time = $this->hs_time_sum / $this->hs_arr_size;
       #$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "<< SAC >> $this->PlayerName : Shottime = $this->hs_hit_time");
-    
+
       if ($this->hs_hit_time < 0.65)
       {
         if ($this->GetConfigEntry("FastBow-Punishment") == "kick")
@@ -1534,7 +1554,7 @@ class Observer
         $message = $this->GetConfigEntry("FastBow-LogMessage");
         $this->NotifyAdmins($message);
         $event->setCancelled(true);
-        
+
       }
       else
       {
@@ -1564,7 +1584,7 @@ class Observer
   {
     $this->ResetMovement();
     $this->LastDamageTick = $this->Server->getTick();  // remember time of last damage
-  }  
+  }
 
 
   public function onRespawn($event) : void
