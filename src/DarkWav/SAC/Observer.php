@@ -752,7 +752,7 @@ class Observer
                 $this->LastIceTick = $this->Server->getTick();
             }
           }
-          if ($this->PlayerSpeedCounter > $this->GetConfigEntry("Speed-Threshold") * 10 \ 2)
+          if ($this->PlayerSpeedCounter > $this->GetConfigEntry("Speed-Threshold") * 10 / 2)
           {
             $message = $this->GetConfigEntry("Speed-LogMessage");
             $this->NotifyAdmins($message);
