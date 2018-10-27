@@ -3,11 +3,11 @@
 #  METADATA OF CONFIG                                                     #
 #  DO NOT CHANGE UNLESS YOU KNOW WHAT                                     #
 #  YOU ARE DOING!!!                                                       #
-   Plugin-Version: 3.6.0                                                  #
-   Config-Version: 4.0.3                                                  #
+   Plugin-Version: 3.6.1                                                  #
+   Config-Version: 4.0.4                                                  #
 ###########################################################################
 # ShadowAntiCheat main configuration file.                                #
-# Current version: 3.6.0                                                  #
+# Current version: 3.6.1                                                  #
 # What should be blocked?                                                 #
 ###########################################################################
 # true = ENABLE                                                           #
@@ -46,6 +46,13 @@
 
    Color: 3
 
+#Hilight non-critical events with this color?
+#this will also color normal startup messages in
+#the previously defined color, which can be considered
+#distracting by some users.
+
+   ColorEverything: false
+
 #Enable auto banning after an amount of kicks???
 #0 = Disabled
 #1 = Instant Ban
@@ -63,13 +70,13 @@
 #If yes, which message should be shown?
 
    KickPlayerMessageBool: true
-   KickPlayerMessage: "<< SAC >> %PLAYER% was kicked for hacking. I am always watching you."
+   KickPlayerMessage: "[SAC] > %PLAYER% was kicked for hacking. I am always watching you."
 
 #Should SAC show a message when someone gets banned?
 #If yes, which message should be shown?
 
    BanPlayerMessageBool: true
-   BanPlayerMessage: "<< SAC >> %PLAYER% was BANNED for hacking. I am always watching you."
+   BanPlayerMessage: "[SAC] > %PLAYER% was BANNED for hacking. I am always watching you."
 
 #Enable verbose output???
 #Sends a mesage to all OPs if someone is hacking.
@@ -112,11 +119,11 @@
 
 #Wich Message Sould be shown if Fly is detected?
 
-   Fly-Message: "<< SAC >> Fly is not allowed!"
+   Fly-Message: "[SAC] > Fly is not allowed!"
 
 #Which Log Message Sould be shown if Fly is detected?
 
-   Fly-LogMessage: "<< SAC >> %PLAYER% is hacking Fly!"
+   Fly-LogMessage: "[SAC] > %PLAYER% is hacking Fly!"
 
 #---------------------# KillAura #----------------------#
 #Probaby the best part of this plugin.
@@ -142,7 +149,7 @@
 #Do you want to enable Angle?
 
    Angle: true
-   
+
 #Minimum check distance
 #How many blocks must 2 Players be away from each
 #other to be violated for angle if they hit with more
@@ -248,13 +255,13 @@
 
 #Wich Message Sould be shown if KillAura is detected?
 
-   KillAura-Message: "<< SAC >> KillAura is not allowed!"
-   KillAura-HEUR-Message: "<< SAC >> Suspicious Combat Behavoir!"
+   KillAura-Message: "[SAC] > KillAura is not allowed!"
+   KillAura-HEUR-Message: "[SAC] > Suspicious Combat Behavoir!"
 
 #Which Log Message Sould be shown if KillAura is detected?
 
-   KillAura-LogMessage: "<< SAC >> %PLAYER% is suspected for KillAura (VL = %AURAVL%)!"
-   KillAura-HEUR-LogMessage: "<< SAC >> %PLAYER% is fighting Suspiciously (VL = %HEURVL%)!"
+   KillAura-LogMessage: "[SAC] > %PLAYER% is suspected for KillAura (VL = %AURAVL%)!"
+   KillAura-HEUR-LogMessage: "[SAC] > %PLAYER% is fighting Suspiciously (VL = %HEURVL%)!"
 
 #-----------------------# Regen #-----------------------#
 #Do you want to enable Regen check?
@@ -269,11 +276,11 @@
 
 #Wich Message Sould be shown if Regen is detected?
 
-   Regen-Message: "<< SAC >> Regen is not allowed!"
+   Regen-Message: "[SAC] > Regen is not allowed!"
 
 #Which Log Message Sould be shown if Regen is detected?
 
-   Regen-LogMessage: "<< SAC >> %PLAYER% is hacking Regen!"
+   Regen-LogMessage: "[SAC] > %PLAYER% is hacking Regen!"
 
 #----------------------# FastBow #----------------------#
 #Do you want to enable FastBow check?
@@ -289,11 +296,11 @@
 
 #Wich Message Sould be shown if FastBow is detected?
 
-   FastBow-Message: "<< SAC >> FastBow is not allowed!"
+   FastBow-Message: "[SAC] > FastBow is not allowed!"
 
 #Which Log Message Sould be shown if FastBow is detected?
 
-   FastBow-LogMessage: "<< SAC >> %PLAYER% is suspected for FastBow (VL = %FASTBOWVL%)!"
+   FastBow-LogMessage: "[SAC] > %PLAYER% is suspected for FastBow (VL = %FASTBOWVL%)!"
 
 #----------------------# Speed #------------------------#
 #Do you want to enable Speed check?
@@ -318,11 +325,11 @@
 
 #Wich Message Sould be shown if Speed is detected?
 
-   Speed-Message: "<< SAC >> Speed is not allowed!"
+   Speed-Message: "[SAC] > Speed is not allowed!"
 
 #Which Log Message Sould be shown if Speed is detected?
 
-   Speed-LogMessage: "<< SAC >> %PLAYER% is suspected for Speed (VL = %SPEEDVL%)!"
+   Speed-LogMessage: "[SAC] > %PLAYER% is suspected for Speed (VL = %SPEEDVL%)!"
 
 #----------------------# Reach #------------------------#
 #Do you want to enable Reach check?
@@ -362,11 +369,11 @@
 
 #Wich Message Sould be shown if Glide is detected?
 
-   Glide-Message: "<< SAC >> Glide is not allowed!"
+   Glide-Message: "[SAC] > Glide is not allowed!"
 
 #Which Log Message Sould be shown if Glide is detected?
 
-   Glide-LogMessage: "<< SAC >> %PLAYER% is hacking Glide!"
+   Glide-LogMessage: "[SAC] > %PLAYER% is hacking Glide!"
 
 #----------------------# ForceOP #-----------------------#
 #######################################################
@@ -407,11 +414,11 @@
 
 #Which Message Should be shown if NoClip is detected?
 
-   NoClip-Message: "<< SAC >> NoClip is not allowed!"
+   NoClip-Message: "[SAC] > NoClip is not allowed!"
 
 #Which Log Message Sould be shown if NoClip is detected?
 
-   NoClip-LogMessage: "<< SAC >> %PLAYER% is suspected for NoClip (VL = %NOCLIPVL%)!"
+   NoClip-LogMessage: "[SAC] > %PLAYER% is suspected for NoClip (VL = %NOCLIPVL%)!"
 
 #//////////////////////////////////////////////////////
 #//                                                  //

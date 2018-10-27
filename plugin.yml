@@ -1,6 +1,6 @@
 name: SAC
 main: DarkWav\SAC\SAC
-version: 3.6.0
+version: 3.6.1
 load: STARTUP
 enable: STARTUP
 author: DarkWav
@@ -12,6 +12,12 @@ commands:
       sac:
            description: Shows ShadowAntiCheat version
            aliases: ["ShadowAntiCheat","AntiCheat","SAC"]
+      sacmodules:
+           description: Shows loaded ShadowAntiCheat modules
+           aliases: ["ShadowAntiCheat","AntiCheat","SAC","Modules"]
+      sacauramodules:
+           description: Shows loaded ShadowAntiCheat KillAura Check modules
+           aliases: ["ShadowAntiCheat","AntiCheat","SAC","Modules"]
 permissions:
     sac:
         description: "Allows to use all SAC features."

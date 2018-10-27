@@ -25,6 +25,9 @@ class SAC extends PluginBase
   public $Config;
   public $Logger;
   public $cl;
+  public $cl2;
+  public $cl3;
+  public $moldulecount;
   public $PlayerObservers = array();
   public $PlayersToKick   = array();
 
@@ -36,56 +39,59 @@ class SAC extends PluginBase
     $this->saveResource("AntiForceOP-Guide.txt");
     $this->saveResource("LegitOPs.yml");
     $cl              = $this->getConfig()->get("Color");
+    if ($this->getConfig()->get("ColorEverything"))
+    {
+      $this->cl2 = $this->getConfig()->get("Color");
+    }
+    else
+    {
+      $this->cl2 = "f";
+    }
+    if ($this->getConfig()->get("ColorEverything"))
+    {
+      $this->cl3 = "5";
+    }
+    else
+    {
+      $this->cl3 = "f";
+    }
 
     $Config = $this->getConfig();
     $Logger = $this->getServer()->getLogger();
     $Server = $this->getServer();
-    $Logger->info(TextFormat::DARK_PURPLE."<< ShadowAPI >> ShadowAPI Loaded");
+    $Logger->info(TextFormat::ESCAPE."$this->cl3"."[ShadowAPI] > ShadowAPI Loaded");
     $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
-    $Logger->info(TextFormat::ESCAPE."$cl" . "<< SAC >> ShadowAntiCheat Activated"            );
-    $Logger->info(TextFormat::ESCAPE."$cl" . "<< SAC >> ShadowAntiCheat v3.6.0 [Phantom]" . TextFormat::DARK_PURPLE." @ ShadowAPI 1.1 [Phantom]");
-    $Logger->info(TextFormat::ESCAPE."$cl" . "<< SAC >> Loading Modules");
-    if($Config->get("ForceOP"    )) $Logger->info(TextFormat::ESCAPE."$cl"."<< SAC >> Enabling AntiForceOP"    );
-    if($Config->get("NoClip"     )) $Logger->info(TextFormat::ESCAPE."$cl"."<< SAC >> Enabling AntiNoClip"     );
-    if($Config->get("Fly"        )) $Logger->info(TextFormat::ESCAPE."$cl"."<< SAC >> Enabling AntiFly"        );
-    if($Config->get("Fly"        )) $Logger->info(TextFormat::ESCAPE."$cl"."<< SAC >> Enabling AntiSpider"     );
-    if($Config->get("Glide"      )) $Logger->info(TextFormat::ESCAPE."$cl"."<< SAC >> Enabling AntiGlide"      );
-    if($Config->get("KillAura"   )) $Logger->info(TextFormat::ESCAPE."$cl"."<< SAC >> Enabling AntiKillAura"   );
-    if($Config->get("Reach"      )) $Logger->info(TextFormat::ESCAPE."$cl"."<< SAC >> Enabling AntiReach"      );
-    if($Config->get("Speed"      )) $Logger->info(TextFormat::ESCAPE."$cl"."<< SAC >> Enabling AntiSpeed"      );
-    if($Config->get("FastBow"    )) $Logger->info(TextFormat::ESCAPE."$cl"."<< SAC >> Enabling AntiFastBow"    );
-    if($Config->get("Regen"      )) $Logger->info(TextFormat::ESCAPE."$cl"."<< SAC >> Enabling AntiRegen"      );
-
+    $Logger->info(TextFormat::ESCAPE."$this->cl2" . "[SAC] > ShadowAntiCheat Activated"            );
+    $Logger->info(TextFormat::ESCAPE."$this->cl2" . "[SAC] > ShadowAntiCheat v3.6.1 [Phantom]".TextFormat::ESCAPE."$this->cl3"." @ ShadowAPI 1.1 [Phantom]");
+    $this->moldulecount = 0;
+    if($Config->get("ForceOP"    )) $this->moldulecount++;
+    if($Config->get("NoClip"     )) $this->moldulecount++;
+    if($Config->get("Fly"        )) $this->moldulecount++;
+    if($Config->get("Fly"        )) $this->moldulecount++;
+    if($Config->get("Glide"      )) $this->moldulecount++;
+    if($Config->get("KillAura"   )) $this->moldulecount++;
+    if($Config->get("Reach"      )) $this->moldulecount++;
+    if($Config->get("Speed"      )) $this->moldulecount++;
+    if($Config->get("FastBow"    )) $this->moldulecount++;
+    if($Config->get("Regen"      )) $this->moldulecount++;
+    $Logger->info(TextFormat::ESCAPE."$this->cl2" . "[SAC] > Loaded $this->moldulecount Modules");
+    $Logger->info(TextFormat::ESCAPE."$this->cl2" . "[SAC] > For more information type /sac or /sacmodules or sacauramodules");
     $configversion = $Config->get("Config-Version");
     switch($configversion)
     {
-      case "4.0.3":
+      case "4.0.4":
         break;
       default:
-        $Logger->warning(TextFormat::ESCAPE."$cl"."<< SAC >> Your Config is out of date!");
+        $Logger->warning(TextFormat::YELLOW."[SAC] > Your Config is out of date!");
         break;
     }
     $pluginversion = $Config->get("Plugin-Version");
     switch($pluginversion)
     {
-        case "3.5.3":
-          break;
-        case "3.5.4":
-          break;
-        case "3.5.5":
-          break;
-        case "3.5.6":
-          break;
-        case "3.5.7":
-          break;
-        case "3.5.8":
-          break;
-        case "3.5.9":
-          break;
-        case "3.6.0":
+        case "3.6.1":
           break;
         default:
-        $Logger->error(TextFormat::ESCAPE."$cl"."<< SAC >> Your Config is incompatible with this plugin version, please update immediately!");
+        $Logger->error(TextFormat::RED."[SAC] > Your Config is incompatible with this plugin version, please update immediately!");
         $Server->getPluginManager()->disablePlugin($this);
         break;
     }
@@ -127,9 +133,8 @@ class SAC extends PluginBase
     $Logger = $this->getServer()->getLogger();
     $Server = $this->getServer();
     $Config = $this->getConfig();
-    $Logger->warning(TextFormat::ESCAPE."$cl"."<< SAC >> You are no longer protected from cheats!");
-    $Logger->info(TextFormat::ESCAPE."$cl"."<< SAC >> ShadowAntiCheat Deactivated");
-    $Logger->info(TextFormat::DARK_PURPLE."<< ShadowAPI >> ShadowAPI Unloaded");
+    $Logger->info(TextFormat::ESCAPE."$this->cl2"."[SAC] > ShadowAntiCheat Deactivated");
+    $Logger->info(TextFormat::ESCAPE."$this->cl3"."[ShadowAPI] > ShadowAPI Unloaded");
   }
 
   public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool
@@ -137,6 +142,7 @@ class SAC extends PluginBase
     $Logger            = $this->getServer()->getLogger();
     $cl                = $this->getConfig()->get("Color");
     $LegitOPsYML       = new Config($this->getDataFolder() . "LegitOPs.yml", Config::YAML);
+    $Config            = $this->getConfig();
     if ($this->getConfig()->get("ForceOP"))
     {
       if ($sender->isOp())
@@ -146,16 +152,49 @@ class SAC extends PluginBase
           if ($sender instanceof Player)
           {
             $sname = $sender->getName();
-            $message  = "<< SAC >> $sname used ForceOP!";
+            $message  = "[SAC] > $sname used ForceOP!";
             $this->NotifyAdmins($message);
-            $sender->getPlayer()->kick(TextFormat::ESCAPE."$cl"."<< SAC >> ForceOP detected!");
+            $sender->getPlayer()->kick(TextFormat::ESCAPE."$cl"."[SAC] > ForceOP detected!");
           }
         }
       }
     }
     if ($command->getName() === "sac" or $command->getName() === "shadowanticheat")
     {
-      $sender->sendMessage(TextFormat::ESCAPE."$cl"."<< SAC >> ShadowAntiCheat v3.6.0 [Phantom]" . TextFormat::DARK_PURPLE." @ ShadowAPI Build 1.1 [Phantom] " . TextFormat::ESCAPE ."$cl". "by DarkWav");
+      $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > ShadowAntiCheat v3.6.1 [Phantom]" . TextFormat::DARK_PURPLE." @ ShadowAPI Build 1.1 [Phantom] " . TextFormat::ESCAPE ."$cl". "by DarkWav");
+    }
+    if((!$sender instanceof Player) or ($sender->isOp())){
+    if ($command->getName() === "sacmodules")
+    {
+      if($Config->get("ForceOP"    )){ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > ForceOP:  ".TextFormat::GREEN."Active");}else{ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > ForceOP:  ".TextFormat::RED."Disabled");}
+      if($Config->get("NoClip"     )){ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > NoClip:   ".TextFormat::GREEN."Active");}else{ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > NoClip:   ".TextFormat::RED."Disabled");}
+      if($Config->get("Fly"        )){ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > Fly:      ".TextFormat::GREEN."Active");}else{ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > Fly:      ".TextFormat::RED."Disabled");}
+      if($Config->get("Fly"        )){ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > Spider:   ".TextFormat::GREEN."Active");}else{ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > Spider:   ".TextFormat::RED."Disabled");}
+      if($Config->get("Glide"      )){ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > Glide:    ".TextFormat::GREEN."Active");}else{ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > Glide:    ".TextFormat::RED."Disabled");}
+      if($Config->get("KillAura"   )){ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > KillAura: ".TextFormat::GREEN."Active");}else{ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > KillAura: ".TextFormat::RED."Disabled");}
+      if($Config->get("Reach"      )){ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > Reach:    ".TextFormat::GREEN."Active");}else{ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > Reach:    ".TextFormat::RED."Disabled");}
+      if($Config->get("Speed"      )){ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > Speed :   ".TextFormat::GREEN."Active");}else{ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > Speed:    ".TextFormat::RED."Disabled");}
+      if($Config->get("FastBow"    )){ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > FastBow:  ".TextFormat::GREEN."Active");}else{ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > FastBow:  ".TextFormat::RED."Disabled");}
+      if($Config->get("Regen"      )){ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > Regen:    ".TextFormat::GREEN."Active");}else{ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > Regen:    ".TextFormat::RED."Disabled");}
+      $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > Currently $this->moldulecount Modules are Active");
+    }
+    if ($command->getName() === "sacauramodules")
+    {
+      if($Config->get("Angle"              )){ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > Angle:               ".TextFormat::GREEN."Active");}else{ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > Angle:               ".TextFormat::RED."Disabled");}
+      if($Config->get("FastClick"          )){ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > FastClick:           ".TextFormat::GREEN."Active");}else{ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > FastClick:           ".TextFormat::RED."Disabled");}
+      if($Config->get("Heuristics"    ) != 0){ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > Heuristics:          ".TextFormat::GREEN."Active");}else{ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > Heuristics:          ".TextFormat::RED."Disabled");}
+      if($Config->get("Heuristics"    ) == 1){ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > Heuristics-Mode:     ".TextFormat::GREEN."Permissive");}
+      if($Config->get("Heuristics"    ) == 2){ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > Heuristics-Mode:     ".TextFormat::YELLOW."Normal");}
+      if($Config->get("Heuristics"    ) == 3){ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > Heuristics-Mode:     ".TextFormat::GOLD."Aggressive");}
+      if($Config->get("DeepHeuristics") != 0){ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > DeepHeuristics:      ".TextFormat::GREEN."Active");}else{ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > DeepHeuristics:      ".TextFormat::RED."Disabled");}
+      if($Config->get("DeepHeuristics") == 1){ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > DeepHeuristics-Mode: ".TextFormat::GREEN."Permissive");}
+      if($Config->get("DeepHeuristics") == 2){ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > DeepHeuristics-Mode: ".TextFormat::YELLOW."Normal");}
+      if($Config->get("DeepHeuristics") == 3){ $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > DeepHeuristics-Mode: ".TextFormat::GOLD."Aggressive");}
+    }
+    }
+    elseif ($command->getName() === "sacauramodules" or $command->getName() === "sacmodules")
+    {
+      $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > You are not allowed to use this Command!");
     }
     return false;
   }
