@@ -62,7 +62,7 @@ class SAC extends PluginBase
     $Logger->info(TextFormat::ESCAPE."$this->cl3"."[ShadowAPI] > ShadowAPI Loaded");
     $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
     $Logger->info(TextFormat::ESCAPE."$this->cl2" . "[SAC] > ShadowAntiCheat Activated"            );
-    $Logger->info(TextFormat::ESCAPE."$this->cl2" . "[SAC] > ShadowAntiCheat v3.6.1 [Phantom]".TextFormat::ESCAPE."$this->cl3"." @ ShadowAPI 1.1 [Phantom]");
+    $Logger->info(TextFormat::ESCAPE."$this->cl2" . "[SAC] > ShadowAntiCheat v3.6.2 [Phantom]".TextFormat::ESCAPE."$this->cl3"." @ ShadowAPI 1.1 [Phantom]");
     $this->moldulecount = 0;
     if($Config->get("ForceOP"    )) $this->moldulecount++;
     if($Config->get("NoClip"     )) $this->moldulecount++;
@@ -75,7 +75,7 @@ class SAC extends PluginBase
     if($Config->get("FastBow"    )) $this->moldulecount++;
     if($Config->get("Regen"      )) $this->moldulecount++;
     $Logger->info(TextFormat::ESCAPE."$this->cl2" . "[SAC] > Loaded $this->moldulecount Modules");
-    $Logger->info(TextFormat::ESCAPE."$this->cl2" . "[SAC] > For more information type /sac or /sacmodules or sacauramodules");
+    $Logger->info(TextFormat::ESCAPE."$this->cl2" . "[SAC] > For more information type /sac or /sacmodules or /sacauramodules");
     $configversion = $Config->get("Config-Version");
     switch($configversion)
     {
@@ -89,6 +89,8 @@ class SAC extends PluginBase
     switch($pluginversion)
     {
         case "3.6.1":
+          break;
+        case "3.6.2":
           break;
         default:
         $Logger->error(TextFormat::RED."[SAC] > Your Config is incompatible with this plugin version, please update immediately!");
@@ -161,7 +163,7 @@ class SAC extends PluginBase
     }
     if ($command->getName() === "sac" or $command->getName() === "shadowanticheat")
     {
-      $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > ShadowAntiCheat v3.6.1 [Phantom]" . TextFormat::DARK_PURPLE." @ ShadowAPI Build 1.1 [Phantom] " . TextFormat::ESCAPE ."$cl". "by DarkWav");
+      $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > ShadowAntiCheat v3.6.2 [Phantom]" . TextFormat::DARK_PURPLE." @ ShadowAPI Build 1.1 [Phantom] " . TextFormat::ESCAPE ."$cl". "by DarkWav");
     }
     if((!$sender instanceof Player) or ($sender->isOp())){
     if ($command->getName() === "sacmodules")
