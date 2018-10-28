@@ -105,7 +105,7 @@ class EventListener implements Listener
     $player   = $event->getPlayer();
     $hash     = spl_object_hash($player);
 
-    if($player != null)
+    if($player != null and $this->Main->PlayerObservers[$hash]->Player != null)
     {
       if (array_key_exists($hash , $this->Main->PlayerObservers))
       {
@@ -124,7 +124,7 @@ class EventListener implements Listener
     $hash     = spl_object_hash($event->getEntity());
     if($ThisEntity instanceof Player)
     {
-      if($ThisEntity != null)
+      if($ThisEntity != null and $this->Main->PlayerObservers[$hash]->Player != null)
       {
         if (array_key_exists($hash , $this->Main->PlayerObservers))
         {
@@ -140,7 +140,7 @@ class EventListener implements Listener
     {
       $hash = spl_object_hash($event->getEntity());
       $ThisEntity = $event->getEntity();
-      if(($ThisEntity instanceof Player) and ($ThisEntity != null))
+      if(($ThisEntity instanceof Player) and ($ThisEntity != null) and ($this->Main->PlayerObservers[$hash]->Player != null))
       {
         if (array_key_exists($hash , $this->Main->PlayerObservers))
         {
@@ -154,9 +154,9 @@ class EventListener implements Listener
   {
     $evname = $event->getEventName();
     $ThisEntity = $event->getEntity();
-    if(($ThisEntity instanceof Player) and ($ThisEntity != null))
+    $hash = spl_object_hash($ThisEntity);
+    if(($ThisEntity instanceof Player) and ($ThisEntity != null) and ($this->Main->PlayerObservers[$hash]->Player != null))
     {
-      $hash = spl_object_hash($ThisEntity);
       if (array_key_exists($hash , $this->Main->PlayerObservers))
       {
         $this->Main->PlayerObservers[$hash]->PlayerWasDamaged($event);
@@ -165,11 +165,11 @@ class EventListener implements Listener
     if ($event instanceof EntityDamageByEntityEvent)
     {
       $ThisDamager = $event->getDamager();
-      if(($ThisDamager instanceof Player) and ($ThisDamager != null))
+      $hash = spl_object_hash($ThisDamager);
+      if(($ThisDamager instanceof Player) and ($ThisDamager != null) and ($this->Main->PlayerObservers[$hash]->Player != null))
       {
         if ($event->getCause() == EntityDamageEvent::CAUSE_ENTITY_ATTACK)
         {
-          $hash = spl_object_hash($ThisDamager);
           if (array_key_exists($hash , $this->Main->PlayerObservers))
           {
             $this->Main->PlayerObservers[$hash]->PlayerHasDamaged($event);
@@ -182,9 +182,9 @@ class EventListener implements Listener
   public function onEntityShootBowEvent(EntityShootBowEvent $event) : void
   {
     $ThisEntity = $event->getEntity();
-    if(($ThisEntity instanceof Player) and ($ThisEntity != null))
+    $hash = spl_object_hash($ThisEntity);
+    if(($ThisEntity instanceof Player) and ($ThisEntity != null) and ($this->Main->PlayerObservers[$hash]->Player != null))
     {
-      $hash = spl_object_hash($ThisEntity);
       if (array_key_exists($hash , $this->Main->PlayerObservers))
       {
         $this->Main->PlayerObservers[$hash]->PlayerShotArrow($event);
@@ -196,7 +196,7 @@ class EventListener implements Listener
   {
     $player   = $event->getPlayer();
     $hash     = spl_object_hash($player);
-    if($player != null)
+    if($player != null and $this->Main->PlayerObservers[$hash]->Player != null)
     {
       if (array_key_exists($hash , $this->Main->PlayerObservers))
       {
@@ -209,7 +209,7 @@ class EventListener implements Listener
   {
     $player   = $event->getPlayer();
     $hash     = spl_object_hash($player);
-    if($player != null)
+    if($player != null and $this->Main->PlayerObservers[$hash]->Player != null)
     {
       if (array_key_exists($hash , $this->Main->PlayerObservers))
       {
@@ -233,7 +233,7 @@ class EventListener implements Listener
     $hash = spl_object_hash($event->getEntity());
     if($ThisEntity instanceof Player)
     {
-      if($ThisEntity != null)
+      if($ThisEntity != null and $this->Main->PlayerObservers[$hash]->Player != null)
       {
         if (array_key_exists($hash , $this->Main->PlayerObservers))
         {
