@@ -95,7 +95,7 @@ class EventListener implements Listener
       {
         $observer->PlayerQuit();
       }
-      unset($this->Main->PlayerObservers[$hash]->Player);
+      $this->Main->PlayerObservers[$hash]->Player = null;
     }
   }
 
@@ -105,7 +105,7 @@ class EventListener implements Listener
     $player   = $event->getPlayer();
     $hash     = spl_object_hash($player);
 
-    if($player != null and $player->getGameMode() != null)
+    if($player != null)
     {
       if (array_key_exists($hash , $this->Main->PlayerObservers))
       {
@@ -124,7 +124,7 @@ class EventListener implements Listener
     $hash     = spl_object_hash($event->getEntity());
     if($ThisEntity instanceof Player)
     {
-      if($ThisEntity != null and $ThisEntity->getGameMode() != null)
+      if($ThisEntity != null)
       {
         if (array_key_exists($hash , $this->Main->PlayerObservers))
         {
@@ -139,9 +139,13 @@ class EventListener implements Listener
     if ($event->getRegainReason() != EntityDamageEvent::CAUSE_MAGIC and $event->getRegainReason() != EntityDamageEvent::CAUSE_CUSTOM)
     {
       $hash = spl_object_hash($event->getEntity());
-      if (array_key_exists($hash , $this->Main->PlayerObservers))
+      $ThisEntity = $event->getEntity();
+      if(($ThisEntity instanceof Player) and ($ThisEntity != null))
       {
-        $this->Main->PlayerObservers[$hash]->PlayerRegainHealth($event);
+        if (array_key_exists($hash , $this->Main->PlayerObservers))
+        {
+          $this->Main->PlayerObservers[$hash]->PlayerRegainHealth($event);
+        }
       }
     }
   }
@@ -150,7 +154,7 @@ class EventListener implements Listener
   {
     $evname = $event->getEventName();
     $ThisEntity = $event->getEntity();
-    if($ThisEntity instanceof Player)
+    if(($ThisEntity instanceof Player) and ($ThisEntity != null))
     {
       $hash = spl_object_hash($ThisEntity);
       if (array_key_exists($hash , $this->Main->PlayerObservers))
@@ -161,7 +165,7 @@ class EventListener implements Listener
     if ($event instanceof EntityDamageByEntityEvent)
     {
       $ThisDamager = $event->getDamager();
-      if($ThisDamager instanceof Player)
+      if(($ThisDamager instanceof Player) and ($ThisDamager != null))
       {
         if ($event->getCause() == EntityDamageEvent::CAUSE_ENTITY_ATTACK)
         {
@@ -178,7 +182,7 @@ class EventListener implements Listener
   public function onEntityShootBowEvent(EntityShootBowEvent $event) : void
   {
     $ThisEntity = $event->getEntity();
-    if($ThisEntity instanceof Player)
+    if(($ThisEntity instanceof Player) and ($ThisEntity != null))
     {
       $hash = spl_object_hash($ThisEntity);
       if (array_key_exists($hash , $this->Main->PlayerObservers))
@@ -192,10 +196,12 @@ class EventListener implements Listener
   {
     $player   = $event->getPlayer();
     $hash     = spl_object_hash($player);
-
-    if (array_key_exists($hash , $this->Main->PlayerObservers))
+    if($player != null)
     {
-      $this->Main->PlayerObservers[$hash]->onDeath($event);
+      if (array_key_exists($hash , $this->Main->PlayerObservers))
+      {
+        $this->Main->PlayerObservers[$hash]->onDeath($event);
+      }
     }
   }
 
@@ -203,10 +209,12 @@ class EventListener implements Listener
   {
     $player   = $event->getPlayer();
     $hash     = spl_object_hash($player);
-
-    if (array_key_exists($hash , $this->Main->PlayerObservers))
+    if($player != null)
     {
-      $this->Main->PlayerObservers[$hash]->onRespawn($event);
+      if (array_key_exists($hash , $this->Main->PlayerObservers))
+      {
+        $this->Main->PlayerObservers[$hash]->onRespawn($event);
+      }
     }
   }
 
@@ -225,7 +233,7 @@ class EventListener implements Listener
     $hash = spl_object_hash($event->getEntity());
     if($ThisEntity instanceof Player)
     {
-      if($ThisEntity != null and $ThisEntity->getGameMode() != null)
+      if($ThisEntity != null)
       {
         if (array_key_exists($hash , $this->Main->PlayerObservers))
         {

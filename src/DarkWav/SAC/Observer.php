@@ -492,6 +492,9 @@ class Observer
     $this->GetSurroundingBlocks();
     $this->CheckSpeedFlyGlide($event);
     $this->CheckNoClip($event);
+    //$aallowflight = $this->Player->getAllowFlight();
+    //$iisOnGround = $this->SACIsOnGround($this->Player);
+    //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "[SAC] > IsOnGround: $iisOnGround AllowFlight: $aallowflight");
     /*
     $level = $this->Player->getLevel();
     $posX         = $this->Player->getX();
@@ -1280,7 +1283,7 @@ class Observer
             # Killaura Heuristics
             if ($this->dist_thr1 != 0.00)
             {
-              # AKAHAD
+              # AKAHAD: Distance per Angle
               if (($distance >= $this->dist_thr2) and 
                   ($delta_t  <  0.5             ) and
                   ($angle_xz >  45.0            ) and
@@ -1616,10 +1619,7 @@ class Observer
       //$this->Logger->info(TextFormat::ESCAPE."$this->Colorized" . "To world is NOT LOADED");
       return;
     }
-    if ($this->Player->getGameMode() != null)
-    {
-      if ($this->Player->getGameMode() == 1 or $this->Player->getGameMode() == 3) return;
-    }
+    if ($this->Player->getGameMode() == 1 or $this->Player->getGameMode() == 3) return;
     else
     {
       return;
