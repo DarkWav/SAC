@@ -23,3 +23,4 @@
 
 ### Read the [License](https://github.com/DarkWav/ShadowAntiCheat/blob/master/LICENSE) before downloading this Software.
 ### By downloading this Software you AGREE to the [License](https://github.com/DarkWav/ShadowAntiCheat/blob/master/LICENSE)!
+### Article 13 information: This Project is still strongly copyleft according to the GPLv3. Therefore, you needn't pay ANY KIND of licension fee when using/liniking/distributing this material, meaning Articel 11 & 17 of the EU Copyright Law DO NOT APPLY TO THIS PARTICULAR PROJECT IN ANY WAY. Feel free to use it just like before!
