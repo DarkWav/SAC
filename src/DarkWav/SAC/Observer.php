@@ -1638,6 +1638,6 @@ class Observer
 //                                                  //
 //     SAC by DarkWav.                              //
 //     Distributed under the GGPL License.          //
-//     Copyright (C) 2018 DarkWav                   //
+//     Copyright (C) 2016-2019 DarkWav              //
 //                                                  //
 //////////////////////////////////////////////////////
