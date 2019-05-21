@@ -62,7 +62,7 @@ class SAC extends PluginBase
     $Logger->info(TextFormat::ESCAPE."$this->cl3"."[ShadowAPI] > ShadowAPI Loaded");
     $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
     $Logger->info(TextFormat::ESCAPE."$this->cl2" . "[SAC] > ShadowAntiCheat Activated"            );
-    $Logger->info(TextFormat::ESCAPE."$this->cl2" . "[SAC] > ShadowAntiCheat v3.6.5 [Phantom]".TextFormat::ESCAPE."$this->cl3"." @ ShadowAPI 1.2 [Ghost]");
+    $Logger->info(TextFormat::ESCAPE."$this->cl2" . "[SAC] > ShadowAntiCheat v3.6.6 [Phantom]".TextFormat::ESCAPE."$this->cl3"." @ ShadowAPI 1.2 [Ghost]");
     $this->moldulecount = 0;
     if($Config->get("ForceOP"    )) $this->moldulecount++;
     if($Config->get("NoClip"     )) $this->moldulecount++;
@@ -97,6 +97,8 @@ class SAC extends PluginBase
         case "3.6.4":
           break;
         case "3.6.5":
+          break;
+        case "3.6.6":
           break;
         default:
         $Logger->error(TextFormat::RED."[SAC] > Your Config is incompatible with this plugin version, please update immediately!");
@@ -169,7 +171,7 @@ class SAC extends PluginBase
     }
     if ($command->getName() === "sac" or $command->getName() === "shadowanticheat")
     {
-      $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > ShadowAntiCheat v3.6.5 [Phantom]" . TextFormat::DARK_PURPLE." @ ShadowAPI 1.2 [Ghost] " . TextFormat::ESCAPE ."$cl". "by DarkWav");
+      $sender->sendMessage(TextFormat::ESCAPE."$cl"."[SAC] > ShadowAntiCheat v3.6.6 [Phantom]" . TextFormat::DARK_PURPLE." @ ShadowAPI 1.2 [Ghost] " . TextFormat::ESCAPE ."$cl". "by DarkWav");
     }
     if((!$sender instanceof Player) or ($sender->isOp())){
     if ($command->getName() === "sacmodules")
@@ -229,6 +231,6 @@ class SAC extends PluginBase
 //                                                  //
 //     SAC by DarkWav.                              //
 //     Distributed under the GGPL License.          //
-//     Copyright (C) 2018 DarkWav                   //
+//     Copyright (C) 2016-2019 DarkWav              //
 //                                                  //
 //////////////////////////////////////////////////////
