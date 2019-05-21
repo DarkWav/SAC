@@ -1,6 +1,6 @@
 name: SAC
 main: DarkWav\SAC\SAC
-version: 3.6.5
+version: 3.6.6
 load: STARTUP
 author: DarkWav
 api: [3.0.0]
@@ -22,9 +22,9 @@ permissions:
         description: "Allows to use all SAC features."
         default: false
         children:
-            sac.admin:
+            sac.notify:
                 description: "Get notified when someone is hacking."
-                default: op
+                default: false
             sac.fly:
                 description: "A permission."
                 default: false
