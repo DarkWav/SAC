@@ -3,11 +3,11 @@
 #  METADATA OF CONFIG                                                     #
 #  DO NOT CHANGE UNLESS YOU KNOW WHAT                                     #
 #  YOU ARE DOING!!!                                                       #
-   Plugin-Version: 3.6.5                                                  #
+   Plugin-Version: 3.6.6                                                  #
    Config-Version: 4.0.4                                                  #
 ###########################################################################
 # ShadowAntiCheat main configuration file.                                #
-# Current version: 3.6.5                                                  #
+# Current version: 3.6.6                                                  #
 # What should be blocked?                                                 #
 ###########################################################################
 # true = ENABLE                                                           #
@@ -126,11 +126,10 @@
    Fly-LogMessage: "[SAC] > %PLAYER% is hacking Fly!"
 
 #---------------------# KillAura #----------------------#
-#Probaby the best part of this plugin.
 #Do you want to enable KillAura check?
 #This also catches AimAura and KillAuraLegit.
 #This will block anything that gives the player
-#a sanificant gamplay advantage, not useless bots.
+#a significant gamplay advantage, not useless bots.
 #TP-Aura is handled by Speed. This is purely behavoir
 #based, it does not spawn any fake entities.
 #While some components of AntiKillAura might
@@ -162,7 +161,7 @@
 
    ViolationRange: 4.5
 
-#Advanced KillAura Heuristics And Detection
+#Advanced KillAura Heuristics
 #This is an advanced algorithm to catch a lot more
 #combat hacks. This is generally aggersive, but
 #you can make it even more aggressive or rather
@@ -410,7 +409,7 @@
 #bugs and glitches.
 #NEVER set this to 0
 
-   NoClip-Threshold: 40
+   NoClip-Threshold: 75
 
 #Which Message Should be shown if NoClip is detected?
 
@@ -424,7 +423,7 @@
 #//                                                  //
 #//     SAC by DarkWav.                              //
 #//     Distributed under the GGPL License.          //
-#//     Copyright (C) 2018 DarkWav                   //
+#//     Copyright (C) 2016-2019 DarkWav              //
 #//                                                  //
 #//////////////////////////////////////////////////////
 ...
