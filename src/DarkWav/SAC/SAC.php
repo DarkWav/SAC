@@ -217,7 +217,7 @@ class SAC extends PluginBase
       foreach ($this->PlayerObservers as $observer)
       {
         $player = $observer->Player;
-        if ($player != null and $player->hasPermission("sac.admin"))
+        if ($player != null and $player->hasPermission("sac.notify"))
         {
           $player->sendMessage(TextFormat::ESCAPE."$cl" . $message);
         }
