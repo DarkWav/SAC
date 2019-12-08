@@ -1,5 +1,6 @@
 # SAC (ShadowAntiCheat) [![](https://poggit.pmmp.io/shield.state/ShadowAntiCheat)](https://poggit.pmmp.io/p/ShadowAntiCheat) [![](https://poggit.pmmp.io/ci.shield/DarkWav/SAC/ShadowAntiCheat)](https://poggit.pmmp.io/ci/DarkWav/SAC/ShadowAntiCheat) [![](https://img.shields.io/github/license/DarkWav/SAC.svg?label=License)](https://github.com/DarkWav/SAC/blob/master/LICENSE)
 
+## Status: Discontinued / Frozen. Don't use the current version!
 ### A powerfull AntiCheat software made to detect unfair gamplay advantages.<br>A re-write of this Plugin is planned to solve problems resulting from very poor software architecture in the current versions. The re-write progress can be seen in the following repository: https://github.com/DarkWav/SAC-rewrite . Once the re-write is finished, I will publish it to the main repository, but it could take several months to complete. This version of SAC will not recieve any feature-updates any more, bug fixes for existing bugs will be published until the official release of the re-write.
 
 ## Current Release: 3.6.6<br>Supported PMMP-API Versions: 3.X.X
