@@ -2,7 +2,7 @@
 
 ## Status: Discontinued / Frozen. Don't use the current version!
 ### A powerfull AntiCheat software made to detect unfair gamplay advantages.<br>A re-write of this Plugin is planned to solve problems resulting from very poor software architecture in the current versions. The re-write progress can be seen in the following repository: https://github.com/DarkWav/SAC-rewrite . Once the re-write is finished, I will publish it to the main repository, but it could take several months to complete. This version of SAC will not recieve any feature-updates or bug-fixes any more.
-# Current Release: 3.6.6<br>Supported PMMP-API Versions: 3.X.X
+## Current Release: 3.6.6<br>Supported PMMP-API Versions: 3.X.X
 
 ## An AntiCheat plugin for [PocketMine-MP](https://github.com/pmmp/pocketmine-mp) and [Altay](https://github.com/TuranicTeam/Altay).<br>Compatible with MCPE 1.X.X.
 
